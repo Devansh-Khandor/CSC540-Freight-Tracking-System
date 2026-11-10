@@ -1,179 +1,182 @@
 <mxfile host="app.diagrams.net">
-<diagram id="FDYvOFzs2OIW5-MksppW" name="Page-1">
-<mxGraphModel dx="1945" dy="1355" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
-  <root>
-    <mxCell id="0" />
-    <mxCell id="1" parent="0" />
-    <mxCell id="account" parent="1" style="swimlane;horizontal=1;startSize=37;horizontalStack=0;rounded=1;fontSize=20;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;arcSize=4;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;collapsible=0;metaEdit=0;overflow=hidden;autosize=1;" value="ACCOUNT" vertex="1">
-      <mxGeometry height="590" width="280" x="40" y="180" as="geometry" />
-    </mxCell>
-    <mxCell id="account_attrs" parent="account" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;fontSize=18;verticalAlign=top;resizable=1;rotatable=1;part=1;html=1;editable=1;movable=1;deletable=1;locked=0;connectable=0;container=0;autosize=0;resizeWidth=0;overflow=visible;" value="&lt;div style=&quot;line-height:26px&quot;&gt;&lt;span style=&quot;display:inline-block;width:170px&quot;&gt;account_id&lt;/span&gt;R U&lt;/div&gt;&lt;div style=&quot;line-height:26px&quot;&gt;&lt;span style=&quot;display:inline-block;width:170px&quot;&gt;password&lt;/span&gt;R&lt;/div&gt;&lt;div style=&quot;line-height:26px&quot;&gt;&lt;span style=&quot;display:inline-block;width:170px&quot;&gt;role&lt;/span&gt;R&lt;/div&gt;" vertex="1">
-      <mxGeometry height="78" width="260" x="10" y="48" as="geometry" />
-    </mxCell>
-    <mxCell id="shipper" parent="account" style="swimlane;horizontal=1;startSize=37;horizontalStack=0;rounded=1;fontSize=20;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;arcSize=4;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;collapsible=0;metaEdit=0;overflow=hidden;autosize=1;" value="SHIPPER" vertex="1">
-      <mxGeometry height="75" width="220" x="30" y="150" as="geometry" />
-    </mxCell>
-    <mxCell id="carrier" parent="account" style="swimlane;horizontal=1;startSize=37;horizontalStack=0;rounded=1;fontSize=20;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;arcSize=4;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;collapsible=0;metaEdit=0;overflow=hidden;autosize=1;" value="CARRIER" vertex="1">
-      <mxGeometry height="75" width="220" x="30" y="410" as="geometry" />
-    </mxCell>
-    <mxCell id="viewer" parent="account" style="swimlane;horizontal=1;startSize=37;horizontalStack=0;rounded=1;fontSize=20;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;arcSize=4;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;collapsible=0;metaEdit=0;overflow=hidden;autosize=1;" value="VIEWER" vertex="1">
-      <mxGeometry height="65" width="220" x="30" y="505" as="geometry" />
-    </mxCell>
-    <mxCell id="account_note" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;fontSize=16;" value="role ∈ {SHIPPER, CARRIER, VIEWER}&lt;br&gt;Complete, disjoint specialization" vertex="1">
-      <mxGeometry height="65" width="300" x="40" y="790" as="geometry" />
-    </mxCell>
-    <mxCell id="shipment" parent="1" style="swimlane;horizontal=1;startSize=37;horizontalStack=0;rounded=1;fontSize=20;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;arcSize=4;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;collapsible=0;metaEdit=0;overflow=hidden;autosize=1;" value="SHIPMENT" vertex="1">
-      <mxGeometry height="200" width="370" x="460" y="260" as="geometry" />
-    </mxCell>
-    <mxCell id="shipment_attrs" parent="shipment" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;fontSize=18;verticalAlign=top;resizable=1;rotatable=1;part=1;html=1;editable=1;movable=1;deletable=1;locked=0;connectable=0;container=0;autosize=0;resizeWidth=0;overflow=visible;" value="&lt;div style=&quot;line-height:26px&quot;&gt;&lt;span style=&quot;display:inline-block;width:285px&quot;&gt;shipment_id&lt;/span&gt;R U&lt;/div&gt;&lt;div style=&quot;line-height:26px&quot;&gt;&lt;span style=&quot;display:inline-block;width:285px&quot;&gt;weight_kg&lt;/span&gt;R&lt;/div&gt;&lt;div style=&quot;line-height:26px&quot;&gt;&lt;span style=&quot;display:inline-block;width:285px&quot;&gt;promised_delivery_date&lt;/span&gt;R&lt;/div&gt;&lt;div style=&quot;line-height:26px&quot;&gt;&lt;span style=&quot;display:inline-block;width:285px&quot;&gt;current_status&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;line-height:26px&quot;&gt;&lt;span style=&quot;display:inline-block;width:285px&quot;&gt;delivery_outcome&lt;/span&gt;&lt;/div&gt;" vertex="1">
-      <mxGeometry height="130" width="350" x="10" y="48" as="geometry" />
-    </mxCell>
-    <mxCell id="vehicle" parent="1" style="swimlane;horizontal=1;startSize=37;horizontalStack=0;rounded=1;fontSize=20;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;arcSize=4;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;collapsible=0;metaEdit=0;overflow=hidden;autosize=1;" value="VEHICLE" vertex="1">
-      <mxGeometry height="490" width="370" x="460" y="650" as="geometry" />
-    </mxCell>
-    <mxCell id="vehicle_attrs" parent="vehicle" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;fontSize=18;verticalAlign=top;resizable=1;rotatable=1;part=1;html=1;editable=1;movable=1;deletable=1;locked=0;connectable=0;container=0;autosize=0;resizeWidth=0;overflow=visible;" value="&lt;div style=&quot;line-height:26px&quot;&gt;&lt;span style=&quot;display:inline-block;width:270px&quot;&gt;vehicle_id&lt;/span&gt;R U&lt;/div&gt;" vertex="1">
-      <mxGeometry height="26" width="350" x="10" y="48" as="geometry" />
-    </mxCell>
-    <mxCell id="box_truck" parent="vehicle" style="swimlane;horizontal=1;startSize=37;horizontalStack=0;rounded=1;fontSize=20;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;arcSize=4;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;collapsible=0;metaEdit=0;overflow=hidden;autosize=1;" value="BOX_TRUCK" vertex="1">
-      <mxGeometry height="105" width="330" x="20" y="105" as="geometry" />
-    </mxCell>
-    <mxCell id="box_truck_attrs" parent="box_truck" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;fontSize=18;verticalAlign=top;resizable=1;rotatable=1;part=1;html=1;editable=1;movable=1;deletable=1;locked=0;connectable=0;container=0;autosize=0;resizeWidth=0;overflow=visible;" value="&lt;div style=&quot;line-height:26px&quot;&gt;&lt;span style=&quot;display:inline-block;width:265px&quot;&gt;cargo_volume&lt;/span&gt;R&lt;/div&gt;&lt;div style=&quot;line-height:26px&quot;&gt;&lt;span style=&quot;display:inline-block;width:265px&quot;&gt;gross_weight_rating&lt;/span&gt;R&lt;/div&gt;" vertex="1">
-      <mxGeometry height="52" width="310" x="10" y="48" as="geometry" />
-    </mxCell>
-    <mxCell id="refrigerated_van" parent="vehicle" style="swimlane;horizontal=1;startSize=37;horizontalStack=0;rounded=1;fontSize=20;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;arcSize=4;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;collapsible=0;metaEdit=0;overflow=hidden;autosize=1;" value="REFRIGERATED_VAN" vertex="1">
-      <mxGeometry height="105" width="330" x="20" y="235" as="geometry" />
-    </mxCell>
-    <mxCell id="refrigerated_van_attrs" parent="refrigerated_van" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;fontSize=18;verticalAlign=top;resizable=1;rotatable=1;part=1;html=1;editable=1;movable=1;deletable=1;locked=0;connectable=0;container=0;autosize=0;resizeWidth=0;overflow=visible;" value="&lt;div style=&quot;line-height:26px&quot;&gt;&lt;span style=&quot;display:inline-block;width:265px&quot;&gt;temperature_range&lt;/span&gt;R&lt;/div&gt;&lt;div style=&quot;line-height:26px&quot;&gt;&lt;span style=&quot;display:inline-block;width:265px&quot;&gt;payload_limit&lt;/span&gt;R&lt;/div&gt;" vertex="1">
-      <mxGeometry height="52" width="310" x="10" y="48" as="geometry" />
-    </mxCell>
-    <mxCell id="rail_car" parent="vehicle" style="swimlane;horizontal=1;startSize=37;horizontalStack=0;rounded=1;fontSize=20;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;arcSize=4;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;collapsible=0;metaEdit=0;overflow=hidden;autosize=1;" value="RAIL_CAR" vertex="1">
-      <mxGeometry height="105" width="330" x="20" y="365" as="geometry" />
-    </mxCell>
-    <mxCell id="rail_car_attrs" parent="rail_car" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;fontSize=18;verticalAlign=top;resizable=1;rotatable=1;part=1;html=1;editable=1;movable=1;deletable=1;locked=0;connectable=0;container=0;autosize=0;resizeWidth=0;overflow=visible;" value="&lt;div style=&quot;line-height:26px&quot;&gt;&lt;span style=&quot;display:inline-block;width:265px&quot;&gt;axle_count&lt;/span&gt;R&lt;/div&gt;&lt;div style=&quot;line-height:26px&quot;&gt;&lt;span style=&quot;display:inline-block;width:265px&quot;&gt;track_gauge&lt;/span&gt;R&lt;/div&gt;" vertex="1">
-      <mxGeometry height="52" width="310" x="10" y="48" as="geometry" />
-    </mxCell>
-    <mxCell id="hub" parent="1" style="swimlane;horizontal=1;startSize=37;horizontalStack=0;rounded=1;fontSize=20;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;arcSize=4;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;collapsible=0;metaEdit=0;overflow=hidden;autosize=1;" value="HUB" vertex="1">
-      <mxGeometry height="115" width="260" x="1060" y="80" as="geometry" />
-    </mxCell>
-    <mxCell id="hub_attrs" parent="hub" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;fontSize=18;verticalAlign=top;resizable=1;rotatable=1;part=1;html=1;editable=1;movable=1;deletable=1;locked=0;connectable=0;container=0;autosize=0;resizeWidth=0;overflow=visible;" value="&lt;div style=&quot;line-height:26px&quot;&gt;&lt;span style=&quot;display:inline-block;width:175px&quot;&gt;hub_id&lt;/span&gt;R U&lt;/div&gt;&lt;div style=&quot;line-height:26px&quot;&gt;&lt;span style=&quot;display:inline-block;width:175px&quot;&gt;region&lt;/span&gt;R&lt;/div&gt;" vertex="1">
-      <mxGeometry height="52" width="240" x="10" y="48" as="geometry" />
-    </mxCell>
-    <mxCell id="lane" parent="1" style="swimlane;horizontal=1;startSize=37;horizontalStack=0;rounded=1;fontSize=20;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;arcSize=4;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;collapsible=0;metaEdit=0;overflow=hidden;autosize=1;" value="LANE" vertex="1">
-      <mxGeometry height="105" width="260" x="1060" y="330" as="geometry" />
-    </mxCell>
-    <mxCell id="lane_attrs" parent="lane" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;fontSize=18;verticalAlign=top;resizable=1;rotatable=1;part=1;html=1;editable=1;movable=1;deletable=1;locked=0;connectable=0;container=0;autosize=0;resizeWidth=0;overflow=visible;" value="&lt;div style=&quot;line-height:26px&quot;&gt;&lt;span style=&quot;display:inline-block;width:164px&quot;&gt;origin_hub_id&lt;/span&gt;R (PK1)&lt;/div&gt;&lt;div style=&quot;line-height:26px&quot;&gt;&lt;span style=&quot;display:inline-block;width:164px&quot;&gt;destination_hub_id&lt;/span&gt;R (PK2)&lt;/div&gt;" vertex="1">
-      <mxGeometry height="52" width="240" x="10" y="45" as="geometry" />
-    </mxCell>
-    <mxCell id="scan_event" parent="1" style="swimlane;horizontal=1;startSize=37;horizontalStack=0;rounded=1;fontSize=20;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;arcSize=4;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;collapsible=0;metaEdit=0;overflow=hidden;autosize=1;" value="SCAN_EVENT" vertex="1">
-      <mxGeometry height="150" width="350" x="1060" y="600" as="geometry" />
-    </mxCell>
-    <mxCell id="scan_event_attrs" parent="scan_event" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;fontSize=18;verticalAlign=top;resizable=1;rotatable=1;part=1;html=1;editable=1;movable=1;deletable=1;locked=0;connectable=0;container=0;autosize=0;resizeWidth=0;overflow=visible;" value="&lt;div style=&quot;line-height:26px&quot;&gt;&lt;span style=&quot;display:inline-block;width:195px&quot;&gt;scan_sequence&lt;/span&gt;R (partial key)&lt;/div&gt;&lt;div style=&quot;line-height:26px&quot;&gt;&lt;span style=&quot;display:inline-block;width:195px&quot;&gt;scan_timestamp&lt;/span&gt;R&lt;/div&gt;&lt;div style=&quot;line-height:26px&quot;&gt;&lt;span style=&quot;display:inline-block;width:195px&quot;&gt;status&lt;/span&gt;R&lt;/div&gt;" vertex="1">
-      <mxGeometry height="78" width="330" x="10" y="48" as="geometry" />
-    </mxCell>
-    <mxCell id="departure" parent="1" style="swimlane;horizontal=1;startSize=37;horizontalStack=0;rounded=1;fontSize=20;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;arcSize=4;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;collapsible=0;metaEdit=0;overflow=hidden;autosize=1;" value="DEPARTURE" vertex="1">
-      <mxGeometry height="150" width="370" x="990" y="930" as="geometry" />
-    </mxCell>
-    <mxCell id="departure_attrs" parent="departure" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;fontSize=18;verticalAlign=top;resizable=1;rotatable=1;part=1;html=1;editable=1;movable=1;deletable=1;locked=0;connectable=0;container=0;autosize=0;resizeWidth=0;overflow=visible;" value="&lt;div style=&quot;line-height:26px&quot;&gt;&lt;span style=&quot;display:inline-block;width:285px&quot;&gt;departure_id&lt;/span&gt;R U&lt;/div&gt;&lt;div style=&quot;line-height:26px&quot;&gt;&lt;span style=&quot;display:inline-block;width:285px&quot;&gt;departure_datetime&lt;/span&gt;R&lt;/div&gt;&lt;div style=&quot;line-height:26px&quot;&gt;&lt;span style=&quot;display:inline-block;width:285px&quot;&gt;max_total_weight_kg&lt;/span&gt;R&lt;/div&gt;" vertex="1">
-      <mxGeometry height="78" width="350" x="10" y="48" as="geometry" />
-    </mxCell>
-    <mxCell id="owns_0" edge="1" parent="1" source="shipper" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=18;strokeWidth=2;startSize=14;endSize=14;labelBackgroundColor=default;jumpStyle=arc;jumpSize=10;startArrow=ERmandOne;endArrow=ERzeroToMany;startFill=0;endFill=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5375;entryDx=0;entryDy=0;" target="shipment" value="Owns">
-      <mxGeometry relative="1" as="geometry">
-        <mxPoint y="-14" as="offset" />
-      </mxGeometry>
-    </mxCell>
-    <mxCell id="owns_1" edge="1" parent="1" source="carrier" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=18;strokeWidth=2;startSize=14;endSize=14;labelBackgroundColor=default;jumpStyle=arc;jumpSize=10;startArrow=ERmandOne;endArrow=ERzeroToMany;startFill=0;endFill=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.15;entryDx=0;entryDy=0;" target="vehicle" value="Owns">
-      <mxGeometry relative="1" as="geometry">
-        <mxPoint y="-14" as="offset" />
-        <Array as="points">
-          <mxPoint x="380" y="627.5" />
-          <mxPoint x="380" y="723.5" />
-        </Array>
-      </mxGeometry>
-    </mxCell>
-    <mxCell id="shipment_lane" edge="1" parent="1" source="shipment" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=18;strokeWidth=2;startSize=14;endSize=14;labelBackgroundColor=default;jumpStyle=arc;jumpSize=10;startArrow=ERzeroToMany;endArrow=ERmandOne;startFill=0;endFill=0;exitX=1;exitY=0.55;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="lane" value="Uses">
-      <mxGeometry relative="1" as="geometry">
-        <mxPoint y="-14" as="offset" />
-        <Array as="points">
-          <mxPoint x="950" y="370" />
-          <mxPoint x="950" y="382.5" />
-        </Array>
-      </mxGeometry>
-    </mxCell>
-    <mxCell id="lane_origin" edge="1" parent="1" source="lane" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=18;strokeWidth=2;startSize=14;endSize=14;labelBackgroundColor=default;jumpStyle=arc;jumpSize=10;startArrow=ERzeroToMany;endArrow=ERmandOne;startFill=0;endFill=0;exitX=0.2;exitY=0;exitDx=0;exitDy=0;entryX=0.2;entryY=1;entryDx=0;entryDy=0;" target="hub" value="HasOrigin">
-      <mxGeometry relative="1" as="geometry">
-        <mxPoint x="-50" as="offset" />
-      </mxGeometry>
-    </mxCell>
-    <mxCell id="lane_destination" edge="1" parent="1" source="lane" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=18;strokeWidth=2;startSize=14;endSize=14;labelBackgroundColor=default;jumpStyle=arc;jumpSize=10;startArrow=ERzeroToMany;endArrow=ERmandOne;startFill=0;endFill=0;exitX=0.8;exitY=0;exitDx=0;exitDy=0;entryX=0.8;entryY=1;entryDx=0;entryDy=0;" target="hub" value="HasDestination">
-      <mxGeometry relative="1" as="geometry">
-        <mxPoint x="65" as="offset" />
-      </mxGeometry>
-    </mxCell>
-    <mxCell id="based_at" edge="1" parent="1" source="vehicle" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=18;strokeWidth=2;startSize=14;endSize=14;labelBackgroundColor=default;jumpStyle=arc;jumpSize=10;startArrow=ERzeroToMany;endArrow=ERmandOne;startFill=0;endFill=0;exitX=1;exitY=0.03775510204;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="hub" value="BasedAt">
-      <mxGeometry relative="1" x="0.55" as="geometry">
-        <mxPoint y="-18" as="offset" />
-        <Array as="points">
-          <mxPoint x="960" y="668.5" />
-          <mxPoint x="960" y="800" />
-          <mxPoint x="1600" y="800" />
-          <mxPoint x="1600" y="30" />
-          <mxPoint x="1000" y="30" />
-          <mxPoint x="1000" y="137.5" />
-        </Array>
-      </mxGeometry>
-    </mxCell>
-    <mxCell id="runs" edge="1" parent="1" source="vehicle" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=18;strokeWidth=2;startSize=14;endSize=14;labelBackgroundColor=default;jumpStyle=arc;jumpSize=10;startArrow=ERmandOne;endArrow=ERzeroToMany;startFill=0;endFill=0;exitX=1;exitY=0.72040816327;exitDx=0;exitDy=0;entryX=0;entryY=0.48666666667;entryDx=0;entryDy=0;" target="departure" value="Runs">
-      <mxGeometry relative="1" as="geometry">
-        <mxPoint y="-14" as="offset" />
-      </mxGeometry>
-    </mxCell>
-    <mxCell id="travels_on" edge="1" parent="1" source="departure" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=18;strokeWidth=2;startSize=14;endSize=14;labelBackgroundColor=default;jumpStyle=arc;jumpSize=10;startArrow=ERzeroToMany;endArrow=ERmandOne;startFill=0;endFill=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.12;entryY=1;entryDx=0;entryDy=0;" target="lane" value="TravelsOn">
-      <mxGeometry relative="1" x="-0.52" as="geometry">
-        <mxPoint y="-18" as="offset" />
-        <Array as="points">
-          <mxPoint x="1175" y="835" />
-          <mxPoint x="1020" y="835" />
-          <mxPoint x="1020" y="490" />
-          <mxPoint x="1091.2" y="490" />
-        </Array>
-      </mxGeometry>
-    </mxCell>
-    <mxCell id="booked_onto" edge="1" parent="1" source="shipment" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=18;strokeWidth=2;startSize=14;endSize=14;labelBackgroundColor=default;jumpStyle=arc;jumpSize=10;startArrow=ERzeroToMany;endArrow=ERzeroToOne;startFill=0;endFill=0;exitX=0.3;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;" target="departure" value="BookedOnto">
-      <mxGeometry relative="1" x="-0.45" as="geometry">
-        <mxPoint y="-20" as="offset" />
-        <Array as="points">
-          <mxPoint x="571" y="550" />
-          <mxPoint x="900" y="550" />
-          <mxPoint x="900" y="967.5" />
-        </Array>
-      </mxGeometry>
-    </mxCell>
-    <mxCell id="has_scan" edge="1" parent="1" source="shipment" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=18;strokeWidth=2;startSize=14;endSize=14;labelBackgroundColor=default;jumpStyle=arc;jumpSize=10;startArrow=ERmandOne;endArrow=ERzeroToMany;startFill=0;endFill=0;exitX=1;exitY=0.85;exitDx=0;exitDy=0;entryX=0.3;entryY=0;entryDx=0;entryDy=0;" target="scan_event" value="◇ HasScan">
-      <mxGeometry relative="1" x="0.46" as="geometry">
-        <mxPoint y="-18" as="offset" />
-        <Array as="points">
-          <mxPoint x="970" y="430" />
-          <mxPoint x="970" y="530" />
-          <mxPoint x="1165" y="530" />
-        </Array>
-      </mxGeometry>
-    </mxCell>
-    <mxCell id="occurs_at" edge="1" parent="1" source="scan_event" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=18;strokeWidth=2;startSize=14;endSize=14;labelBackgroundColor=default;jumpStyle=arc;jumpSize=10;startArrow=ERzeroToMany;endArrow=ERmandOne;startFill=0;endFill=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" target="hub" value="OccursAt">
-      <mxGeometry relative="1" as="geometry">
-        <mxPoint x="-55" as="offset" />
-        <Array as="points">
-          <mxPoint x="1540" y="675" />
-          <mxPoint x="1540" y="137.5" />
-        </Array>
-      </mxGeometry>
-    </mxCell>
-    <mxCell id="business_rules" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;fontSize=18;" value="&lt;b&gt;BUSINESS RULES&lt;/b&gt;&lt;br&gt;• HUB.region ∈ {Northeast, Southeast, Midwest, Southwest, West}.&lt;br&gt;• The LANE key is the ordered pair (origin_hub_id, destination_hub_id). The hubs must differ.&lt;br&gt;• BookedOnto assumes at most one departure per shipment. Each departure may carry many shipments.&lt;br&gt;• The booking procedure checks the matching lane and remaining weight capacity atomically.&lt;br&gt;• The diamond beside HasScan marks the identifying relationship. Each scan requires one shipment.&lt;br&gt;• The SCAN_EVENT key is (shipment_id, scan_sequence). The sequence is unique within its shipment.&lt;br&gt;• Scan insertion triggers enforce chronological timestamps and non-regressing status.&lt;br&gt;• Scan insertion maintains current_status and records delivery_outcome as ON_TIME or LATE on delivery." vertex="1">
-      <mxGeometry height="285" width="1050" x="40" y="1200" as="geometry" />
-    </mxCell>
-    <mxCell id="vehicle_specialization_note" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;fontSize=16;" value="Vehicle specialization: disjoint; completeness not specified." vertex="1">
-      <mxGeometry height="45" width="420" x="460" y="1150" as="geometry" />
-    </mxCell>
-  </root>
-</mxGraphModel>
-</diagram>
+  <diagram id="FDYvOFzs2OIW5-MksppW" name="Page-1">
+    <mxGraphModel grid="0" page="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" pageScale="1" pageWidth="1740" pageHeight="1720" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="account" parent="1" style="swimlane;horizontal=1;startSize=37;horizontalStack=0;rounded=1;fontSize=20;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;arcSize=4;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;collapsible=0;metaEdit=0;overflow=hidden;autosize=1;" value="ACCOUNT" vertex="1">
+          <mxGeometry height="590" width="280" x="40" y="180" as="geometry" />
+        </mxCell>
+        <mxCell id="account_attrs" parent="account" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;fontSize=18;verticalAlign=top;resizable=1;rotatable=1;part=1;html=1;editable=1;movable=1;deletable=1;locked=0;connectable=0;container=0;autosize=0;resizeWidth=0;overflow=visible;" value="&lt;div style=&quot;line-height:26px&quot;&gt;&lt;span style=&quot;display:inline-block;width:170px&quot;&gt;account_id&lt;/span&gt;R U&lt;/div&gt;&lt;div style=&quot;line-height:26px&quot;&gt;&lt;span style=&quot;display:inline-block;width:170px&quot;&gt;password&lt;/span&gt;R&lt;/div&gt;&lt;div style=&quot;line-height:26px&quot;&gt;&lt;span style=&quot;display:inline-block;width:170px&quot;&gt;role&lt;/span&gt;R&lt;/div&gt;" vertex="1">
+          <mxGeometry height="78" width="260" x="10" y="48" as="geometry" />
+        </mxCell>
+        <mxCell id="shipper" parent="account" style="swimlane;horizontal=1;startSize=37;horizontalStack=0;rounded=1;fontSize=20;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;arcSize=4;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;collapsible=0;metaEdit=0;overflow=hidden;autosize=1;" value="SHIPPER" vertex="1">
+          <mxGeometry height="75" width="220" x="30" y="150" as="geometry" />
+        </mxCell>
+        <mxCell id="carrier" parent="account" style="swimlane;horizontal=1;startSize=37;horizontalStack=0;rounded=1;fontSize=20;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;arcSize=4;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;collapsible=0;metaEdit=0;overflow=hidden;autosize=1;" value="CARRIER" vertex="1">
+          <mxGeometry height="75" width="220" x="30" y="410" as="geometry" />
+        </mxCell>
+        <mxCell id="viewer" parent="account" style="swimlane;horizontal=1;startSize=37;horizontalStack=0;rounded=1;fontSize=20;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;arcSize=4;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;collapsible=0;metaEdit=0;overflow=hidden;autosize=1;" value="VIEWER" vertex="1">
+          <mxGeometry height="65" width="220" x="30" y="505" as="geometry" />
+        </mxCell>
+        <mxCell id="account_note" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;fontSize=16;" value="role ∈ {SHIPPER, CARRIER, VIEWER}&lt;br&gt;Complete, disjoint specialization" vertex="1">
+          <mxGeometry height="65" width="300" x="40" y="790" as="geometry" />
+        </mxCell>
+        <mxCell id="shipment" parent="1" style="swimlane;horizontal=1;startSize=37;horizontalStack=0;rounded=1;fontSize=20;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;arcSize=4;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;collapsible=0;metaEdit=0;overflow=hidden;autosize=1;" value="SHIPMENT" vertex="1">
+          <mxGeometry height="200" width="370" x="460" y="260" as="geometry" />
+        </mxCell>
+        <mxCell id="shipment_attrs" parent="shipment" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;fontSize=18;verticalAlign=top;resizable=1;rotatable=1;part=1;html=1;editable=1;movable=1;deletable=1;locked=0;connectable=0;container=0;autosize=0;resizeWidth=0;overflow=visible;" value="&lt;div style=&quot;line-height:26px&quot;&gt;&lt;span style=&quot;display:inline-block;width:285px&quot;&gt;shipment_id&lt;/span&gt;R U&lt;/div&gt;&lt;div style=&quot;line-height:26px&quot;&gt;&lt;span style=&quot;display:inline-block;width:285px&quot;&gt;weight_kg&lt;/span&gt;R&lt;/div&gt;&lt;div style=&quot;line-height:26px&quot;&gt;&lt;span style=&quot;display:inline-block;width:285px&quot;&gt;promised_delivery_date&lt;/span&gt;R&lt;/div&gt;&lt;div style=&quot;line-height:26px&quot;&gt;&lt;span style=&quot;display:inline-block;width:285px&quot;&gt;current_status&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;line-height:26px&quot;&gt;&lt;span style=&quot;display:inline-block;width:285px&quot;&gt;delivery_outcome&lt;/span&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="130" width="350" x="10" y="48" as="geometry" />
+        </mxCell>
+        <mxCell id="vehicle" parent="1" style="swimlane;horizontal=1;startSize=37;horizontalStack=0;rounded=1;fontSize=20;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;arcSize=4;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;collapsible=0;metaEdit=0;overflow=hidden;autosize=1;" value="VEHICLE" vertex="1">
+          <mxGeometry height="490" width="370" x="460" y="650" as="geometry" />
+        </mxCell>
+        <mxCell id="vehicle_attrs" parent="vehicle" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;fontSize=18;verticalAlign=top;resizable=1;rotatable=1;part=1;html=1;editable=1;movable=1;deletable=1;locked=0;connectable=0;container=0;autosize=0;resizeWidth=0;overflow=visible;" value="&lt;div style=&quot;line-height:26px&quot;&gt;&lt;span style=&quot;display:inline-block;width:270px&quot;&gt;vehicle_id&lt;/span&gt;R U&lt;/div&gt;" vertex="1">
+          <mxGeometry height="26" width="350" x="10" y="48" as="geometry" />
+        </mxCell>
+        <mxCell id="box_truck" parent="vehicle" style="swimlane;horizontal=1;startSize=37;horizontalStack=0;rounded=1;fontSize=20;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;arcSize=4;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;collapsible=0;metaEdit=0;overflow=hidden;autosize=1;" value="BOX_TRUCK" vertex="1">
+          <mxGeometry height="105" width="330" x="20" y="105" as="geometry" />
+        </mxCell>
+        <mxCell id="box_truck_attrs" parent="box_truck" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;fontSize=18;verticalAlign=top;resizable=1;rotatable=1;part=1;html=1;editable=1;movable=1;deletable=1;locked=0;connectable=0;container=0;autosize=0;resizeWidth=0;overflow=visible;" value="&lt;div style=&quot;line-height:26px&quot;&gt;&lt;span style=&quot;display:inline-block;width:265px&quot;&gt;cargo_volume&lt;/span&gt;R&lt;/div&gt;&lt;div style=&quot;line-height:26px&quot;&gt;&lt;span style=&quot;display:inline-block;width:265px&quot;&gt;gross_weight_rating&lt;/span&gt;R&lt;/div&gt;" vertex="1">
+          <mxGeometry height="52" width="310" x="10" y="48" as="geometry" />
+        </mxCell>
+        <mxCell id="refrigerated_van" parent="vehicle" style="swimlane;horizontal=1;startSize=37;horizontalStack=0;rounded=1;fontSize=20;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;arcSize=4;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;collapsible=0;metaEdit=0;overflow=hidden;autosize=1;" value="REFRIGERATED_VAN" vertex="1">
+          <mxGeometry height="105" width="330" x="20" y="235" as="geometry" />
+        </mxCell>
+        <mxCell id="refrigerated_van_attrs" parent="refrigerated_van" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;fontSize=18;verticalAlign=top;resizable=1;rotatable=1;part=1;html=1;editable=1;movable=1;deletable=1;locked=0;connectable=0;container=0;autosize=0;resizeWidth=0;overflow=visible;" value="&lt;div style=&quot;line-height:26px&quot;&gt;&lt;span style=&quot;display:inline-block;width:265px&quot;&gt;temperature_range&lt;/span&gt;R&lt;/div&gt;&lt;div style=&quot;line-height:26px&quot;&gt;&lt;span style=&quot;display:inline-block;width:265px&quot;&gt;payload_limit&lt;/span&gt;R&lt;/div&gt;" vertex="1">
+          <mxGeometry height="52" width="310" x="10" y="48" as="geometry" />
+        </mxCell>
+        <mxCell id="rail_car" parent="vehicle" style="swimlane;horizontal=1;startSize=37;horizontalStack=0;rounded=1;fontSize=20;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;arcSize=4;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;collapsible=0;metaEdit=0;overflow=hidden;autosize=1;" value="RAIL_CAR" vertex="1">
+          <mxGeometry height="105" width="330" x="20" y="365" as="geometry" />
+        </mxCell>
+        <mxCell id="rail_car_attrs" parent="rail_car" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;fontSize=18;verticalAlign=top;resizable=1;rotatable=1;part=1;html=1;editable=1;movable=1;deletable=1;locked=0;connectable=0;container=0;autosize=0;resizeWidth=0;overflow=visible;" value="&lt;div style=&quot;line-height:26px&quot;&gt;&lt;span style=&quot;display:inline-block;width:265px&quot;&gt;axle_count&lt;/span&gt;R&lt;/div&gt;&lt;div style=&quot;line-height:26px&quot;&gt;&lt;span style=&quot;display:inline-block;width:265px&quot;&gt;track_gauge&lt;/span&gt;R&lt;/div&gt;" vertex="1">
+          <mxGeometry height="52" width="310" x="10" y="48" as="geometry" />
+        </mxCell>
+        <mxCell id="hub" parent="1" style="swimlane;horizontal=1;startSize=37;horizontalStack=0;rounded=1;fontSize=20;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;arcSize=4;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;collapsible=0;metaEdit=0;overflow=hidden;autosize=1;" value="HUB" vertex="1">
+          <mxGeometry height="115" width="260" x="1060" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="hub_attrs" parent="hub" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;fontSize=18;verticalAlign=top;resizable=1;rotatable=1;part=1;html=1;editable=1;movable=1;deletable=1;locked=0;connectable=0;container=0;autosize=0;resizeWidth=0;overflow=visible;" value="&lt;div style=&quot;line-height:26px&quot;&gt;&lt;span style=&quot;display:inline-block;width:175px&quot;&gt;hub_id&lt;/span&gt;R U&lt;/div&gt;&lt;div style=&quot;line-height:26px&quot;&gt;&lt;span style=&quot;display:inline-block;width:175px&quot;&gt;region&lt;/span&gt;R&lt;/div&gt;" vertex="1">
+          <mxGeometry height="52" width="240" x="10" y="48" as="geometry" />
+        </mxCell>
+        <mxCell id="lane" parent="1" style="swimlane;horizontal=1;startSize=37;horizontalStack=0;rounded=1;fontSize=20;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;arcSize=4;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;collapsible=0;metaEdit=0;overflow=hidden;autosize=1;" value="LANE" vertex="1">
+          <mxGeometry height="105" width="260" x="1060" y="330" as="geometry" />
+        </mxCell>
+        <mxCell id="lane_attrs" parent="lane" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;fontSize=18;verticalAlign=top;resizable=1;rotatable=1;part=1;html=1;editable=1;movable=1;deletable=1;locked=0;connectable=0;container=0;autosize=0;resizeWidth=0;overflow=visible;" value="&lt;div style=&quot;line-height:26px&quot;&gt;&lt;span style=&quot;display:inline-block;width:164px&quot;&gt;origin_hub_id&lt;/span&gt;R (PK1)&lt;/div&gt;&lt;div style=&quot;line-height:26px&quot;&gt;&lt;span style=&quot;display:inline-block;width:164px&quot;&gt;destination_hub_id&lt;/span&gt;R (PK2)&lt;/div&gt;" vertex="1">
+          <mxGeometry height="52" width="240" x="10" y="45" as="geometry" />
+        </mxCell>
+        <mxCell id="scan_event" parent="1" style="swimlane;horizontal=1;startSize=37;horizontalStack=0;rounded=1;fontSize=20;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;arcSize=4;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;collapsible=0;metaEdit=0;overflow=hidden;autosize=1;" value="SCAN_EVENT" vertex="1">
+          <mxGeometry height="150" width="350" x="1060" y="600" as="geometry" />
+        </mxCell>
+        <mxCell id="scan_event_attrs" parent="scan_event" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;fontSize=18;verticalAlign=top;resizable=1;rotatable=1;part=1;html=1;editable=1;movable=1;deletable=1;locked=0;connectable=0;container=0;autosize=0;resizeWidth=0;overflow=visible;" value="&lt;div style=&quot;line-height:26px&quot;&gt;&lt;span style=&quot;display:inline-block;width:195px&quot;&gt;scan_sequence&lt;/span&gt;R (partial key)&lt;/div&gt;&lt;div style=&quot;line-height:26px&quot;&gt;&lt;span style=&quot;display:inline-block;width:195px&quot;&gt;scan_timestamp&lt;/span&gt;R&lt;/div&gt;&lt;div style=&quot;line-height:26px&quot;&gt;&lt;span style=&quot;display:inline-block;width:195px&quot;&gt;status&lt;/span&gt;R&lt;/div&gt;" vertex="1">
+          <mxGeometry height="78" width="330" x="10" y="48" as="geometry" />
+        </mxCell>
+        <mxCell id="departure" parent="1" style="swimlane;horizontal=1;startSize=37;horizontalStack=0;rounded=1;fontSize=20;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;arcSize=4;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;collapsible=0;metaEdit=0;overflow=hidden;autosize=1;" value="DEPARTURE" vertex="1">
+          <mxGeometry height="150" width="370" x="990" y="930" as="geometry" />
+        </mxCell>
+        <mxCell id="departure_attrs" parent="departure" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;fontSize=18;verticalAlign=top;resizable=1;rotatable=1;part=1;html=1;editable=1;movable=1;deletable=1;locked=0;connectable=0;container=0;autosize=0;resizeWidth=0;overflow=visible;" value="&lt;div style=&quot;line-height:26px&quot;&gt;&lt;span style=&quot;display:inline-block;width:285px&quot;&gt;departure_id&lt;/span&gt;R U&lt;/div&gt;&lt;div style=&quot;line-height:26px&quot;&gt;&lt;span style=&quot;display:inline-block;width:285px&quot;&gt;departure_datetime&lt;/span&gt;R&lt;/div&gt;&lt;div style=&quot;line-height:26px&quot;&gt;&lt;span style=&quot;display:inline-block;width:285px&quot;&gt;max_total_weight_kg&lt;/span&gt;R&lt;/div&gt;" vertex="1">
+          <mxGeometry height="78" width="350" x="10" y="48" as="geometry" />
+        </mxCell>
+        <mxCell id="owns_0" edge="1" parent="1" source="shipper" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=18;strokeWidth=2;startSize=14;endSize=14;labelBackgroundColor=default;jumpStyle=arc;jumpSize=10;startArrow=ERmandOne;endArrow=ERzeroToMany;startFill=0;endFill=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5375;entryDx=0;entryDy=0;" target="shipment" value="Owns">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint y="-14" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="owns_1" edge="1" parent="1" source="carrier" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=18;strokeWidth=2;startSize=14;endSize=14;labelBackgroundColor=default;jumpStyle=arc;jumpSize=10;startArrow=ERmandOne;endArrow=ERzeroToMany;startFill=0;endFill=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.15;entryDx=0;entryDy=0;" target="vehicle" value="Owns">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint y="-14" as="offset" />
+            <Array as="points">
+              <mxPoint x="380" y="627.5" />
+              <mxPoint x="380" y="723.5" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="shipment_lane" edge="1" parent="1" source="shipment" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=18;strokeWidth=2;startSize=14;endSize=14;labelBackgroundColor=default;jumpStyle=arc;jumpSize=10;startArrow=ERzeroToMany;endArrow=ERmandOne;startFill=0;endFill=0;exitX=1;exitY=0.55;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="lane" value="Uses">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint y="-14" as="offset" />
+            <Array as="points">
+              <mxPoint x="950" y="370" />
+              <mxPoint x="950" y="382.5" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="lane_origin" edge="1" parent="1" source="lane" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=18;strokeWidth=2;startSize=14;endSize=14;labelBackgroundColor=default;jumpStyle=arc;jumpSize=10;startArrow=ERzeroToMany;endArrow=ERmandOne;startFill=0;endFill=0;exitX=0.2;exitY=0;exitDx=0;exitDy=0;entryX=0.2;entryY=1;entryDx=0;entryDy=0;" target="hub" value="HasOrigin">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="-50" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="lane_destination" edge="1" parent="1" source="lane" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=18;strokeWidth=2;startSize=14;endSize=14;labelBackgroundColor=default;jumpStyle=arc;jumpSize=10;startArrow=ERzeroToMany;endArrow=ERmandOne;startFill=0;endFill=0;exitX=0.8;exitY=0;exitDx=0;exitDy=0;entryX=0.8;entryY=1;entryDx=0;entryDy=0;" target="hub" value="HasDestination">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="65" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="based_at" edge="1" parent="1" source="vehicle" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=18;strokeWidth=2;startSize=14;endSize=14;labelBackgroundColor=default;jumpStyle=arc;jumpSize=10;startArrow=ERzeroToMany;endArrow=ERmandOne;startFill=0;endFill=0;exitX=1;exitY=0.03775510204;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="hub" value="BasedAt">
+          <mxGeometry relative="1" x="0.55" as="geometry">
+            <mxPoint y="-18" as="offset" />
+            <Array as="points">
+              <mxPoint x="960" y="668.5" />
+              <mxPoint x="960" y="800" />
+              <mxPoint x="1600" y="800" />
+              <mxPoint x="1600" y="30" />
+              <mxPoint x="1000" y="30" />
+              <mxPoint x="1000" y="137.5" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="runs" edge="1" parent="1" source="vehicle" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=18;strokeWidth=2;startSize=14;endSize=14;labelBackgroundColor=default;jumpStyle=arc;jumpSize=10;startArrow=ERmandOne;endArrow=ERzeroToMany;startFill=0;endFill=0;exitX=1;exitY=0.72040816327;exitDx=0;exitDy=0;entryX=0;entryY=0.48666666667;entryDx=0;entryDy=0;" target="departure" value="Runs">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint y="-14" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="travels_on" edge="1" parent="1" source="departure" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=18;strokeWidth=2;startSize=14;endSize=14;labelBackgroundColor=default;jumpStyle=arc;jumpSize=10;startArrow=ERzeroToMany;endArrow=ERmandOne;startFill=0;endFill=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.12;entryY=1;entryDx=0;entryDy=0;" target="lane" value="TravelsOn">
+          <mxGeometry relative="1" x="-0.52" as="geometry">
+            <mxPoint y="-18" as="offset" />
+            <Array as="points">
+              <mxPoint x="1175" y="835" />
+              <mxPoint x="1020" y="835" />
+              <mxPoint x="1020" y="490" />
+              <mxPoint x="1091.2" y="490" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="booked_onto" edge="1" parent="1" source="shipment" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=18;strokeWidth=2;startSize=14;endSize=14;labelBackgroundColor=default;jumpStyle=arc;jumpSize=10;startArrow=ERzeroToMany;endArrow=ERzeroToOne;startFill=0;endFill=0;exitX=0.3;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;" target="departure" value="BookedOnto">
+          <mxGeometry relative="1" x="-0.45" as="geometry">
+            <mxPoint y="-20" as="offset" />
+            <Array as="points">
+              <mxPoint x="571" y="550" />
+              <mxPoint x="900" y="550" />
+              <mxPoint x="900" y="967.5" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="has_scan" edge="1" parent="1" source="shipment" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=18;strokeWidth=2;startSize=14;endSize=14;labelBackgroundColor=default;jumpStyle=arc;jumpSize=10;startArrow=ERmandOne;endArrow=ERzeroToMany;startFill=0;endFill=0;exitX=1;exitY=0.85;exitDx=0;exitDy=0;entryX=0.3;entryY=0;entryDx=0;entryDy=0;" target="scan_event" value="◇ HasScan (identifying)">
+          <mxGeometry relative="1" x="0.46" as="geometry">
+            <mxPoint x="24" y="-18" as="offset" />
+            <Array as="points">
+              <mxPoint x="970" y="430" />
+              <mxPoint x="970" y="530" />
+              <mxPoint x="1165" y="530" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="occurs_at" edge="1" parent="1" source="scan_event" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=18;strokeWidth=2;startSize=14;endSize=14;labelBackgroundColor=default;jumpStyle=arc;jumpSize=10;startArrow=ERzeroToMany;endArrow=ERmandOne;startFill=0;endFill=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" target="hub" value="OccursAt">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="-55" as="offset" />
+            <Array as="points">
+              <mxPoint x="1540" y="675" />
+              <mxPoint x="1540" y="137.5" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="business_rules" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;fontSize=18;" value="&lt;b&gt;BUSINESS RULES&lt;/b&gt;&lt;br&gt;• HUB.region ∈ {Northeast, Southeast, Midwest, Southwest, West}.&lt;br&gt;• The LANE key is (origin_hub_id, destination_hub_id). The hubs must differ.&lt;br&gt;• HUB and LANE are preloaded reference data. Shipments and departures must use an existing valid directed lane.&lt;br&gt;• SHIPMENT.weight_kg &amp;gt; 0 and DEPARTURE.max_total_weight_kg &amp;gt; 0.&lt;br&gt;• BookedOnto assumes at most one departure per shipment. Each departure may carry many shipments.&lt;br&gt;• The booking procedure atomically checks matching lanes and available capacity using the sum of booked shipment weights.&lt;br&gt;• SCAN_EVENT is a weak entity identified through SHIPMENT; its key is (shipment_id, scan_sequence).&lt;br&gt;• SCAN_EVENT.status and SHIPMENT.current_status use {RECEIVED, IN_TRANSIT, ARRIVED_AT_HUB, OUT_FOR_DELIVERY, DELIVERED}.&lt;br&gt;• The scan chronology trigger enforces valid transitions and nondecreasing timestamps. Intermediate-hub movement may alternate between IN_TRANSIT and ARRIVED_AT_HUB.&lt;br&gt;• SHIPMENT.delivery_outcome ∈ {ON_TIME, LATE, NULL}; it remains NULL until delivery.&lt;br&gt;• Scan insertion triggers maintain current_status and determine delivery_outcome from the promised delivery date." vertex="1">
+          <mxGeometry height="420" width="770" x="40" y="1250" as="geometry" />
+        </mxCell>
+        <mxCell id="vehicle_specialization_note" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;fontSize=16;" value="Vehicle specialization: partial and disjoint. A vehicle may belong to at most one modeled subtype; other vehicle types are permitted." vertex="1">
+          <mxGeometry height="45" width="420" x="395" y="1178" as="geometry" />
+        </mxCell>
+        <mxCell id="scan_event_weak_note" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;fontSize=16;connectable=0;" value="Weak entity" vertex="1">
+          <mxGeometry height="30" width="350" x="1060" y="755" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
 </mxfile>
