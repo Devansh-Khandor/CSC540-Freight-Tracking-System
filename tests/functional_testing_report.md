@@ -1,6 +1,6 @@
 # Functional database testing report: booking procedure and scan triggers
 
-**Status: the current cleanup code has not been verified against the database.** On 2026-11-11 all 72 tests passed against schema `sshett24` (full run 86 s), but that run used the earlier version of `FixtureWorld.cleanup()`. Two cleanup safety changes were made afterwards. The rerun with them could not reach the server (see [Run history](#run-history)), so they are still unverified there. No business-rule defects were found in `book_shipment` or the two `scan_event` triggers. One defect was found in the test code itself and fixed (see [Defects found](#defects-found)).
+**Status: executed and verified.** On 2026-11-11 the full suite passed against schema `sshett24`: 72 passed, 0 failed, 0 errors. That run included both final cleanup safety changes in `tests/db_helpers.py`. Afterwards, an independent check of the database found 0 remaining test rows (see [Run history](#run-history)). No business-rule defects were found in `book_shipment` or the two `scan_event` triggers. One defect was found in the test code itself and fixed (see [Defects found](#defects-found)).
 
 Production objects were not modified. `sql/01_schema.sql`, `tests/schema_validation.sql`, the installed procedure and triggers, and the application code under `app/` are unchanged.
 
@@ -166,7 +166,11 @@ All waits have limits: 6 s to observe blocking, 9 s to join a thread, `innodb_lo
 
 ## Actual results summary
 
-Last successful full run (2026-11-11, before the cleanup changes below):
+**Final verification run (2026-11-11, including both cleanup safety changes):** 72 passed, 0 failed, 0 errors. That breaks down as 58 booking, constraint and scan tests plus 14 concurrency tests. The project member ran this verification and the database check that followed.
+
+After that run, an independent check of the `sshett24` database found 0 remaining rows in `shipment`, `booking`, `scan_event` and `hub`, and 0 tagged functional-test accounts (`password LIKE 'PYTEST-CSC540-%'`).
+
+The earlier full run, before the cleanup changes (run 4 below), produced this output:
 
 ```
 python -m pytest -v
@@ -181,7 +185,8 @@ python -m pytest -v
 | 2 | After the helper fix | 58 of 58 passed (`test_database_rules.py`) |
 | 3 | After the concurrency tests were added | 14 of 14 passed (`test_concurrency.py`) |
 | 4 | Full suite | **72 passed**. Afterwards there were 0 tagged accounts and 0 rows in `shipment`, `booking`, `scan_event` and `hub`. |
-| 5 | Full suite after the two cleanup safety changes | **Not executed against the database: 72 errors during setup.** Every test failed with `OperationalError 2003` while the session schema guard was connecting, because `classdb2.csc.ncsu.edu` did not resolve (NXDOMAIN; the public domain `ncsu.edu` did resolve). This is consistent with the NCSU VPN or campus network being disconnected. No connection was made, so nothing was read or written. The changed module compiles and all 72 tests collect. **Pending:** rerun on the NCSU network, then confirm cleanup. |
+| 5 | Full suite after the two cleanup safety changes | **Not executed against the database: 72 errors during setup.** Every test failed with `OperationalError 2003` while the session schema guard was connecting, because `classdb2.csc.ncsu.edu` did not resolve (NXDOMAIN; the public domain `ncsu.edu` did resolve). This is consistent with the NCSU VPN or campus network being disconnected. No connection was made, so nothing was read or written. The changed module compiles and all 72 tests collect. This was a connectivity problem, not a test failure. |
+| 6 | Full suite with both cleanup safety changes (final) | **72 passed, 0 failed, 0 errors**: 58 tests in `test_database_rules.py` and 14 in `test_concurrency.py`. A follow-up database check found 0 rows in `shipment`, `booking`, `scan_event` and `hub`, and 0 tagged test accounts. |
 
 | Group | Tests | Pass | Fail | Blocked |
 |---|---|---|---|---|
