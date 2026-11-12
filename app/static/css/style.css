@@ -62,3 +62,7 @@ td form { margin: 0; }
 .shipment-facts div { padding: 1rem; border: 1px solid var(--line); border-radius: .4rem; background: white; }
 dt { color: var(--muted); font-size: .85rem; }
 dd { margin: .5rem 0 0; font-weight: 650; }
+
+.subtype-fields { display: grid; gap: .7rem; min-width: 0; border: 1px solid var(--line); border-radius: .3rem; padding: 1rem; }
+.subtype-fields legend { font-weight: 650; }
+.login-form input:disabled, .login-form select:disabled { color: var(--muted); background: #edf1f3; opacity: 1; }

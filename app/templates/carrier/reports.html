@@ -1,0 +1,8 @@
+{% extends "carrier/base.html" %}
+{% block title %}Carrier reports{% endblock %}
+{% block carrier_content %}
+<h1>Carrier reports</h1><h2>On-time delivery rate</h2>
+<p>Only delivered shipments on your departures count. Undelivered shipments are excluded.</p>
+<dl class="shipment-facts"><div><dt>On time</dt><dd>{{ summary.on_time }}</dd></div><div><dt>Late</dt><dd>{{ summary.late }}</dd></div><div><dt>On-time rate</dt><dd>{{ (summary.rate|string ~ '%') if summary.rate is not none else 'No deliveries yet' }}</dd></div></dl>
+<h2>Weight utilization per departure</h2>{% include "carrier/_departures.html" %}
+{% endblock %}

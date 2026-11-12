@@ -1,0 +1,5 @@
+{% if shipments %}<div class="table-scroll" role="region" aria-label="Assigned shipments" tabindex="0"><table>
+<caption>Shipments booked onto your departures</caption>
+<thead><tr><th scope="col">Shipment</th><th scope="col">Departure / vehicle</th><th scope="col">Route</th><th scope="col">Booked weight (kg)</th><th scope="col">Promised date</th><th scope="col">Status / outcome</th><th scope="col">Action</th></tr></thead>
+<tbody>{% for shipment in shipments %}<tr><td>#{{ shipment.shipment_id }}</td><td>#{{ shipment.departure_id }} / #{{ shipment.vehicle_id }}</td><td>Hub {{ shipment.origin_hub_id }} → Hub {{ shipment.destination_hub_id }}</td><td>{{ shipment.weight_kg }}</td><td>{{ shipment.promised_delivery_date }}</td><td>{{ shipment.current_status or 'Not yet scanned' }} · {{ shipment.delivery_outcome or 'Not delivered' }}</td><td><a href="{{ url_for('carrier.scans', shipment_id=shipment.shipment_id) }}">History &amp; scans #{{ shipment.shipment_id }}</a></td></tr>{% endfor %}</tbody></table></div>
+{% else %}<p>No shipments are booked onto your departures yet.</p>{% endif %}

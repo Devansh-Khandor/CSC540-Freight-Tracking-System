@@ -1,0 +1,27 @@
+{% extends "carrier/base.html" %}
+{% block title %}{{ 'Edit vehicle' if vehicle else 'Create vehicle' }}{% endblock %}
+{% block carrier_content %}
+<h1>{{ 'Edit vehicle #' ~ vehicle.vehicle_id if vehicle else 'Create vehicle' }}</h1>
+<p>Ownership and subtype cannot change after creation. Updating descriptive attributes does not change departure capacities.</p>
+{% if error %}<p class="form-error" role="alert">{{ error }}</p>{% endif %}
+{% if hubs %}
+<form method="post" class="login-form">
+<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+<label for="home_hub_id">Home hub</label><select name="home_hub_id" id="home_hub_id" required>
+<option value="">Select a hub</option>{% for hub in hubs %}<option value="{{ hub.hub_id }}" {% if values.get('home_hub_id')|string == hub.hub_id|string %}selected{% endif %}>Hub {{ hub.hub_id }} · {{ hub.region }}</option>{% endfor %}</select>
+{% if vehicle %}<p>Subtype: <strong>{{ vehicle.kind|replace('_', ' ')|title }}</strong></p>
+<input type="hidden" name="kind" value="{{ vehicle.kind }}">
+{% else %}<label for="kind">Vehicle subtype</label><select name="kind" id="kind" required>
+<option value="">Select a subtype</option>{% for kind in subtypes %}<option value="{{ kind }}" {% if values.get('kind') == kind %}selected{% endif %}>{{ kind|replace('_', ' ')|title }}</option>{% endfor %}</select>
+<p>Fill in the two attributes for your selected subtype. Other subtype fields are ignored.</p>{% endif %}
+{% for kind, spec in subtypes.items() %}{% if not vehicle or vehicle.kind == kind %}
+<fieldset class="subtype-fields"><legend>{{ kind|replace('_', ' ')|title }}</legend>
+{% for field in spec[1] %}<label for="{{ field }}">{{ field|replace('_', ' ')|capitalize }}</label>
+{% if field == 'temperature_range' %}<input id="{{ field }}" name="{{ field }}" maxlength="50" value="{{ values.get(field, '') }}" {% if vehicle %}required{% endif %}>
+{% else %}<input type="number" id="{{ field }}" name="{{ field }}" value="{{ values.get(field, '') }}" min="{{ '1' if field == 'axle_count' else '0.01' }}" step="{{ '1' if field == 'axle_count' else '0.01' }}" max="{{ '4294967295' if field == 'axle_count' else ('9999.99' if field == 'track_gauge' else '99999999.99') }}" {% if vehicle %}required{% endif %}>{% endif %}
+{% endfor %}</fieldset>{% endif %}{% endfor %}
+<button class="button" type="submit">Save vehicle</button>
+</form>
+{% else %}<p>No hubs are available. A home hub must be provisioned before creating a vehicle.</p>{% endif %}
+<p><a href="{{ url_for('carrier.vehicles') }}">Cancel and return to vehicles</a></p>
+{% endblock %}

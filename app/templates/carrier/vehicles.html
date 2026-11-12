@@ -1,0 +1,6 @@
+{% extends "carrier/base.html" %}
+{% block title %}Your vehicles{% endblock %}
+{% block carrier_content %}
+<h1>Your vehicles</h1><a class="button" href="{{ url_for('carrier.vehicle_form') }}">Create vehicle</a>
+{% include "carrier/_vehicles.html" %}
+{% endblock %}

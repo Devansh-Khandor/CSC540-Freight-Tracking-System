@@ -1,0 +1,15 @@
+{% extends "carrier/base.html" %}
+{% block title %}Carrier dashboard{% endblock %}
+{% block carrier_content %}
+<h1>Carrier dashboard</h1>
+<p>Manage your fleet, schedule departures, and record shipment movements.</p>
+<dl class="shipment-facts">
+  <div><dt>Your vehicles</dt><dd>{{ vehicles|length }}</dd></div>
+  <div><dt>Upcoming departures</dt><dd>{{ departures|length }}</dd></div>
+  <div><dt>Assigned shipments</dt><dd>{{ shipments|length }}</dd></div>
+</dl>
+<div class="actions"><a class="button" href="{{ url_for('carrier.vehicle_form') }}">Create vehicle</a><a class="button" href="{{ url_for('carrier.departure_form') }}">Schedule departure</a></div>
+<h2>Your vehicles</h2>{% include "carrier/_vehicles.html" %}
+<h2>Upcoming departures</h2><p>Dates and times use Eastern Time.</p>{% include "carrier/_departures.html" %}
+<h2>Assigned shipments</h2>{% include "carrier/_shipments.html" %}
+{% endblock %}

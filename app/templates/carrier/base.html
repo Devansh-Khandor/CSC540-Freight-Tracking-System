@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="workspaces">
+  <p class="eyebrow">Carrier workspace · Account {{ session['account_id'] }}</p>
+  <nav aria-label="Carrier navigation" class="actions">
+    <a href="{{ url_for('carrier.dashboard') }}">Dashboard</a>
+    <a href="{{ url_for('carrier.vehicles') }}">Vehicles</a>
+    <a href="{{ url_for('carrier.departures') }}">Departures</a>
+    <a href="{{ url_for('carrier.shipments') }}">Assigned shipments &amp; scans</a>
+    <a href="{{ url_for('carrier.reports') }}">Reports</a>
+  </nav>
+  {% block carrier_content %}{% endblock %}
+</section>
+{% endblock %}

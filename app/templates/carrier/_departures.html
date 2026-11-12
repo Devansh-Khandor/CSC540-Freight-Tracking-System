@@ -1,0 +1,5 @@
+{% if departures %}<div class="table-scroll" role="region" aria-label="Your departures" tabindex="0"><table>
+<caption>Departure capacity and booked weight for your vehicles</caption>
+<thead><tr><th scope="col">Departure</th><th scope="col">Vehicle</th><th scope="col">Directed lane</th><th scope="col">Date and time (ET)</th><th scope="col">Booked / capacity (kg)</th><th scope="col">Utilization</th><th scope="col">Action</th></tr></thead>
+<tbody>{% for departure in departures %}<tr><td>#{{ departure.departure_id }}</td><td>#{{ departure.vehicle_id }}</td><td>Hub {{ departure.origin_hub_id }} → Hub {{ departure.destination_hub_id }}</td><td>{{ departure.departure_datetime }}</td><td>{{ departure.booked_weight }} / {{ departure.max_total_weight_kg }}</td><td>{{ departure.utilization }}%</td><td><a href="{{ url_for('carrier.departure_form', departure_id=departure.departure_id) }}">Edit departure #{{ departure.departure_id }}</a></td></tr>{% endfor %}</tbody></table></div>
+{% else %}<p>No departures to display.</p>{% endif %}

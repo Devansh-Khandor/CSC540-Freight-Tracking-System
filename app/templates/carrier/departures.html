@@ -1,0 +1,6 @@
+{% extends "carrier/base.html" %}
+{% block title %}Your departures{% endblock %}
+{% block carrier_content %}
+<h1>Your departures</h1><a class="button" href="{{ url_for('carrier.departure_form') }}">Schedule departure</a>
+{% include "carrier/_departures.html" %}
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends "carrier/base.html" %}
+{% block title %}Shipment #{{ shipment.shipment_id }} scans{% endblock %}
+{% block carrier_content %}
+<h1>Shipment #{{ shipment.shipment_id }}</h1>
+<p>Departure #{{ shipment.departure_id }} · {{ shipment.weight_kg }} kg · Hub {{ shipment.origin_hub_id }} → Hub {{ shipment.destination_hub_id }} · Promised {{ shipment.promised_delivery_date }}</p>
+<p>Current status: {{ shipment.current_status or 'Not yet scanned' }} · Outcome: {{ shipment.delivery_outcome or 'Not delivered' }}</p>
+<h2>Movement history</h2>
+{% if history %}<div class="table-scroll" role="region" aria-label="Movement history" tabindex="0"><table><thead><tr><th scope="col">Sequence</th><th scope="col">Timestamp (ET)</th><th scope="col">Status</th><th scope="col">Hub</th></tr></thead><tbody>{% for scan in history %}<tr><td>{{ scan.scan_sequence }}</td><td>{{ scan.scan_timestamp }}</td><td>{{ scan.status }}</td><td>{{ scan.hub_id }}</td></tr>{% endfor %}</tbody></table></div>{% else %}<p>No scans recorded. The first scan must be RECEIVED.</p>{% endif %}
+{% if error %}<p class="form-error" role="alert">{{ error }}</p>{% endif %}
+{% if shipment.current_status == 'DELIVERED' %}<p>This shipment is delivered. Its scan history is complete.</p>
+{% elif hubs %}
+<h2>Post a scan</h2>
+<p>Scans must follow the latest timestamp and status order. Equal timestamps are allowed. History cannot be edited or deleted.</p>
+<details><summary>Allowed status order</summary><p>RECEIVED → IN_TRANSIT. From IN_TRANSIT, stay IN_TRANSIT or move to ARRIVED_AT_HUB. From ARRIVED_AT_HUB, stay there, return to IN_TRANSIT, or move to OUT_FOR_DELIVERY. From OUT_FOR_DELIVERY, stay there or move to DELIVERED. No further scans follow delivery.</p></details>
+<form method="post" class="login-form">
+<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+<label for="scan_timestamp">Scan date and time (ET)</label><input type="datetime-local" id="scan_timestamp" name="scan_timestamp" value="{{ values.get('scan_timestamp', '') }}" min="1000-01-01T00:00" max="9999-12-31T23:59:59" step="1" required>
+<p>Use Eastern wall-clock time. Ambiguous or skipped daylight-saving times are not accepted.</p>
+<label for="hub_id">Scan hub</label><select id="hub_id" name="hub_id" required><option value="">Select a hub</option>{% for hub in hubs %}<option value="{{ hub.hub_id }}" {% if values.get('hub_id')|string == hub.hub_id|string %}selected{% endif %}>Hub {{ hub.hub_id }} · {{ hub.region }}</option>{% endfor %}</select>
+<label for="status">New status</label><select id="status" name="status" required><option value="">Select a status</option>{% for status in statuses %}<option value="{{ status }}" {% if values.get('status') == status %}selected{% endif %}>{{ status }}</option>{% endfor %}</select>
+<button type="submit" class="button">Record scan</button>
+</form>
+{% else %}<p>No hubs are available for scan posting.</p>{% endif %}
+<p><a href="{{ url_for('carrier.shipments') }}">Return to assigned shipments</a></p>
+{% endblock %}

@@ -6,7 +6,7 @@ import pymysql
 import pytest
 from werkzeug.security import generate_password_hash
 
-from app import auth, db, web
+from app import auth, db, web, carrier_service
 
 PASSWORD = "test-only-password"
 HASH = generate_password_hash(PASSWORD, method=auth.HASH_METHOD)
@@ -49,6 +49,9 @@ def login(client, role="SHIPPER", password=PASSWORD, account_id="7", csrf=None):
 
 @pytest.mark.parametrize("role", auth.ROLES)
 def test_login_role_and_minimal_session(client, monkeypatch, role):
+    # The carrier dashboard now reads operational data. Keep this auth test's
+    # database assertions focused on the account lookup, not dashboard queries.
+    monkeypatch.setattr(carrier_service, "dashboard", lambda owner: {"vehicles": [], "departures": [], "shipments": []})
     factory, connection, cursor = install_account(monkeypatch, role)
     old_token = token(client)
     response = login(client, role, csrf=old_token)

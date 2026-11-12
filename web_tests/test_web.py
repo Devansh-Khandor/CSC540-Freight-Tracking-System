@@ -131,5 +131,6 @@ def test_only_expected_write_routes(app, isolated_environment):
     isolated_environment.assert_not_called()
     for rule in app.url_map.iter_rules():
         assert rule.methods <= ({"GET", "POST", "HEAD", "OPTIONS"}
-                                if rule.endpoint in {"auth.login", "auth.logout", "shipper.create", "shipper.edit", "shipper.book"}
+                                if rule.endpoint in {"auth.login", "auth.logout", "shipper.create", "shipper.edit", "shipper.book",
+                                                     "carrier.vehicle_form", "carrier.departure_form", "carrier.scans"}
                                 else {"GET", "HEAD", "OPTIONS"})

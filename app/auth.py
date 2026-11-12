@@ -58,9 +58,14 @@ def auth_ready():
     return isinstance(key, (str, bytes)) and len(key) >= 32
 
 
+def dashboard_endpoint(role):
+    return "carrier.dashboard" if role == "CARRIER" else "auth." + role.lower()
+
+
 def init_auth(app):
     app.extensions["login_limiter"] = LoginLimiter()
     app.jinja_env.globals["csrf_token"] = csrf_token
+    app.jinja_env.globals["dashboard_endpoint"] = dashboard_endpoint
     app.register_blueprint(bp)
 
     @app.before_request
@@ -70,7 +75,7 @@ def init_auth(app):
             if (not isinstance(expires, (int, float)) or time.time() >= expires
                     or session.get("role") not in ROLES or not auth_ready()):
                 session.clear()
-        if request.blueprint in {"auth", "shipper"} and not auth_ready():
+        if request.blueprint in {"auth", "shipper", "carrier"} and not auth_ready():
             return render_template("error.html", code=503,
                                    heading="Sign-in unavailable",
                                    message="Sign-in is temporarily unavailable. Please try again later."), 503
@@ -83,7 +88,7 @@ def init_auth(app):
 
     @app.after_request
     def private_responses(response):
-        if request.blueprint in {"auth", "shipper"} or session.get("account_id"):
+        if request.blueprint in {"auth", "shipper", "carrier"} or session.get("account_id"):
             response.headers["Cache-Control"] = "no-store"
         response.headers["X-Content-Type-Options"] = "nosniff"
         response.headers["X-Frame-Options"] = "DENY"
@@ -112,7 +117,7 @@ def valid_identity(row):
 @bp.route("/login", methods=["GET", "POST"])
 def login():
     if session.get("account_id"):
-        return redirect(url_for("auth." + session["role"].lower()))
+        return redirect(url_for(dashboard_endpoint(session["role"])))
     error = None
     status = 200
     if request.method == "POST":
@@ -145,7 +150,7 @@ def login():
             session.update(account_id=row[0], role=row[2],
                            expires_at=time.time() + current_app.permanent_session_lifetime.total_seconds())
             csrf_token()  # Rotate the anonymous token after authentication.
-            return redirect(url_for("auth." + row[2].lower()))
+            return redirect(url_for(dashboard_endpoint(row[2])))
         error, status = "Invalid account ID, password, or role.", 401
     return render_template("login.html", error=error, roles=ROLES), status
 
@@ -160,12 +165,6 @@ def logout():
 @role_required("SHIPPER")
 def shipper():
     return render_template("shipper/dashboard.html")
-
-
-@bp.get("/carrier")
-@role_required("CARRIER")
-def carrier():
-    return render_template("dashboard.html", role="Carrier")
 
 
 @bp.get("/viewer")

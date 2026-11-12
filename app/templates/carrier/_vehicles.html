@@ -1,0 +1,14 @@
+{% if vehicles %}
+<div class="table-scroll" role="region" aria-label="Your vehicles" tabindex="0"><table>
+<caption>Vehicles belonging to your carrier account</caption>
+<thead><tr><th scope="col">Vehicle</th><th scope="col">Subtype</th><th scope="col">Home hub</th><th scope="col">Attributes</th><th scope="col">Action</th></tr></thead>
+<tbody>{% for vehicle in vehicles %}<tr>
+<td>#{{ vehicle.vehicle_id }}</td><td>{{ vehicle.kind|replace('_', ' ')|title }}</td><td>{{ vehicle.home_hub_id }} · {{ vehicle.region }}</td>
+<td>{% if vehicle.kind == 'BOX_TRUCK' %}Cargo volume: {{ vehicle.cargo_volume }}; gross weight rating: {{ vehicle.gross_weight_rating }}
+{% elif vehicle.kind == 'REFRIGERATED_VAN' %}Temperature range: {{ vehicle.temperature_range }}; payload limit: {{ vehicle.payload_limit }}
+{% elif vehicle.kind == 'RAIL_CAR' %}Axles: {{ vehicle.axle_count }}; track gauge: {{ vehicle.track_gauge }}
+{% elif vehicle.kind == 'INVALID' %}Inconsistent subtype records; administrator review required.
+{% else %}No subtype assigned{% endif %}</td>
+<td>{% if vehicle.kind != 'INVALID' %}<a href="{{ url_for('carrier.vehicle_form', vehicle_id=vehicle.vehicle_id) }}">Edit vehicle #{{ vehicle.vehicle_id }}</a>{% endif %}</td>
+</tr>{% endfor %}</tbody></table></div>
+{% else %}<p>No vehicles yet. Create a vehicle to start scheduling departures.</p>{% endif %}

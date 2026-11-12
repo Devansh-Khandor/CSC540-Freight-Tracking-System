@@ -1,12 +1,11 @@
 CSC 540 - Freight Tracking and Delivery Management
 NC State University
 
-Steps 1–3: Flask foundation, authentication, and shipper workflows
+Steps 1–4: Flask foundation, authentication, shipper and carrier workflows
 
 Uses Python 3 (3.10 or newer recommended), PyMySQL, and raw SQL against the
 departmental MariaDB 10.5 server. SSL is explicitly disabled per the professor's
-instructions. There is no ORM. Shipper workflows are implemented; carrier and
-viewer operations remain placeholders.
+instructions. There is no ORM. Shipper and carrier workflows are implemented; viewer operations remain placeholders.
 The CLI uses SELECT VERSION(); the web diagnostic uses SELECT 1. Authentication
 also reads account and subtype records. Shipper routes create/update shipments
 and call the existing booking procedure. No web route creates
@@ -48,7 +47,7 @@ After activating .venv, install and launch from the project root:
 Open http://127.0.0.1:5000/. This is a local development server.
 The homepage loads without database access. Login and protected role dashboards
 are available (see Step 2 below).
-Shipper operations are available; Carrier, Viewer, and Analytics remain planned.
+Shipper and carrier operations are available; Viewer and Analytics remain planned.
 The Connection status link opens /status and runs only SELECT 1 using app/db.py.
 It returns Connected (HTTP 200) or Unavailable (HTTP 503), with no credentials,
 schema metadata, server version, or database exception details. Results are not
@@ -161,7 +160,7 @@ are rejected with the same message as incorrect credentials. Registration,
 carrier scanning, and analytical execution are not implemented. Step 3 adds
 shipper create/update, booking, tracking, and owner-specific reports.
 
-/shipper is a working dashboard; /carrier and /viewer remain placeholders. Anonymous
+/shipper and /carrier are working dashboards; /viewer remains a placeholder. Anonymous
 visitors are redirected to /login; another role receives HTTP 403. Navigation
 shows the signed-in user's dashboard and a POST logout form. GET /logout is not
 allowed. Login and logout use session-bound CSRF tokens; tokens rotate on login,
@@ -296,7 +295,7 @@ shipment reads and writes constrain shipper_account_id. Missing and foreign
 shipments return the same 404. All writes require CSRF tokens and successful
 writes redirect with HTTP 303. Status/outcome, ownership, and shipment identity
 are never writable through a form. No delete, cancellation, or rebooking route
-exists. Carrier and viewer dashboards retain their Step 2 placeholders.
+exists. Step 4 adds carrier workflows; the viewer dashboard retains its Step 2 placeholder.
 
 Validation and display:
 - Positive DECIMAL(10,2) weight: 0.01 through 99999999.99 kg; no silent rounding,
@@ -363,3 +362,63 @@ No live database writes or concurrency tests were performed during Step 3
 implementation. Existing database tests and their schema guard are unchanged.
 Run them only under their documented approved database setup, not as offline
 Flask tests. No SQL, diagrams, reports, analytics work, or CLI behavior changed.
+
+
+STEP 4: CARRIER WORKFLOWS
+
+app/carrier.py contains carrier routes and forms. app/carrier_service.py contains
+owner-scoped SQL and transaction rules, reusing the shipper connection context.
+app/templates/carrier/ contains the dashboard, forms, lists, history and reports.
+
+Sign in with an existing CARRIER account using the same authentication setup.
+- /carrier: own fleet, upcoming Eastern-time departures, and assigned shipments.
+- /carrier/vehicles: own vehicles and Create/Edit links.
+- /carrier/vehicles/new and /carrier/vehicles/<id>/edit: home hub plus subtype
+  attributes. Creation atomically inserts vehicle and one chosen subtype.
+  BOX_TRUCK uses cargo_volume and gross_weight_rating (DECIMAL(10,2));
+  REFRIGERATED_VAN uses temperature_range (1-50 characters) and payload_limit
+  (DECIMAL(10,2)); RAIL_CAR uses positive unsigned axle_count and track_gauge
+  (DECIMAL(6,2)). Numeric values are positive and never silently rounded.
+  Vehicle identity, carrier ownership and subtype are immutable. Base-only
+  vehicles may update their home hub; inconsistent multi-subtype rows are rejected.
+  Descriptive vehicle fields do not redefine departure capacity.
+- /carrier/departures and its /new and /<id>/edit pages: own vehicles and directed
+  lanes only. Updates lock the departure before aggregating booked weight.
+  Capacity may increase or decrease down to the booked total. With bookings,
+  vehicle, lane and time are immutable in both the form and service.
+- /carrier/shipments: only shipments joined through booking -> departure ->
+  the carrier's vehicle. /carrier/shipments/<id>/scans shows their history and
+  accepts a single scan. Terminal delivered shipments display history only.
+- /carrier/reports: own departure booked kg/capacity/utilization percentage and
+  delivered-only on-time rate. No deliveries displays an explicit empty state.
+  These are operational reports, separate from the six global analytical queries.
+
+Every write uses CSRF, a dedicated strict READ COMMITTED transaction and explicit
+commit. Failed operations roll back and close. Scans recheck ownership after a
+separate SHIPMENT FOR UPDATE prelock, allocate MAX(scan_sequence)+1 while locked,
+then INSERT one row. Existing triggers enforce chronology/transitions and update
+shipment status/outcome. Python never writes those derived fields or bookings.
+Only deadlocks/timeouts retry, at most three whole transactions with fresh
+connections. Unknown commit/connection failures are not retried: inspect records
+and history before repeating a write. Scan requests have no idempotency key.
+
+Dates use America/New_York wall-clock time, year 1000-9999, optional whole seconds.
+Historical dates are accepted. New ambiguous/skipped DST times and offsets are
+rejected rather than silently converted. The deployed schema is assumed to match
+sql/01_schema.sql; installed trigger behavior has not been verified by offline tests.
+
+Offline validation (never run bare pytest against the database fixtures):
+   python -m pytest web_tests -q -p no:cacheprovider
+   python -m compileall -q app web_tests
+   python -c "from app.web import create_app; import app.main; assert not create_app().debug"
+   git diff --check
+Local launch remains:
+   python -m flask --app app.web:create_app run --no-debug
+
+Offline tests use mocks/scripted cursors: they check authorization, ownership
+parameters, subtype atomicity, update/scan lock ordering, rollback/retry behavior,
+form rendering, navigation, CSRF and reporting. They do not prove MariaDB SQL or
+trigger execution or concurrent serialization. On campus/VPN with approved demo
+accounts/data, verify subtype writes, capacity update versus booking, scan versus
+scan, scan versus shipment update, and cross-carrier rejection before the demo.
+Viewer, global analytics, SQL/schema changes and CLI changes are outside Step 4.
