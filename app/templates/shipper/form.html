@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Update' if shipment else 'Create' }} shipment{% endblock %}
+{% block content %}
+<section class="page-section"><p class="eyebrow">My shipments</p><h1>{{ 'Update shipment #' ~ shipment.shipment_id if shipment else 'Create shipment' }}</h1>
+<p>Logistics fields can be edited only before the first scan. Booked shipments must retain their lane and fit within departure capacity.</p>
+{% if error %}<p class="form-error" role="alert">{{ error }}</p>{% endif %}
+{% if lanes %}
+<form method="post" class="login-form">
+<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+<label for="lane">Directed lane</label><select name="lane" id="lane" required><option value="">Select a lane</option>
+{% for lane in lanes %}{% set key = lane.origin_hub_id ~ ':' ~ lane.destination_hub_id %}<option value="{{ key }}" {% if values.get('lane') == key %}selected{% endif %}>Hub {{ lane.origin_hub_id }} ({{ lane.origin_region }}) → Hub {{ lane.destination_hub_id }} ({{ lane.destination_region }})</option>{% endfor %}</select>
+<label for="weight_kg">Weight (kg)</label><input type="number" id="weight_kg" name="weight_kg" min="0.01" max="99999999.99" step="0.01" value="{{ values.get('weight_kg', '') }}" required>
+<label for="promised_delivery_date">Promised delivery date</label><input type="date" id="promised_delivery_date" name="promised_delivery_date" min="1000-01-01" max="9999-12-31" value="{{ values.get('promised_delivery_date', '') }}" required>
+<p>Dates use the project’s Eastern Time calendar. A past date is allowed for historical shipments.</p>
+<button class="button" type="submit">{{ 'Save changes' if shipment else 'Create shipment' }}</button>
+</form>
+{% else %}<p>No lanes are available. A lane must be provisioned before a shipment can be saved.</p>{% endif %}
+<p><a href="{{ url_for('shipper.detail', shipment_id=shipment.shipment_id) if shipment else url_for('shipper.index') }}">Cancel and return</a></p>
+</section>
+{% endblock %}

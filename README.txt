@@ -1,13 +1,15 @@
 CSC 540 - Freight Tracking and Delivery Management
 NC State University
 
-Steps 1 and 2: Flask foundation and authentication
+Steps 1–3: Flask foundation, authentication, and shipper workflows
 
 Uses Python 3 (3.10 or newer recommended), PyMySQL, and raw SQL against the
 departmental MariaDB 10.5 server. SSL is explicitly disabled per the professor's
-instructions. There is no ORM; operational business workflows are not implemented yet.
+instructions. There is no ORM. Shipper workflows are implemented; carrier and
+viewer operations remain placeholders.
 The CLI uses SELECT VERSION(); the web diagnostic uses SELECT 1. Authentication
-also reads account and subtype records. No web route creates
+also reads account and subtype records. Shipper routes create/update shipments
+and call the existing booking procedure. No web route creates
 databases, tables, triggers, or procedures. Use your existing assigned schema; CREATE
 DATABASE permission is neither assumed nor required.
 
@@ -20,6 +22,8 @@ app/main.py       CLI connectivity test; prints the server version only after
                   SELECT VERSION() succeeds, and closes cursor and connection.
 app/web.py       Flask application factory, homepage, status and error handlers.
 app/auth.py      Login/logout, CSRF, role guards, and per-process login limiter.
+app/shipper.py   Protected shipper routes and forms.
+app/shipper_service.py Owner-scoped SQL, validation, and transaction protocols.
 app/templates/   Shared Jinja2 layout, homepage, status, and error pages.
 app/static/      Responsive CSS; no frontend framework or CDN required.
 web_tests/       Offline Flask smoke tests, separate from database fixtures.
@@ -44,7 +48,7 @@ After activating .venv, install and launch from the project root:
 Open http://127.0.0.1:5000/. This is a local development server.
 The homepage loads without database access. Login and protected role dashboards
 are available (see Step 2 below).
-Operational workflows and Analytics remain planned.
+Shipper operations are available; Carrier, Viewer, and Analytics remain planned.
 The Connection status link opens /status and runs only SELECT 1 using app/db.py.
 It returns Connected (HTTP 200) or Unavailable (HTTP 503), with no credentials,
 schema metadata, server version, or database exception details. Results are not
@@ -61,8 +65,8 @@ No signing secret is generated or hardcoded by the app. With SECRET_KEY missing
 or shorter than 32 characters, public pages still work and authentication is
 unavailable. Configure a random key before signing in. Debug defaults
 to disabled, and the documented --no-debug flag also overrides FLASK_DEBUG.
-Authentication is implemented in Step 2 below; no database-write web routes or
-analytics are implemented.
+Authentication is implemented in Step 2; shipment writes and booking are
+implemented in Step 3 below. Analytics are not implemented.
 The existing CLI command remains python -m app.main.
 
 Run offline checks without university database access:
@@ -153,10 +157,11 @@ Login is now available at /login. Enter an existing account ID, its provisioned
 password, and assigned role. The server reads ACCOUNT with a parameterized query
 and verifies the password hash, the exact ACCOUNT.role, and membership in exactly
 one matching subtype table. Missing, mismatched, or multiple subtype memberships
-are rejected with the same message as incorrect credentials. No registration,
-shipment CRUD, booking, scanning, or analytical execution is implemented.
+are rejected with the same message as incorrect credentials. Registration,
+carrier scanning, and analytical execution are not implemented. Step 3 adds
+shipper create/update, booking, tracking, and owner-specific reports.
 
-/shipper, /carrier, and /viewer are protected dashboard placeholders. Anonymous
+/shipper is a working dashboard; /carrier and /viewer remain placeholders. Anonymous
 visitors are redirected to /login; another role receives HTTP 403. Navigation
 shows the signed-in user's dashboard and a POST logout form. GET /logout is not
 allowed. Login and logout use session-bound CSRF tokens; tokens rotate on login,
@@ -274,3 +279,87 @@ an offline check: tests/ has a live schema guard and database-writing fixtures.
 Security API references:
 https://flask.palletsprojects.com/en/stable/web-security/
 https://werkzeug.palletsprojects.com/en/stable/utils/#werkzeug.security.generate_password_hash
+
+
+STEP 3: SHIPPER WORKFLOWS
+
+After login as SHIPPER, open /shipper. All child routes require the SHIPPER role:
+- /shipper/shipments: owner-only list, booking state, and an empty state.
+- /shipper/shipments/new: create from an existing directed lane, weight, and date.
+- /shipper/shipments/<id>: private details and scan history in scan_sequence order.
+- /shipper/shipments/<id>/edit: update eligible logistics fields only.
+- /shipper/shipments/<id>/book: eligible departures and procedure-backed booking.
+- /shipper/reports: own ON_TIME/LATE counts and currently in-transit shipments.
+
+Owner IDs always come from the signed session, never a form field. Private
+shipment reads and writes constrain shipper_account_id. Missing and foreign
+shipments return the same 404. All writes require CSRF tokens and successful
+writes redirect with HTTP 303. Status/outcome, ownership, and shipment identity
+are never writable through a form. No delete, cancellation, or rebooking route
+exists. Carrier and viewer dashboards retain their Step 2 placeholders.
+
+Validation and display:
+- Positive DECIMAL(10,2) weight: 0.01 through 99999999.99 kg; no silent rounding,
+  exponent notation, or non-finite values. Only existing ordered lanes are valid.
+- Valid ISO calendar dates (YYYY-MM-DD), years 1000 through 9999. Historical dates
+  are allowed because the specification does not require a future promise.
+- Dates/times follow the project's America/New_York convention. No timezone
+  conversion is applied to MariaDB DATE/DATETIME values.
+- Eligible departures match both lane endpoints and have remaining weight >=
+  shipment weight. Already-booked shipments have no new booking options. No
+  additional future-departure restriction is invented; historical data is usable.
+- In-transit reports include IN_TRANSIT, ARRIVED_AT_HUB, OUT_FOR_DELIVERY.
+  RECEIVED and unscanned shipments appear in the full shipment list. Only
+  delivered ON_TIME/LATE outcomes are counted in delivery summaries.
+
+Transactions (see sql/schema_design_notes.md):
+- Each operation opens/closes its own PyMySQL connection through app/db.py.
+  Reads are ended with rollback. Create/update transactions set READ COMMITTED
+  and strict SQL mode, explicitly commit on success, and rollback on failure.
+- Updates initially read the owner-scoped booking. If booked, they lock departure
+  before shipment. They re-read booking after locking and restart if it changed.
+  They reject all logistics edits once any scan exists. Unbooked/unscanned
+  shipments may change lane, weight, and promise. Booked/unscanned shipments may
+  change promise and weight within capacity, but cannot change lane. Capacity is
+  recomputed as SUM(booked weights) - old weight + new weight under both locks.
+- Booking checks ownership on a dedicated connection, then rolls back that read
+  transaction before CALL book_shipment(shipment_id, departure_id). The procedure
+  owns its transaction. Python does not insert bookings or duplicate its atomic
+  capacity logic. Ownership is immutable under the documented database policy.
+  All CALL result sets are drained before the connection closes.
+- Deadlocks/lock timeouts and update mapping races retry the entire operation
+  at most three times with fresh connections. Business failures are not retried.
+  Lost connections/unknown commit outcomes are never automatically retried.
+  The UI asks users to inspect their shipment list before retrying a write;
+  create requests do not have durable idempotency keys in the existing schema.
+- Procedure messages are mapped to fixed user-facing feedback for duplicate,
+  capacity, or lane failures. Raw driver messages, SQL, and credentials are not
+  displayed or logged by the shipper handlers. Constraints return safe feedback.
+
+Run the complete offline Flask suite (including Steps 1 and 2):
+
+   python -m pytest web_tests -q
+   python -m compileall -q app web_tests
+   python -c "from app.web import create_app; import app.main; assert not create_app().debug"
+   git diff --check
+
+The scripted database tests check ownership parameters, lock order, commit and
+rollback behavior, retry bounds, procedure invocation, form flows, and safe
+errors. They do not prove MariaDB SQL execution or concurrent serialization.
+Before the live demo, with approved disposable data and campus/VPN access, verify:
+1. The deployed schema/procedure matches sql/01_schema.sql and the demo account
+   has a compatible password hash and matching subtype.
+2. Create, list, edit, track, book, and report for one shipper; attempt another
+   shipper's IDs and confirm no data access or changes.
+3. Exact-capacity and over-capacity bookings, duplicate and wrong-lane rejection,
+   plus booked-weight edits at the capacity boundary.
+4. Concurrent booking versus shipment update (including initially unbooked),
+   competing booked-weight changes, and update versus first scan. Confirm the
+   documented lock order, stable capacity, and no logistics edits after scans.
+5. Real constraint/deadlock/timeout behavior, procedure result-set cleanup, and
+   lost-connection handling. Do not automatically repeat an uncertain write.
+
+No live database writes or concurrency tests were performed during Step 3
+implementation. Existing database tests and their schema guard are unchanged.
+Run them only under their documented approved database setup, not as offline
+Flask tests. No SQL, diagrams, reports, analytics work, or CLI behavior changed.

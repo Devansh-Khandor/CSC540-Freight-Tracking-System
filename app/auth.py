@@ -70,7 +70,7 @@ def init_auth(app):
             if (not isinstance(expires, (int, float)) or time.time() >= expires
                     or session.get("role") not in ROLES or not auth_ready()):
                 session.clear()
-        if request.blueprint == "auth" and not auth_ready():
+        if request.blueprint in {"auth", "shipper"} and not auth_ready():
             return render_template("error.html", code=503,
                                    heading="Sign-in unavailable",
                                    message="Sign-in is temporarily unavailable. Please try again later."), 503
@@ -83,7 +83,7 @@ def init_auth(app):
 
     @app.after_request
     def private_responses(response):
-        if request.blueprint == "auth" or session.get("account_id"):
+        if request.blueprint in {"auth", "shipper"} or session.get("account_id"):
             response.headers["Cache-Control"] = "no-store"
         response.headers["X-Content-Type-Options"] = "nosniff"
         response.headers["X-Frame-Options"] = "DENY"
@@ -159,7 +159,7 @@ def logout():
 @bp.get("/shipper")
 @role_required("SHIPPER")
 def shipper():
-    return render_template("dashboard.html", role="Shipper")
+    return render_template("shipper/dashboard.html")
 
 
 @bp.get("/carrier")

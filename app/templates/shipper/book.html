@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Book shipment #{{ shipment.shipment_id }}{% endblock %}
+{% block content %}
+<section class="workspaces"><p class="eyebrow">My shipments</p><h1>Book shipment #{{ shipment.shipment_id }}</h1>
+<p>{{ shipment.weight_kg }} kg · Hub {{ shipment.origin_hub_id }} → Hub {{ shipment.destination_hub_id }}</p>
+{% if error %}<p class="form-error" role="alert">{{ error }}</p>{% endif %}
+<p>Availability can change. The database verifies lane compatibility and capacity when you book.</p>
+{% if shipment.departure_id %}<p>This shipment is already booked on departure #{{ shipment.departure_id }}.</p>
+{% elif departures %}<div class="table-scroll" role="region" aria-label="Eligible departures" tabindex="0"><table><caption>Compatible departures with sufficient remaining capacity</caption><thead><tr><th scope="col">Departure</th><th scope="col">Date and time (ET)</th><th scope="col">Vehicle</th><th scope="col">Capacity (kg)</th><th scope="col">Remaining (kg)</th><th scope="col">Action</th></tr></thead><tbody>
+{% for departure in departures %}<tr><td>#{{ departure.departure_id }}</td><td>{{ departure.departure_datetime }}</td><td>{{ departure.vehicle_id }}</td><td>{{ departure.max_total_weight_kg }}</td><td>{{ departure.remaining_weight }}</td><td>
+<form method="post"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><input type="hidden" name="departure_id" value="{{ departure.departure_id }}"><button type="submit" class="button">Book #{{ departure.departure_id }}</button></form>
+</td></tr>{% endfor %}</tbody></table></div>
+{% else %}<div class="card"><p>No compatible departures currently have enough remaining capacity.</p></div>{% endif %}
+<p><a href="{{ url_for('shipper.detail', shipment_id=shipment.shipment_id) }}">Return to shipment</a></p>
+</section>
+{% endblock %}

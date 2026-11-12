@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Shipment #{{ shipment.shipment_id }}{% endblock %}
+{% block content %}
+<section class="workspaces"><p class="eyebrow">My shipments · Tracking</p><h1>Shipment #{{ shipment.shipment_id }}</h1>
+<div class="actions"><a href="{{ url_for('shipper.index') }}">All my shipments</a>
+{% if not scans %}<a href="{{ url_for('shipper.edit', shipment_id=shipment.shipment_id) }}">Update shipment</a>{% endif %}
+{% if not shipment.departure_id %}<a class="button" href="{{ url_for('shipper.book', shipment_id=shipment.shipment_id) }}">Book a departure</a>{% endif %}</div>
+<dl class="shipment-facts">
+<div><dt>Origin</dt><dd>Hub {{ shipment.origin_hub_id }} · {{ shipment.origin_region }}</dd></div>
+<div><dt>Destination</dt><dd>Hub {{ shipment.destination_hub_id }} · {{ shipment.destination_region }}</dd></div>
+<div><dt>Weight</dt><dd>{{ shipment.weight_kg }} kg</dd></div>
+<div><dt>Promised date</dt><dd>{{ shipment.promised_delivery_date }}</dd></div>
+<div><dt>Current status</dt><dd>{{ shipment.current_status or 'Not yet scanned' }}</dd></div>
+<div><dt>Delivery outcome</dt><dd>{{ shipment.delivery_outcome or 'Not delivered' }}</dd></div>
+<div><dt>Booking</dt><dd>{{ 'Departure #' ~ shipment.departure_id if shipment.departure_id else 'Not booked' }}</dd></div>
+</dl>
+<h2>Movement history</h2><p>Scan order follows the shipment’s sequence. Timestamps use Eastern Time.</p>
+{% if scans %}<p>Logistics edits are locked because this shipment has scan history.</p><div class="table-scroll" role="region" aria-label="Movement history" tabindex="0"><table><thead><tr><th scope="col">Sequence</th><th scope="col">Timestamp</th><th scope="col">Status</th><th scope="col">Hub</th></tr></thead><tbody>
+{% for scan in scans %}<tr><td>{{ scan.scan_sequence }}</td><td>{{ scan.scan_timestamp }}</td><td>{{ scan.status }}</td><td>{{ scan.hub_id }} · {{ scan.region }}</td></tr>{% endfor %}</tbody></table></div>
+{% else %}<div class="card"><p>No scan events have been recorded for this shipment.</p></div>{% endif %}
+</section>
+{% endblock %}

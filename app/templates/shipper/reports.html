@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}My shipment reports{% endblock %}
+{% block content %}
+<section class="workspaces"><p class="eyebrow">Shipper workspace</p><h1>My shipment reports</h1><p><a href="{{ url_for('shipper.index') }}">All my shipments</a></p>
+<h2>Delivery outcomes</h2><p>Only delivered shipments count toward on-time and late totals.</p>
+<dl class="shipment-facts"><div><dt>On time</dt><dd>{{ summary.on_time }}</dd></div><div><dt>Late</dt><dd>{{ summary.late }}</dd></div></dl>
+<h2>Currently in transit</h2><p>Shipments marked IN_TRANSIT, ARRIVED_AT_HUB, or OUT_FOR_DELIVERY.</p>
+{% include "shipper/_shipments.html" %}
+</section>
+{% endblock %}

@@ -31,7 +31,7 @@
       </nav>
     </div>
   </header>
-  <main id="main" class="container" tabindex="-1">{% block content %}{% endblock %}</main>
+  <main id="main" class="container" tabindex="-1">{% for message in get_flashed_messages() %}<p class="notice" role="status">{{ message }}</p>{% endfor %}{% block content %}{% endblock %}</main>
   <footer class="site-footer"><div class="container footer-inner"><span>NC State University · CSC 540</span><span>Freight Tracking and Delivery Management · Foundation preview</span></div></footer>
 </body>
 </html>

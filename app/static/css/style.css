@@ -51,3 +51,14 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 3px s
 .nav-form { margin: 0; }
 .nav-button { padding: 0; background: none; color: var(--red); }
 .form-error { color: #82131c; background: #fce9e9; border-left: 4px solid var(--red); padding: 1rem; }
+.notice { background: #e2f2e8; color: #175539; border-left: 4px solid #247354; padding: 1rem; }
+.table-scroll { overflow-x: auto; margin-block: 1.5rem; border: 1px solid var(--line); border-radius: .4rem; }
+table { width: 100%; border-collapse: collapse; background: white; font-size: .9rem; }
+caption { text-align: left; padding: .8rem 1rem; font-weight: 650; background: #e9eef1; }
+th, td { text-align: left; padding: .9rem; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { background: #edf1f3; }
+td form { margin: 0; }
+.shipment-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 1rem; margin-block: 2rem; }
+.shipment-facts div { padding: 1rem; border: 1px solid var(--line); border-radius: .4rem; background: white; }
+dt { color: var(--muted); font-size: .85rem; }
+dd { margin: .5rem 0 0; font-weight: 650; }

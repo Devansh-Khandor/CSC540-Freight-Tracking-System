@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Shipper dashboard{% endblock %}
+{% block content %}
+<section class="workspaces">
+  <p class="eyebrow">Shipper workspace</p><h1>Shipper dashboard</h1>
+  <p>Manage and track shipments belonging to account {{ session['account_id'] }}.</p>
+  <div class="card-grid">
+    <article class="card"><h2>My shipments</h2><p>View shipment details, update eligible shipments, book departures, and follow scan history.</p><a class="button" href="{{ url_for('shipper.index') }}">View shipments</a></article>
+    <article class="card"><h2>Create shipment</h2><p>Choose a directed lane, weight, and promised delivery date.</p><a class="button" href="{{ url_for('shipper.create') }}">Create shipment</a></article>
+    <article class="card"><h2>My reports</h2><p>Review delivery outcomes and shipments currently in transit.</p><a class="button" href="{{ url_for('shipper.reports') }}">View reports</a></article>
+  </div>
+</section>
+{% endblock %}

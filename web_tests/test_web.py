@@ -125,11 +125,11 @@ def test_friendly_error_pages(app):
     assert b"Traceback" not in failed.data
 
 
-def test_no_write_routes(app, isolated_environment):
+def test_only_expected_write_routes(app, isolated_environment):
     for path in ("/", "/status"):
         assert app.test_client().post(path).status_code == 405
     isolated_environment.assert_not_called()
     for rule in app.url_map.iter_rules():
         assert rule.methods <= ({"GET", "POST", "HEAD", "OPTIONS"}
-                                if rule.endpoint in {"auth.login", "auth.logout"}
+                                if rule.endpoint in {"auth.login", "auth.logout", "shipper.create", "shipper.edit", "shipper.book"}
                                 else {"GET", "HEAD", "OPTIONS"})

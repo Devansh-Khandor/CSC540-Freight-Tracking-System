@@ -1,0 +1,10 @@
+{% if shipments %}
+<div class="table-scroll" role="region" aria-label="Shipments" tabindex="0">
+<table><caption>Shipments belonging to your account</caption>
+<thead><tr><th scope="col">Shipment</th><th scope="col">Weight (kg)</th><th scope="col">Origin</th><th scope="col">Destination</th><th scope="col">Promised date</th><th scope="col">Current status</th><th scope="col">Delivery outcome</th><th scope="col">Booking</th></tr></thead>
+<tbody>{% for shipment in shipments %}<tr>
+<td><a href="{{ url_for('shipper.detail', shipment_id=shipment.shipment_id) }}">#{{ shipment.shipment_id }}</a></td>
+<td>{{ shipment.weight_kg }}</td><td>Hub {{ shipment.origin_hub_id }} · {{ shipment.origin_region }}</td><td>Hub {{ shipment.destination_hub_id }} · {{ shipment.destination_region }}</td>
+<td>{{ shipment.promised_delivery_date }}</td><td>{{ shipment.current_status or 'Not yet scanned' }}</td><td>{{ shipment.delivery_outcome or 'Not delivered' }}</td><td>{{ 'Departure #' ~ shipment.departure_id if shipment.departure_id else 'Not booked' }}</td>
+</tr>{% endfor %}</tbody></table></div>
+{% else %}<div class="card"><p>No shipments to display.</p></div>{% endif %}

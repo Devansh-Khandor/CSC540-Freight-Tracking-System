@@ -9,6 +9,7 @@ from flask import Flask, render_template
 
 from app import db
 from app.auth import init_auth
+from app.shipper import bp as shipper_bp
 
 
 def database_available():
@@ -44,6 +45,7 @@ def create_app(test_config=None):
         app.config.update(test_config)
 
     init_auth(app)
+    app.register_blueprint(shipper_bp)
 
     @app.errorhandler(400)
     def bad_request(error):
