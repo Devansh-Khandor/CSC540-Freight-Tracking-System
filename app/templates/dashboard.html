@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}{{ role }} dashboard{% endblock %}
+{% block content %}
+<section class="page-section">
+  <p class="eyebrow">{{ role }} workspace</p><h1>{{ role }} dashboard</h1>
+  <p>Signed in as account {{ session['account_id'] }}.</p>
+  <div class="card"><span class="badge">Planned</span><h2>Your workspace is ready for its next stage.</h2><p>Shipment management, bookings, scans, and reports are not yet available. This dashboard currently confirms your role-based access.</p></div>
+</section>
+{% endblock %}

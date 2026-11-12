@@ -30,9 +30,11 @@ def test_home_and_assets_work_without_configuration(app, isolated_environment):
     html = response.get_data(as_text=True)
     assert "Freight Tracking and Delivery Management System" in html
     assert 'name="viewport"' in html
-    for label in ("Login", "Shipper", "Carrier", "Viewer", "Analytics"):
-        assert f'{label} <small>Planned</small>' in html
-        assert client.get("/" + label.lower()).status_code == 404
+    for label in ("Login", "Shipper", "Carrier", "Viewer"):
+        assert f'>{label}</a>' in html
+        assert client.get("/" + label.lower()).status_code == 503
+    assert 'Analytics <small>Planned</small>' in html
+    assert client.get("/analytics").status_code == 404
     assert client.get("/static/css/style.css").status_code == 200
     assert not app.debug
     assert app.secret_key is None
@@ -128,4 +130,6 @@ def test_no_write_routes(app, isolated_environment):
         assert app.test_client().post(path).status_code == 405
     isolated_environment.assert_not_called()
     for rule in app.url_map.iter_rules():
-        assert rule.methods <= {"GET", "HEAD", "OPTIONS"}
+        assert rule.methods <= ({"GET", "POST", "HEAD", "OPTIONS"}
+                                if rule.endpoint in {"auth.login", "auth.logout"}
+                                else {"GET", "HEAD", "OPTIONS"})

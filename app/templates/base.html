@@ -15,9 +15,19 @@
       <nav aria-label="Main navigation">
         <a href="{{ url_for('home') }}" {% if request.endpoint == 'home' %}aria-current="page"{% endif %}>Home</a>
         <a href="{{ url_for('status') }}" {% if request.endpoint == 'status' %}aria-current="page"{% endif %}>Connection status</a>
-        {% for label in ['Login', 'Shipper', 'Carrier', 'Viewer', 'Analytics'] %}
-        <span class="nav-placeholder" aria-disabled="true">{{ label }} <small>Planned</small></span>
+        {% if session.get('account_id') %}
+        <a href="{{ url_for('auth.' + session['role']|lower) }}">{{ session['role']|title }} dashboard</a>
+        <form method="post" action="{{ url_for('auth.logout') }}" class="nav-form">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <button type="submit" class="nav-button">Log out</button>
+        </form>
+        {% else %}
+        <a href="{{ url_for('auth.login') }}">Login</a>
+        {% for role in ['shipper', 'carrier', 'viewer'] %}
+        <a href="{{ url_for('auth.' + role) }}">{{ role|title }}</a>
         {% endfor %}
+        {% endif %}
+        <span class="nav-placeholder" aria-disabled="true">Analytics <small>Planned</small></span>
       </nav>
     </div>
   </header>

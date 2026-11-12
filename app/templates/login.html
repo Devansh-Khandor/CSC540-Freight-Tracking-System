@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Login{% endblock %}
+{% block content %}
+<section class="page-section">
+  <p class="eyebrow">Your freight workspace</p><h1>Sign in</h1>
+  <p>Use your provisioned account ID, password, and assigned role.</p>
+  {% if error %}<p class="form-error" role="alert">{{ error }}</p>{% endif %}
+  <form method="post" action="{{ url_for('auth.login') }}" class="login-form">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <label for="account_id">Account ID</label>
+    <input id="account_id" name="account_id" inputmode="numeric" pattern="[0-9]+" maxlength="10" autocomplete="username" required>
+    <label for="password">Password</label>
+    <input id="password" name="password" type="password" maxlength="1024" autocomplete="current-password" required>
+    <label for="role">Role</label>
+    <select id="role" name="role" required><option value="">Select your role</option>{% for role in roles %}<option value="{{ role }}">{{ role|title }}</option>{% endfor %}</select>
+    <button class="button" type="submit">Sign in</button>
+  </form>
+</section>
+{% endblock %}
