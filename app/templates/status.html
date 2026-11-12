@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Connection status{% endblock %}
+{% block content %}
+<section class="page-section" aria-labelledby="status-title">
+  <p class="eyebrow">System status</p><h1 id="status-title">Database connection</h1>
+  <div class="status-card {{ 'connected' if connected else 'unavailable' }}" role="status">
+    <h2>{{ 'Connected' if connected else 'Unavailable' }}</h2>
+    <p>{{ 'The database connection is available.' if connected else 'The database connection is unavailable right now. Please try again later.' }}</p>
+  </div>
+  <div class="actions"><a class="button" href="{{ url_for('status') }}">Check again</a><a href="{{ url_for('home') }}">Return home</a></div>
+</section>
+{% endblock %}

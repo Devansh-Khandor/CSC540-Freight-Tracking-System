@@ -1,13 +1,13 @@
 CSC 540 - Freight Tracking and Delivery Management
 NC State University
 
-Task 1: Python project foundation
+Step 1: Python and Flask application foundation
 
 Uses Python 3 (3.10 or newer recommended), PyMySQL, and raw SQL against the
 departmental MariaDB 10.5 server. SSL is explicitly disabled per the professor's
-instructions. There is no ORM, business logic, or menu workflow yet.
-The only application query is SELECT VERSION(). No databases, tables, triggers,
-or stored procedures are created. Use your existing assigned schema; CREATE
+instructions. There is no ORM or web business workflow yet.
+The CLI uses SELECT VERSION(); the web diagnostic uses SELECT 1. Neither creates
+databases, tables, triggers, or procedures. Use your existing assigned schema; CREATE
 DATABASE permission is neither assumed nor required.
 
 FILES AND DIRECTORIES
@@ -17,17 +17,61 @@ app/db.py         Loads configuration, validates required values and the port,
                   and opens a PyMySQL connection with SSL disabled and timeouts.
 app/main.py       CLI connectivity test; prints the server version only after
                   SELECT VERSION() succeeds, and closes cursor and connection.
-requirements.txt Runtime dependencies: PyMySQL and python-dotenv.
+app/web.py       Flask application factory, homepage, status and error handlers.
+app/templates/   Shared Jinja2 layout, homepage, status, and error pages.
+app/static/      Responsive CSS; no frontend framework or CDN required.
+web_tests/       Offline Flask smoke tests, separate from database fixtures.
+requirements.txt Runtime dependencies: PyMySQL, python-dotenv, and Flask.
 .env.example     Configuration template with no real credentials or schema name.
 .gitignore       Excludes local credentials, virtual environments, caches, and
                   generated output. It keeps .env.example tracked.
 README.txt       This setup and usage guide.
-sql/             Reserved for future raw SQL scripts; currently empty.
-tests/           Reserved for future automated tests; currently empty.
+sql/             Database schema and design notes; unchanged by the web setup.
+tests/           Existing functional and concurrency tests requiring MariaDB.
 diagrams/        Reserved for authored database/project diagrams.
 report/          Reserved for authored project reports.
-Each reserved directory contains a .gitkeep so Git can retain the directory.
 Place disposable generated output in a generated/ directory.
+
+FLASK WEB APPLICATION (STEP 1)
+
+After activating .venv, install and launch from the project root:
+
+   python -m pip install -r requirements-dev.txt
+   python -m flask --app app.web:create_app run --no-debug
+
+Open http://127.0.0.1:5000/. This is a local development server.
+The homepage loads without database access. Login, Shipper, Carrier, Viewer,
+and Analytics are visibly marked Planned and have no active workflow routes.
+The Connection status link opens /status and runs only SELECT 1 using app/db.py.
+It returns Connected (HTTP 200) or Unavailable (HTTP 503), with no credentials,
+schema metadata, server version, or database exception details. Results are not
+cached. Connections and cursors close after the check, including query failures.
+The existing 10-second connection/read/write timeouts apply, so an unavailable
+server can delay this diagnostic. The homepage and error pages do not query it.
+
+Set SECRET_KEY in your ignored local .env or exported environment. To generate
+a value locally, run this command and copy its output into .env (do not commit it):
+
+   python -c "import secrets; print(secrets.token_hex(32))"
+
+No secret is generated or hardcoded by the app. With SECRET_KEY missing or empty,
+this read-only foundation still starts; signed sessions are unavailable. Configure
+a key before adding session-dependent features in a later stage. Debug defaults
+to disabled, and the documented --no-debug flag also overrides FLASK_DEBUG.
+No authentication, password handling, database writes, or analytics are implemented.
+The existing CLI command remains python -m app.main.
+
+Run offline checks without university database access:
+
+   python -m pytest web_tests -q
+   python -m compileall -q app web_tests
+   python -c "from app.web import create_app; assert not create_app().debug"
+   python -m pip check
+
+Always specify web_tests for offline testing. The existing tests/ suite has an
+automatic live database schema guard and includes writes with cleanup; running
+bare pytest selects that existing integration suite. Its fixtures and tests have
+not been changed. Run those only with their documented MariaDB setup and access.
 
 MACOS SETUP (Terminal, zsh)
 

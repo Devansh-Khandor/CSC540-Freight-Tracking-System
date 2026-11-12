@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block content %}
+<section class="hero" aria-labelledby="home-title">
+  <p class="eyebrow">Regional logistics · CSC 540</p>
+  <h1 id="home-title">Freight Tracking and Delivery Management System</h1>
+  <p class="hero-description">A clearer view of freight, from origin to delivery. This project brings shipment journeys, carrier operations, and delivery performance into one place.</p>
+  <a class="button" href="{{ url_for('status') }}">Check database connection <span aria-hidden="true">→</span></a>
+  <p class="hero-note">Foundation preview · Role-based workflows are coming in future stages.</p>
+</section>
+<section class="workspaces" aria-labelledby="workspaces-title">
+  <div class="section-intro"><p class="eyebrow">Designed for every role</p><h2 id="workspaces-title">Your future workspace</h2><p>These dashboards are planned and are not yet available.</p></div>
+  <div class="card-grid">
+    <article class="card"><span class="badge">Planned</span><h3>Shipper</h3><p>Manage your shipments, book eligible departures, and follow freight through its movement history.</p><p class="card-caption">Shipments · Bookings · Tracking</p></article>
+    <article class="card"><span class="badge">Planned</span><h3>Carrier</h3><p>Coordinate your vehicles and departures, record scan events, and review delivery performance.</p><p class="card-caption">Fleet · Departures · Scans</p></article>
+    <article class="card"><span class="badge">Planned</span><h3>Viewer</h3><p>Explore shipment tracking and published performance summaries through read-only access.</p><p class="card-caption">Tracking · Performance reports</p></article>
+  </div>
+</section>
+<section class="info-panel" aria-labelledby="analytics-title"><div><p class="eyebrow">Planned · Analytics</p><h2 id="analytics-title">Understand the journey behind each delivery.</h2><p>A future View Queries area will bring together the six required analytical queries, covering fleet composition, departure utilization, scan timing, and shipment activity.</p></div><span class="panel-label">Available in a future stage</span></section>
+{% endblock %}

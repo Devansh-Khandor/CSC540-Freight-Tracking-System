@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Freight Tracking and Delivery Management, a CSC 540 project at NC State University.">
+  <title>{% block title %}Freight Tracking{% endblock %} · CSC 540</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="{{ url_for('home') }}"><span class="brand-mark" aria-hidden="true">FT</span> Freight Tracking</a>
+      <nav aria-label="Main navigation">
+        <a href="{{ url_for('home') }}" {% if request.endpoint == 'home' %}aria-current="page"{% endif %}>Home</a>
+        <a href="{{ url_for('status') }}" {% if request.endpoint == 'status' %}aria-current="page"{% endif %}>Connection status</a>
+        {% for label in ['Login', 'Shipper', 'Carrier', 'Viewer', 'Analytics'] %}
+        <span class="nav-placeholder" aria-disabled="true">{{ label }} <small>Planned</small></span>
+        {% endfor %}
+      </nav>
+    </div>
+  </header>
+  <main id="main" class="container" tabindex="-1">{% block content %}{% endblock %}</main>
+  <footer class="site-footer"><div class="container footer-inner"><span>NC State University · CSC 540</span><span>Freight Tracking and Delivery Management · Foundation preview</span></div></footer>
+</body>
+</html>
