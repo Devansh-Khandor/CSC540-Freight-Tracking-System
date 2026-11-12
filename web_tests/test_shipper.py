@@ -1,6 +1,7 @@
 """Offline shipper authorization, forms, SQL, and transaction tests."""
 from datetime import date
 from decimal import Decimal as D
+from html.parser import HTMLParser
 import time
 from unittest.mock import MagicMock
 
@@ -448,6 +449,58 @@ def test_form_and_booking_pages_render(client, monkeypatch):
         response = client.get(path)
         assert response.status_code == 200
         assert b'name="csrf_token"' in response.data
+
+
+class FormControls(HTMLParser):
+    def __init__(self, html):
+        super().__init__()
+        self.controls = []
+        self.feed(html)
+
+    def handle_starttag(self, tag, attrs):
+        self.controls.append((tag, dict(attrs)))
+
+
+@pytest.mark.parametrize("path,departure_id", [
+    ("/shipper/shipments/new", None),
+    ("/shipper/shipments/41/edit", None),
+    ("/shipper/shipments/41/edit", 9),
+])
+def test_lane_control_preserves_booking_constraint(client, monkeypatch, path, departure_id):
+    monkeypatch.setattr(service, "lanes", lambda: LANES)
+    monkeypatch.setattr(service, "get_shipment", lambda owner, sid: {**SHIPMENT, "departure_id": departure_id})
+    response = client.get(path)
+    assert response.status_code == 200
+    controls = FormControls(response.get_data(as_text=True)).controls
+    selector = next(attrs for tag, attrs in controls if tag == "select" and attrs.get("name") == "lane")
+    hidden = [attrs for tag, attrs in controls if tag == "input" and attrs.get("name") == "lane"]
+    if departure_id is None:
+        assert "disabled" not in selector
+        assert not hidden
+    else:
+        assert "disabled" in selector
+        assert selector["aria-describedby"] == "lane-help"
+        assert hidden == [{"type": "hidden", "name": "lane", "value": "1:2"}]
+        # Submit what a browser sends: disabled controls are omitted, hidden lane retained.
+        update_mock = MagicMock()
+        monkeypatch.setattr(service, "update_shipment", update_mock)
+        saved = client.post(path, data={**FORM, "lane": hidden[0]["value"], "csrf_token": "test-csrf"})
+        assert saved.status_code == 303
+        assert update_mock.call_args.args[2]["lane"] == "1:2"
+
+
+def test_booked_lane_uses_stored_value_after_invalid_post(client, monkeypatch):
+    monkeypatch.setattr(service, "lanes", lambda: LANES + [
+        dict(origin_hub_id=2, destination_hub_id=1, origin_region="West", destination_region="Northeast")])
+    monkeypatch.setattr(service, "get_shipment", lambda owner, sid: {**SHIPMENT, "departure_id": 9})
+    response = client.post("/shipper/shipments/41/edit", data={
+        **FORM, "lane": "2:1", "weight_kg": "0", "csrf_token": "test-csrf"})
+    assert response.status_code == 400
+    controls = FormControls(response.get_data(as_text=True)).controls
+    selected = [attrs["value"] for tag, attrs in controls if tag == "option" and "selected" in attrs]
+    assert selected == ["1:2"]
+    assert any(tag == "input" and attrs.get("name") == "lane" and attrs.get("value") == "1:2"
+               for tag, attrs in controls)
 
 
 @pytest.mark.parametrize("code", [1205, 1213])
