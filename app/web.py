@@ -11,6 +11,7 @@ from app import db
 from app.auth import init_auth
 from app.shipper import bp as shipper_bp
 from app.carrier import bp as carrier_bp
+from app.viewer import bp as viewer_bp
 
 
 def database_available():
@@ -48,6 +49,7 @@ def create_app(test_config=None):
     init_auth(app)
     app.register_blueprint(shipper_bp)
     app.register_blueprint(carrier_bp)
+    app.register_blueprint(viewer_bp)
 
     @app.errorhandler(400)
     def bad_request(error):

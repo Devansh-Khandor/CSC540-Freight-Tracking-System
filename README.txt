@@ -1,11 +1,11 @@
 CSC 540 - Freight Tracking and Delivery Management
 NC State University
 
-Steps 1–4: Flask foundation, authentication, shipper and carrier workflows
+Steps 1–5: Flask foundation, authentication, shipper, carrier and viewer workflows
 
 Uses Python 3 (3.10 or newer recommended), PyMySQL, and raw SQL against the
 departmental MariaDB 10.5 server. SSL is explicitly disabled per the professor's
-instructions. There is no ORM. Shipper and carrier workflows are implemented; viewer operations remain placeholders.
+instructions. There is no ORM. Shipper, carrier and read-only viewer workflows are implemented.
 The CLI uses SELECT VERSION(); the web diagnostic uses SELECT 1. Authentication
 also reads account and subtype records. Shipper routes create/update shipments
 and call the existing booking procedure. No web route creates
@@ -47,7 +47,7 @@ After activating .venv, install and launch from the project root:
 Open http://127.0.0.1:5000/. This is a local development server.
 The homepage loads without database access. Login and protected role dashboards
 are available (see Step 2 below).
-Shipper and carrier operations are available; Viewer and Analytics remain planned.
+Shipper, carrier and viewer operations are available; global Analytics remain planned.
 The Connection status link opens /status and runs only SELECT 1 using app/db.py.
 It returns Connected (HTTP 200) or Unavailable (HTTP 503), with no credentials,
 schema metadata, server version, or database exception details. Results are not
@@ -160,7 +160,7 @@ are rejected with the same message as incorrect credentials. Registration,
 carrier scanning, and analytical execution are not implemented. Step 3 adds
 shipper create/update, booking, tracking, and owner-specific reports.
 
-/shipper and /carrier are working dashboards; /viewer remains a placeholder. Anonymous
+/shipper, /carrier and /viewer are working role-protected dashboards. Anonymous
 visitors are redirected to /login; another role receives HTTP 403. Navigation
 shows the signed-in user's dashboard and a POST logout form. GET /logout is not
 allowed. Login and logout use session-bound CSRF tokens; tokens rotate on login,
@@ -422,3 +422,37 @@ trigger execution or concurrent serialization. On campus/VPN with approved demo
 accounts/data, verify subtype writes, capacity update versus booking, scan versus
 scan, scan versus shipment update, and cross-carrier rejection before the demo.
 Viewer, global analytics, SQL/schema changes and CLI changes are outside Step 4.
+
+
+STEP 5: READ-ONLY VIEWER
+
+The final specification (Viewer Functions, page 4) permits shipment-ID tracking
+and published performance summaries such as on-time rates by lane or carrier.
+It specifies no viewer ownership filter or additional search fields. Viewers may
+therefore look up any existing shipment by ID, with strict VIEWER role access.
+
+- /viewer: concise total, in-transit and delivered shipment counts and lookup.
+- /viewer/track?shipment_id=<id>: origin/destination, current status, promise,
+  outcome, optional departure/vehicle/time and scan history in scan_sequence order.
+  IDs must be positive unsigned INT values. Invalid IDs get 400, absent records
+  get 404, and unbooked/unscanned shipments have explicit empty states.
+- /viewer/reports: all-time delivered-only on-time counts/rates by directed lane
+  and carrier, computed from existing shipment outcomes. Undelivered shipments
+  are excluded. A zero denominator displays No deliveries yet, not a zero rate.
+  These published summaries do not implement the six global analytical queries.
+
+app/viewer.py owns GET-only routes and generic error handling;
+app/viewer_service.py executes only SELECT statements using the existing
+connection context, which rolls back read transactions and closes connections.
+No commits, locking reads, booking calls, or data-changing SQL are exposed.
+No passwords or shipper account identifiers are selected for shipment tracking.
+Viewer access to shipper/carrier management routes remains forbidden.
+The standard POST logout remains available and retains its CSRF protection.
+
+web_tests/test_viewer.py covers role guards, parameterized lookup, found/missing
+shipments, ordered and empty history, read-only methods and SQL, cross-role write
+rejection, generic errors, template navigation and empty report states. These are
+offline mocked tests; they do not establish live MariaDB query/aggregate behavior.
+Use the same documented web_tests, compileall, import and diff checks and launch
+command above. Real authenticated viewing needs university database access and a
+valid provisioned VIEWER account. No authentication workaround is supplied.

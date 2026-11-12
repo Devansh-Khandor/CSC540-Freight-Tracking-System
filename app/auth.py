@@ -59,7 +59,7 @@ def auth_ready():
 
 
 def dashboard_endpoint(role):
-    return "carrier.dashboard" if role == "CARRIER" else "auth." + role.lower()
+    return role.lower() + ".dashboard" if role in {"CARRIER", "VIEWER"} else "auth." + role.lower()
 
 
 def init_auth(app):
@@ -75,7 +75,7 @@ def init_auth(app):
             if (not isinstance(expires, (int, float)) or time.time() >= expires
                     or session.get("role") not in ROLES or not auth_ready()):
                 session.clear()
-        if request.blueprint in {"auth", "shipper", "carrier"} and not auth_ready():
+        if request.blueprint in {"auth", "shipper", "carrier", "viewer"} and not auth_ready():
             return render_template("error.html", code=503,
                                    heading="Sign-in unavailable",
                                    message="Sign-in is temporarily unavailable. Please try again later."), 503
@@ -88,7 +88,7 @@ def init_auth(app):
 
     @app.after_request
     def private_responses(response):
-        if request.blueprint in {"auth", "shipper", "carrier"} or session.get("account_id"):
+        if request.blueprint in {"auth", "shipper", "carrier", "viewer"} or session.get("account_id"):
             response.headers["Cache-Control"] = "no-store"
         response.headers["X-Content-Type-Options"] = "nosniff"
         response.headers["X-Frame-Options"] = "DENY"
@@ -165,9 +165,3 @@ def logout():
 @role_required("SHIPPER")
 def shipper():
     return render_template("shipper/dashboard.html")
-
-
-@bp.get("/viewer")
-@role_required("VIEWER")
-def viewer():
-    return render_template("dashboard.html", role="Viewer")

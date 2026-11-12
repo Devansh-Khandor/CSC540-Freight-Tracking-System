@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="workspaces">
+<p class="eyebrow">Viewer workspace · Read-only access</p>
+<nav aria-label="Viewer navigation" class="actions">
+<a href="{{ url_for('viewer.dashboard') }}">Dashboard</a>
+<a href="{{ url_for('viewer.track') }}">Track a shipment</a>
+<a href="{{ url_for('viewer.reports') }}">Performance reports</a>
+</nav>
+{% block viewer_content %}{% endblock %}
+</section>
+{% endblock %}

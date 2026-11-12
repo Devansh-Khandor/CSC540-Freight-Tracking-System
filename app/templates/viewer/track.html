@@ -1,0 +1,27 @@
+{% extends "viewer/base.html" %}
+{% block title %}Track a shipment{% endblock %}
+{% block viewer_content %}
+<h1>Track a shipment</h1>
+{% if error %}<p class="form-error" role="alert">{{ error }}</p>{% endif %}
+{% include "viewer/_lookup.html" %}
+{% if shipment %}
+<h2>Shipment #{{ shipment.shipment_id }}</h2>
+<dl class="shipment-facts">
+<div><dt>Origin</dt><dd>Hub {{ shipment.origin_hub_id }} · {{ shipment.origin_region }}</dd></div>
+<div><dt>Destination</dt><dd>Hub {{ shipment.destination_hub_id }} · {{ shipment.destination_region }}</dd></div>
+<div><dt>Current status</dt><dd>{{ shipment.current_status or 'Not yet scanned' }}</dd></div>
+<div><dt>Promised delivery date</dt><dd>{{ shipment.promised_delivery_date }}</dd></div>
+<div><dt>Delivery outcome</dt><dd>{{ shipment.delivery_outcome or 'Not delivered' }}</dd></div>
+</dl>
+<h2>Departure</h2>
+{% if shipment.departure_id %}<p>Departure #{{ shipment.departure_id }} · Vehicle #{{ shipment.vehicle_id }} · {{ shipment.departure_datetime }} (ET)</p>
+<p>Hub {{ shipment.departure_origin }} → Hub {{ shipment.departure_destination }}</p>
+{% else %}<p>This shipment is not yet booked onto a departure.</p>{% endif %}
+<h2>Movement history</h2><p>Scans appear in sequence order. Timestamps use Eastern Time.</p>
+{% if scans %}<div class="table-scroll" role="region" aria-label="Shipment movement history" tabindex="0"><table>
+<caption>Scan history for shipment #{{ shipment.shipment_id }}</caption>
+<thead><tr><th scope="col">Sequence</th><th scope="col">Timestamp (ET)</th><th scope="col">Status</th><th scope="col">Hub</th></tr></thead>
+<tbody>{% for scan in scans %}<tr><td>{{ scan.scan_sequence }}</td><td>{{ scan.scan_timestamp }}</td><td>{{ scan.status }}</td><td>Hub {{ scan.hub_id }} · {{ scan.region }}</td></tr>{% endfor %}</tbody>
+</table></div>{% else %}<p>No scan events have been recorded for this shipment.</p>{% endif %}
+{% endif %}
+{% endblock %}

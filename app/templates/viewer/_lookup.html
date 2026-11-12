@@ -1,0 +1,6 @@
+<form method="get" action="{{ url_for('viewer.track') }}" class="login-form">
+<label for="shipment_id">Shipment ID</label>
+<input id="shipment_id" name="shipment_id" inputmode="numeric" pattern="[0-9]+" maxlength="10" value="{{ value|default('') }}" required aria-describedby="lookup-help">
+<p id="lookup-help">Enter a shipment ID to view its route, delivery status, and scan history.</p>
+<button class="button" type="submit">Track shipment</button>
+</form>

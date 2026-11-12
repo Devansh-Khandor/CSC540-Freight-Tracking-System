@@ -1,0 +1,14 @@
+{% extends "viewer/base.html" %}
+{% block title %}Viewer dashboard{% endblock %}
+{% block viewer_content %}
+<h1>Viewer dashboard</h1><p>Look up freight movements and read delivery performance summaries.</p>
+<dl class="shipment-facts">
+<div><dt>Total shipments</dt><dd>{{ statistics.total }}</dd></div>
+<div><dt>Currently in transit</dt><dd>{{ statistics.in_transit }}</dd></div>
+<div><dt>Delivered</dt><dd>{{ statistics.delivered }}</dd></div>
+</dl>
+<p>In transit includes IN_TRANSIT, ARRIVED_AT_HUB, and OUT_FOR_DELIVERY.</p>
+{% if statistics.total == 0 %}<p>No shipments are recorded yet.</p>{% endif %}
+<h2>Track a shipment</h2>{% include "viewer/_lookup.html" %}
+<p><a href="{{ url_for('viewer.reports') }}">View on-time performance by lane and carrier</a></p>
+{% endblock %}

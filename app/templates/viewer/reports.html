@@ -1,0 +1,19 @@
+{% extends "viewer/base.html" %}
+{% block title %}Published performance reports{% endblock %}
+{% block viewer_content %}
+<h1>Published performance reports</h1>
+<p>All-time summaries from recorded shipment delivery outcomes. On-time rate = on-time deliveries ÷ delivered shipments × 100. Undelivered shipments are excluded; no deliveries means no rate.</p>
+<h2>On-time performance by directed lane</h2>
+{% if lanes %}<div class="table-scroll" role="region" aria-label="Lane performance" tabindex="0"><table>
+<caption>Delivery performance by origin and destination</caption>
+<thead><tr><th scope="col">Origin</th><th scope="col">Destination</th><th scope="col">Delivered</th><th scope="col">On time</th><th scope="col">Late</th><th scope="col">On-time rate</th></tr></thead>
+<tbody>{% for row in lanes %}<tr><td>Hub {{ row.origin_hub_id }} · {{ row.origin_region }}</td><td>Hub {{ row.destination_hub_id }} · {{ row.destination_region }}</td><td>{{ row.delivered }}</td><td>{{ row.on_time }}</td><td>{{ row.late }}</td><td>{{ (row.rate|string ~ '%') if row.rate is not none else 'No deliveries yet' }}</td></tr>{% endfor %}</tbody>
+</table></div>{% else %}<p>No lanes are available for reporting.</p>{% endif %}
+<h2>On-time performance by carrier</h2>
+<p>Deliveries are attributed through the shipment's booked departure and its vehicle's carrier.</p>
+{% if carriers %}<div class="table-scroll" role="region" aria-label="Carrier performance" tabindex="0"><table>
+<caption>Delivery performance by carrier</caption>
+<thead><tr><th scope="col">Carrier</th><th scope="col">Delivered</th><th scope="col">On time</th><th scope="col">Late</th><th scope="col">On-time rate</th></tr></thead>
+<tbody>{% for row in carriers %}<tr><td>#{{ row.carrier_id }}</td><td>{{ row.delivered }}</td><td>{{ row.on_time }}</td><td>{{ row.late }}</td><td>{{ (row.rate|string ~ '%') if row.rate is not none else 'No deliveries yet' }}</td></tr>{% endfor %}</tbody>
+</table></div>{% else %}<p>No carriers are available for reporting.</p>{% endif %}
+{% endblock %}
