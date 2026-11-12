@@ -66,9 +66,10 @@ ORDER BY
     utilization_rank;
 
 
--- ============================================================
--- QUERY 3: Time elapsed between consecutive shipment scan events
--- ============================================================
+
+-- Query 3: Time elapsed between consecutive scans
+-- for a specific shipment.
+-- Change 1 to the shipment ID you want to inspect.
 
 SELECT
     shipment_id,
@@ -88,12 +89,12 @@ FROM (
         status,
         scan_timestamp,
         LAG(scan_timestamp) OVER (
-            PARTITION BY shipment_id
             ORDER BY scan_sequence
         ) AS previous_scan_timestamp
     FROM scan_event
+    WHERE shipment_id = 1
 ) AS scan_intervals
-ORDER BY shipment_id, scan_sequence;
+ORDER BY scan_sequence;
 
 
 -- ============================================================

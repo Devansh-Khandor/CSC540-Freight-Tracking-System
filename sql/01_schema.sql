@@ -481,8 +481,7 @@ BEGIN
             OR (BINARY v_last_status = 'IN_TRANSIT'
                 AND BINARY NEW.status IN (
                     'IN_TRANSIT',
-                    'ARRIVED_AT_HUB',
-                    'OUT_FOR_DELIVERY'
+                    'ARRIVED_AT_HUB'
                 ))
             OR (BINARY v_last_status = 'ARRIVED_AT_HUB'
                 AND BINARY NEW.status IN ('ARRIVED_AT_HUB', 'IN_TRANSIT', 'OUT_FOR_DELIVERY'))
