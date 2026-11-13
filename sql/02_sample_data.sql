@@ -3,6 +3,8 @@
 -- CSC 540: Freight Tracking and Delivery Management
 -- File: 02_sample_data.sql
 -- Purpose: Load professor-provided demonstration dataset
+-- SAFETY: Fresh-schema-only seed. Do not run against a populated/shared schema.
+-- Explicit primary keys and stored-procedure bookings make this script non-rerunnable.
 -- ============================================================
 
 -- HUB ID MAPPING:
@@ -46,30 +48,18 @@ INSERT INTO lane (origin_hub_id, destination_hub_id) VALUES
 -- SECTION 3: ACCOUNTS
 -- ============================================================
 
--- Source ID mapping:
--- C1  = 1  Piedmont Freight Lines
--- C2  = 2  Atlantic Coast Haulers
--- C3  = 3  Plains Rail Co
--- SH1 = 4  Triangle Textiles
--- SH2 = 5  Oak City Electronics
--- SH3 = 6  Carolina Produce Co
--- SH4 = 7  Coastal Furniture
--- VW1 = 8  Fedex
-
--- Temporary demo password: demo
--- Coordinate with the application team if authentication
--- requires a different password format.
+-- Passwords must be initialized using app/bootstrap_accounts.py
+-- Do not use these placeholder values for application login.
 
 INSERT INTO account (account_id, password, role) VALUES
-(1, 'demo', 'CARRIER'),
-(2, 'demo', 'CARRIER'),
-(3, 'demo', 'CARRIER'),
-(4, 'demo', 'SHIPPER'),
-(5, 'demo', 'SHIPPER'),
-(6, 'demo', 'SHIPPER'),
-(7, 'demo', 'SHIPPER'),
-(8, 'demo', 'VIEWER');
-
+(1, 'BOOTSTRAP_REQUIRED', 'CARRIER'),
+(2, 'BOOTSTRAP_REQUIRED', 'CARRIER'),
+(3, 'BOOTSTRAP_REQUIRED', 'CARRIER'),
+(4, 'BOOTSTRAP_REQUIRED', 'SHIPPER'),
+(5, 'BOOTSTRAP_REQUIRED', 'SHIPPER'),
+(6, 'BOOTSTRAP_REQUIRED', 'SHIPPER'),
+(7, 'BOOTSTRAP_REQUIRED', 'SHIPPER'),
+(8, 'BOOTSTRAP_REQUIRED', 'VIEWER');
 
 -- ============================================================
 -- SECTION 4: ACCOUNT ROLE TABLES

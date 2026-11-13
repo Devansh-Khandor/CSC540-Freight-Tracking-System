@@ -2,8 +2,10 @@
 -- ============================================================
 -- CSC 540: Freight Tracking and Delivery Management
 -- File: 03_queries.sql
--- Required analytical queries
+-- Six required analytical queries
+-- Compatible with MariaDB 10.5
 -- ============================================================
+
 
 -- ============================================================
 -- QUERY 1: Number of vehicles of each type owned by each carrier
@@ -40,14 +42,14 @@ SELECT
     d.max_total_weight_kg,
     ROUND(
         COALESCE(SUM(s.weight_kg), 0) * 100.0
-        / d.max_total_weight_kg,
+        / NULLIF(d.max_total_weight_kg, 0),
         2
     ) AS utilization_percentage,
     RANK() OVER (
         PARTITION BY d.origin_hub_id, d.destination_hub_id
         ORDER BY
             COALESCE(SUM(s.weight_kg), 0) * 100.0
-            / d.max_total_weight_kg DESC
+            / NULLIF(d.max_total_weight_kg, 0) DESC
     ) AS utilization_rank
 FROM departure d
 LEFT JOIN booking b
@@ -66,10 +68,13 @@ ORDER BY
     utilization_rank;
 
 
-
--- Query 3: Time elapsed between consecutive scans
+-- ============================================================
+-- QUERY 3: Time elapsed between consecutive scans
 -- for a specific shipment.
--- Change 1 to the shipment ID you want to inspect.
+-- Change the value of @shipment_id to inspect another shipment.
+-- ============================================================
+
+SET @shipment_id = 1;
 
 SELECT
     shipment_id,
@@ -89,16 +94,18 @@ FROM (
         status,
         scan_timestamp,
         LAG(scan_timestamp) OVER (
+            PARTITION BY shipment_id
             ORDER BY scan_sequence
         ) AS previous_scan_timestamp
     FROM scan_event
-    WHERE shipment_id = 1
+    WHERE shipment_id = @shipment_id
 ) AS scan_intervals
 ORDER BY scan_sequence;
 
 
 -- ============================================================
 -- QUERY 4: Running total of delivered shipment weight by carrier
+-- Each delivered shipment is counted only once.
 -- ============================================================
 
 SELECT
@@ -115,7 +122,7 @@ FROM (
     SELECT
         v.carrier_account_id,
         s.shipment_id,
-        se.scan_timestamp AS delivered_timestamp,
+        delivered.delivered_timestamp,
         s.weight_kg
     FROM shipment s
     JOIN booking b
@@ -124,16 +131,25 @@ FROM (
         ON b.departure_id = d.departure_id
     JOIN vehicle v
         ON d.vehicle_id = v.vehicle_id
-    JOIN scan_event se
-        ON s.shipment_id = se.shipment_id
-    WHERE se.status = 'DELIVERED'
+    JOIN (
+        SELECT
+            shipment_id,
+            MIN(scan_timestamp) AS delivered_timestamp
+        FROM scan_event
+        WHERE status = 'DELIVERED'
+        GROUP BY shipment_id
+    ) AS delivered
+        ON s.shipment_id = delivered.shipment_id
 ) AS delivered_shipments
-ORDER BY carrier_account_id, delivered_timestamp, shipment_id;
+ORDER BY
+    carrier_account_id,
+    delivered_timestamp,
+    shipment_id;
 
 
 -- ============================================================
 -- QUERY 5: Departures carrying shipments from at least two
---          different shippers
+-- different shippers
 -- ============================================================
 
 SELECT
@@ -152,7 +168,6 @@ GROUP BY
     d.destination_hub_id
 HAVING COUNT(DISTINCT s.shipper_account_id) >= 2
 ORDER BY d.departure_id;
-
 
 
 -- ============================================================
