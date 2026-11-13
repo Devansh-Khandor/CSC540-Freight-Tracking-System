@@ -49,7 +49,7 @@ Open http://127.0.0.1:5000/. This is a local development server.
 The homepage loads without database access. Login and protected role dashboards
 are available (see Step 2 below).
 Shipper, carrier and viewer operations are available. The six global analytics
-queries are implemented in SQL/Python; the Flask View Queries menu is not yet wired.
+queries are available through the authenticated Flask View Queries menu (/queries).
 The Connection status link opens /status and runs only SELECT 1 using app/db.py.
 It returns Connected (HTTP 200) or Unavailable (HTTP 503), with no credentials,
 schema metadata, server version, or database exception details. Results are not
@@ -522,8 +522,8 @@ SIX GLOBAL ANALYTICAL QUERIES (CANONICAL ORDER)
 5. Departures serving at least two distinct shippers, including their counts.
 6. Shipments with no scans, including owner, route and promised date.
 
-Implementations: app/queries.py and sql/03_queries.sql. The Flask homepage still
-marks Analytics planned because no global View Queries web route is integrated.
+Implementations: app/queries.py and sql/03_queries.sql. The Flask View Queries
+interface reuses these six Python functions without duplicating their SQL.
 Existing carrier/viewer operational reports remain separate from these queries.
 
 ANALYTICS INTEGRATION
@@ -683,3 +683,30 @@ ownership to the caller. Flask must supply per-request connections, enforce its
 existing authorization policy, and handle Decimal/date/datetime serialization.
 The reports themselves are global reports, not account-level access controls.
 No function signatures or Flask branch files were changed.
+
+STEP 6: FLASK VIEW QUERIES
+
+All authenticated SHIPPER, CARRIER and VIEWER accounts can open /queries from
+the navigation. The six reports appear in the professor's required order above.
+Each /queries/1 through /queries/6 page executes only its selected report. Query 3
+first displays a form; submit a shipment ID from 1 to 4294967295 to see scans
+and elapsed minutes. Missing scans do not imply that the shipment exists.
+
+app/analytics_service.py uses the shared connection helper, a MariaDB READ ONLY
+snapshot transaction, and the existing SELECT-only analytics adapter. Connections
+are rolled back and closed on success or failure. Routes accept GET/HEAD only;
+there are no analytics write actions. Session expiry, CSRF and login throttling
+remain unchanged. Database errors show a generic message. Decimal precision is
+preserved, output is escaped, and wide tables scroll inside a focusable region.
+
+Run offline verification with:
+    .venv/bin/python -m pytest web_tests -q -p no:cacheprovider
+    .venv/bin/python -m unittest analytics_checks.test_offline -v
+    .venv/bin/python -m compileall -q app web_tests analytics_checks
+    .venv/bin/python -m pip check
+
+Web tests use mocked connections; analytics offline checks use SQLite, not live
+MariaDB. Neither proves populated results against the university database. The
+final freight sample load remains pending; empty results are expected except
+Query 1, which includes existing carriers with zero vehicle counts. Do not run
+seed loaders or write-capable database tests as part of this verification.

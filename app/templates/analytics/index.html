@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}View Queries{% endblock %}
+{% block content %}
+<section class="workspaces">
+<p class="eyebrow">Freight analytics · Read-only</p><h1>View Queries</h1>
+<p>Six global reports, available to signed-in shippers, carriers, and viewers. Choose a query below; these reports cover all recorded freight, not just your account.</p>
+<ol class="query-list">
+{% for report in reports %}<li><h2><a href="{{ url_for('analytics.result', number=report.number) }}">{{ report.title }}</a></h2><p>{{ report.description }}</p></li>{% endfor %}
+</ol>
+</section>
+{% endblock %}

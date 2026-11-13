@@ -27,7 +27,7 @@
         <a href="{{ url_for(dashboard_endpoint(role|upper)) }}">{{ role|title }}</a>
         {% endfor %}
         {% endif %}
-        <span class="nav-placeholder" aria-disabled="true">Analytics <small>Planned</small></span>
+        <a href="{{ url_for('analytics.index') }}" {% if request.blueprint == 'analytics' %}aria-current="page"{% endif %}>View Queries</a>
       </nav>
     </div>
   </header>

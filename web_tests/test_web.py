@@ -33,7 +33,8 @@ def test_home_and_assets_work_without_configuration(app, isolated_environment):
     for label in ("Login", "Shipper", "Carrier", "Viewer"):
         assert f'>{label}</a>' in html
         assert client.get("/" + label.lower()).status_code == 503
-    assert 'Analytics <small>Planned</small>' in html
+    assert 'View Queries</a>' in html
+    assert client.get('/queries').status_code == 503
     assert client.get("/analytics").status_code == 404
     assert client.get("/static/css/style.css").status_code == 200
     assert not app.debug

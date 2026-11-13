@@ -66,3 +66,9 @@ dd { margin: .5rem 0 0; font-weight: 650; }
 .subtype-fields { display: grid; gap: .7rem; min-width: 0; border: 1px solid var(--line); border-radius: .3rem; padding: 1rem; }
 .subtype-fields legend { font-weight: 650; }
 .login-form input:disabled, .login-form select:disabled { color: var(--muted); background: #edf1f3; opacity: 1; }
+
+.query-list { padding-left: 2rem; }
+.query-list li { padding: 1rem 0 1.5rem .4rem; border-bottom: 1px solid var(--line); }
+.query-list li::marker { font-weight: 700; color: var(--red); }
+.query-list h2 { font-size: 1.4rem; }
+.query-results td { white-space: nowrap; }

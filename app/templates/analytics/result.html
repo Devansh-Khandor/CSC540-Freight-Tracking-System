@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Query {{ report.number }} · {{ report.title }}{% endblock %}
+{% block content %}
+<section class="workspaces">
+<p><a href="{{ url_for('analytics.index') }}">All six queries</a></p>
+<p class="eyebrow">Query {{ report.number }} · Global read-only report</p>
+<h1>{{ report.title }}</h1><p>{{ report.description }}</p>
+{% if report.number == 3 %}
+<form method="get" action="{{ url_for('analytics.result', number=3) }}" class="login-form">
+<label for="shipment_id">Shipment ID</label>
+<input id="shipment_id" name="shipment_id" inputmode="numeric" pattern="[0-9]+" maxlength="10" value="{{ value }}" required aria-describedby="shipment-help">
+<p id="shipment-help">Enter a shipment ID from 1 to 4294967295. The first scan has no previous timestamp or interval.</p>
+<button class="button" type="submit">View scan intervals</button>
+</form>
+{% endif %}
+{% if error %}<p class="form-error" role="alert">{{ error }}</p>{% endif %}
+{% if rows is not none %}
+{% if rows %}
+<p>{{ rows|length }} result{{ '' if rows|length == 1 else 's' }}. Dates and times use Eastern Time. Results reflect the database when this report was opened.</p>
+<div class="table-scroll" role="region" aria-label="Query {{ report.number }} results" tabindex="0">
+<table class="query-results"><caption>Query {{ report.number }}: {{ report.title }}{% if report.number == 3 %} · Shipment {{ value }}{% endif %}</caption>
+<thead><tr>{% for column in report.columns %}<th scope="col">{{ column }}</th>{% endfor %}</tr></thead>
+<tbody>{% for row in rows %}<tr>{% for cell in row %}<td>{% if cell is none %}{{ 'No previous scan' if report.number == 3 and loop.index in [5, 6] else 'Not available' }}{% else %}{{ cell }}{% endif %}</td>{% endfor %}</tr>{% endfor %}</tbody>
+</table></div>
+{% else %}<div class="card" role="status"><p>{{ report.empty }}</p></div>{% endif %}
+{% endif %}
+</section>
+{% endblock %}
