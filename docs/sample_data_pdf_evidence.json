@@ -1,0 +1,622 @@
+{
+  "pdf_sha256": "3e523cb6834f8ddc10699fc40d3f9325ac2fc76c3c36105922ddb54ece7c848a",
+  "checks": {
+    "hub regions": 11,
+    "account roles": 8,
+    "carrier membership": 3,
+    "shipper membership": 4,
+    "viewer membership": 1,
+    "vehicle ownership/home": 7,
+    "box attributes": 4,
+    "refrigerated attributes": 2,
+    "rail attributes": 1,
+    "departures": 10,
+    "shipments": 23,
+    "bookings": 22,
+    "individual scan records": 69,
+    "derived directed lanes": 5
+  },
+  "hubs": [
+    {
+      "code": "RDU",
+      "name": "Raleigh Hub",
+      "region": "Southeast",
+      "id": 1
+    },
+    {
+      "code": "ATL",
+      "name": "Atlanta Hub",
+      "region": "Southeast",
+      "id": 2
+    },
+    {
+      "code": "MIA",
+      "name": "Miami Hub",
+      "region": "Southeast",
+      "id": 3
+    },
+    {
+      "code": "JFK",
+      "name": "New York Hub",
+      "region": "Northeast",
+      "id": 4
+    },
+    {
+      "code": "BOS",
+      "name": "Boston Hub",
+      "region": "Northeast",
+      "id": 5
+    },
+    {
+      "code": "ORD",
+      "name": "Chicago Hub",
+      "region": "Midwest",
+      "id": 6
+    },
+    {
+      "code": "STL",
+      "name": "St. Louis Hub",
+      "region": "Midwest",
+      "id": 7
+    },
+    {
+      "code": "DFW",
+      "name": "Dallas Hub",
+      "region": "Southwest",
+      "id": 8
+    },
+    {
+      "code": "PHX",
+      "name": "Phoenix Hub",
+      "region": "Southwest",
+      "id": 9
+    },
+    {
+      "code": "LAX",
+      "name": "Los Angeles Hub",
+      "region": "West",
+      "id": 10
+    },
+    {
+      "code": "SEA",
+      "name": "Seattle Hub",
+      "region": "West",
+      "id": 11
+    }
+  ],
+  "accounts": [
+    {
+      "code": "C1",
+      "name": "Piedmont Freight Lines",
+      "role": "Carrier",
+      "id": 1
+    },
+    {
+      "code": "C2",
+      "name": "Atlantic Coast Haulers",
+      "role": "Carrier",
+      "id": 2
+    },
+    {
+      "code": "C3",
+      "name": "Plains Rail Co",
+      "role": "Carrier",
+      "id": 3
+    },
+    {
+      "code": "SH1",
+      "name": "Triangle Textiles",
+      "role": "Shipper",
+      "id": 4
+    },
+    {
+      "code": "SH2",
+      "name": "Oak City Electronics",
+      "role": "Shipper",
+      "id": 5
+    },
+    {
+      "code": "SH3",
+      "name": "Carolina Produce Co",
+      "role": "Shipper",
+      "id": 6
+    },
+    {
+      "code": "SH4",
+      "name": "Coastal Furniture",
+      "role": "Shipper",
+      "id": 7
+    },
+    {
+      "code": "VW1",
+      "name": "Fedex",
+      "role": "Viewer",
+      "id": 8
+    }
+  ],
+  "scans": [
+    {
+      "shipment_id": 1,
+      "scan_sequence": 1,
+      "status": "RECEIVED",
+      "hub_id": 1,
+      "scan_timestamp": "2026-03-01 21:00:00"
+    },
+    {
+      "shipment_id": 1,
+      "scan_sequence": 2,
+      "status": "IN_TRANSIT",
+      "hub_id": 1,
+      "scan_timestamp": "2026-03-01 22:05:00"
+    },
+    {
+      "shipment_id": 1,
+      "scan_sequence": 3,
+      "status": "OUT_FOR_DELIVERY",
+      "hub_id": 2,
+      "scan_timestamp": "2026-03-02 12:30:00"
+    },
+    {
+      "shipment_id": 1,
+      "scan_sequence": 4,
+      "status": "DELIVERED",
+      "hub_id": 2,
+      "scan_timestamp": "2026-03-02 14:00:00"
+    },
+    {
+      "shipment_id": 2,
+      "scan_sequence": 1,
+      "status": "RECEIVED",
+      "hub_id": 4,
+      "scan_timestamp": "2026-03-01 15:00:00"
+    },
+    {
+      "shipment_id": 2,
+      "scan_sequence": 2,
+      "status": "IN_TRANSIT",
+      "hub_id": 4,
+      "scan_timestamp": "2026-03-02 09:10:00"
+    },
+    {
+      "shipment_id": 2,
+      "scan_sequence": 3,
+      "status": "OUT_FOR_DELIVERY",
+      "hub_id": 5,
+      "scan_timestamp": "2026-03-03 08:00:00"
+    },
+    {
+      "shipment_id": 2,
+      "scan_sequence": 4,
+      "status": "DELIVERED",
+      "hub_id": 5,
+      "scan_timestamp": "2026-03-03 11:30:00"
+    },
+    {
+      "shipment_id": 3,
+      "scan_sequence": 1,
+      "status": "RECEIVED",
+      "hub_id": 1,
+      "scan_timestamp": "2026-03-01 19:15:00"
+    },
+    {
+      "shipment_id": 3,
+      "scan_sequence": 2,
+      "status": "IN_TRANSIT",
+      "hub_id": 1,
+      "scan_timestamp": "2026-03-01 22:05:00"
+    },
+    {
+      "shipment_id": 3,
+      "scan_sequence": 3,
+      "status": "OUT_FOR_DELIVERY",
+      "hub_id": 2,
+      "scan_timestamp": "2026-03-02 18:00:00"
+    },
+    {
+      "shipment_id": 3,
+      "scan_sequence": 4,
+      "status": "DELIVERED",
+      "hub_id": 2,
+      "scan_timestamp": "2026-03-02 20:45:00"
+    },
+    {
+      "shipment_id": 4,
+      "scan_sequence": 1,
+      "status": "RECEIVED",
+      "hub_id": 4,
+      "scan_timestamp": "2026-03-01 16:00:00"
+    },
+    {
+      "shipment_id": 4,
+      "scan_sequence": 2,
+      "status": "IN_TRANSIT",
+      "hub_id": 4,
+      "scan_timestamp": "2026-03-02 09:10:00"
+    },
+    {
+      "shipment_id": 5,
+      "scan_sequence": 1,
+      "status": "RECEIVED",
+      "hub_id": 2,
+      "scan_timestamp": "2026-03-03 15:00:00"
+    },
+    {
+      "shipment_id": 5,
+      "scan_sequence": 2,
+      "status": "IN_TRANSIT",
+      "hub_id": 2,
+      "scan_timestamp": "2026-03-04 06:10:00"
+    },
+    {
+      "shipment_id": 5,
+      "scan_sequence": 3,
+      "status": "OUT_FOR_DELIVERY",
+      "hub_id": 3,
+      "scan_timestamp": "2026-03-06 08:00:00"
+    },
+    {
+      "shipment_id": 5,
+      "scan_sequence": 4,
+      "status": "DELIVERED",
+      "hub_id": 3,
+      "scan_timestamp": "2026-03-06 12:15:00"
+    },
+    {
+      "shipment_id": 6,
+      "scan_sequence": 1,
+      "status": "RECEIVED",
+      "hub_id": 2,
+      "scan_timestamp": "2026-03-03 16:30:00"
+    },
+    {
+      "shipment_id": 6,
+      "scan_sequence": 2,
+      "status": "IN_TRANSIT",
+      "hub_id": 2,
+      "scan_timestamp": "2026-03-04 06:10:00"
+    },
+    {
+      "shipment_id": 6,
+      "scan_sequence": 3,
+      "status": "OUT_FOR_DELIVERY",
+      "hub_id": 3,
+      "scan_timestamp": "2026-03-07 09:00:00"
+    },
+    {
+      "shipment_id": 6,
+      "scan_sequence": 4,
+      "status": "DELIVERED",
+      "hub_id": 3,
+      "scan_timestamp": "2026-03-07 16:20:00"
+    },
+    {
+      "shipment_id": 7,
+      "scan_sequence": 1,
+      "status": "RECEIVED",
+      "hub_id": 6,
+      "scan_timestamp": "2026-03-02 11:00:00"
+    },
+    {
+      "shipment_id": 7,
+      "scan_sequence": 2,
+      "status": "IN_TRANSIT",
+      "hub_id": 6,
+      "scan_timestamp": "2026-03-02 20:15:00"
+    },
+    {
+      "shipment_id": 7,
+      "scan_sequence": 3,
+      "status": "OUT_FOR_DELIVERY",
+      "hub_id": 8,
+      "scan_timestamp": "2026-03-04 07:30:00"
+    },
+    {
+      "shipment_id": 7,
+      "scan_sequence": 4,
+      "status": "DELIVERED",
+      "hub_id": 8,
+      "scan_timestamp": "2026-03-04 11:00:00"
+    },
+    {
+      "shipment_id": 8,
+      "scan_sequence": 1,
+      "status": "RECEIVED",
+      "hub_id": 6,
+      "scan_timestamp": "2026-03-02 12:30:00"
+    },
+    {
+      "shipment_id": 8,
+      "scan_sequence": 2,
+      "status": "IN_TRANSIT",
+      "hub_id": 6,
+      "scan_timestamp": "2026-03-02 20:15:00"
+    },
+    {
+      "shipment_id": 8,
+      "scan_sequence": 3,
+      "status": "OUT_FOR_DELIVERY",
+      "hub_id": 8,
+      "scan_timestamp": "2026-03-05 07:00:00"
+    },
+    {
+      "shipment_id": 8,
+      "scan_sequence": 4,
+      "status": "DELIVERED",
+      "hub_id": 8,
+      "scan_timestamp": "2026-03-05 09:45:00"
+    },
+    {
+      "shipment_id": 9,
+      "scan_sequence": 1,
+      "status": "RECEIVED",
+      "hub_id": 1,
+      "scan_timestamp": "2026-03-01 18:40:00"
+    },
+    {
+      "shipment_id": 9,
+      "scan_sequence": 2,
+      "status": "IN_TRANSIT",
+      "hub_id": 1,
+      "scan_timestamp": "2026-03-01 22:05:00"
+    },
+    {
+      "shipment_id": 9,
+      "scan_sequence": 3,
+      "status": "OUT_FOR_DELIVERY",
+      "hub_id": 2,
+      "scan_timestamp": "2026-03-03 09:00:00"
+    },
+    {
+      "shipment_id": 9,
+      "scan_sequence": 4,
+      "status": "DELIVERED",
+      "hub_id": 2,
+      "scan_timestamp": "2026-03-03 12:00:00"
+    },
+    {
+      "shipment_id": 10,
+      "scan_sequence": 1,
+      "status": "RECEIVED",
+      "hub_id": 1,
+      "scan_timestamp": "2026-03-07 15:00:00"
+    },
+    {
+      "shipment_id": 10,
+      "scan_sequence": 2,
+      "status": "IN_TRANSIT",
+      "hub_id": 1,
+      "scan_timestamp": "2026-03-07 22:10:00"
+    },
+    {
+      "shipment_id": 10,
+      "scan_sequence": 3,
+      "status": "OUT_FOR_DELIVERY",
+      "hub_id": 2,
+      "scan_timestamp": "2026-03-10 08:00:00"
+    },
+    {
+      "shipment_id": 10,
+      "scan_sequence": 4,
+      "status": "DELIVERED",
+      "hub_id": 2,
+      "scan_timestamp": "2026-03-10 10:30:00"
+    },
+    {
+      "shipment_id": 11,
+      "scan_sequence": 1,
+      "status": "RECEIVED",
+      "hub_id": 8,
+      "scan_timestamp": "2026-03-02 19:00:00"
+    },
+    {
+      "shipment_id": 11,
+      "scan_sequence": 2,
+      "status": "IN_TRANSIT",
+      "hub_id": 8,
+      "scan_timestamp": "2026-03-03 08:30:00"
+    },
+    {
+      "shipment_id": 11,
+      "scan_sequence": 3,
+      "status": "OUT_FOR_DELIVERY",
+      "hub_id": 10,
+      "scan_timestamp": "2026-03-07 06:00:00"
+    },
+    {
+      "shipment_id": 11,
+      "scan_sequence": 4,
+      "status": "DELIVERED",
+      "hub_id": 10,
+      "scan_timestamp": "2026-03-07 08:30:00"
+    },
+    {
+      "shipment_id": 12,
+      "scan_sequence": 1,
+      "status": "RECEIVED",
+      "hub_id": 1,
+      "scan_timestamp": "2026-10-28 16:00:00"
+    },
+    {
+      "shipment_id": 13,
+      "scan_sequence": 1,
+      "status": "RECEIVED",
+      "hub_id": 1,
+      "scan_timestamp": "2026-10-28 16:30:00"
+    },
+    {
+      "shipment_id": 15,
+      "scan_sequence": 1,
+      "status": "RECEIVED",
+      "hub_id": 1,
+      "scan_timestamp": "2026-10-29 16:00:00"
+    },
+    {
+      "shipment_id": 16,
+      "scan_sequence": 1,
+      "status": "RECEIVED",
+      "hub_id": 1,
+      "scan_timestamp": "2026-10-29 17:00:00"
+    },
+    {
+      "shipment_id": 16,
+      "scan_sequence": 2,
+      "status": "IN_TRANSIT",
+      "hub_id": 1,
+      "scan_timestamp": "2026-10-30 09:10:00"
+    },
+    {
+      "shipment_id": 17,
+      "scan_sequence": 1,
+      "status": "RECEIVED",
+      "hub_id": 1,
+      "scan_timestamp": "2026-10-29 17:15:00"
+    },
+    {
+      "shipment_id": 17,
+      "scan_sequence": 2,
+      "status": "IN_TRANSIT",
+      "hub_id": 1,
+      "scan_timestamp": "2026-10-30 09:10:00"
+    },
+    {
+      "shipment_id": 18,
+      "scan_sequence": 1,
+      "status": "RECEIVED",
+      "hub_id": 1,
+      "scan_timestamp": "2026-10-29 17:30:00"
+    },
+    {
+      "shipment_id": 18,
+      "scan_sequence": 2,
+      "status": "IN_TRANSIT",
+      "hub_id": 1,
+      "scan_timestamp": "2026-10-30 09:10:00"
+    },
+    {
+      "shipment_id": 19,
+      "scan_sequence": 1,
+      "status": "RECEIVED",
+      "hub_id": 1,
+      "scan_timestamp": "2026-10-29 17:45:00"
+    },
+    {
+      "shipment_id": 19,
+      "scan_sequence": 2,
+      "status": "IN_TRANSIT",
+      "hub_id": 1,
+      "scan_timestamp": "2026-10-30 09:10:00"
+    },
+    {
+      "shipment_id": 20,
+      "scan_sequence": 1,
+      "status": "RECEIVED",
+      "hub_id": 1,
+      "scan_timestamp": "2026-01-09 16:00:00"
+    },
+    {
+      "shipment_id": 20,
+      "scan_sequence": 2,
+      "status": "IN_TRANSIT",
+      "hub_id": 1,
+      "scan_timestamp": "2026-01-10 09:10:00"
+    },
+    {
+      "shipment_id": 20,
+      "scan_sequence": 3,
+      "status": "OUT_FOR_DELIVERY",
+      "hub_id": 2,
+      "scan_timestamp": "2026-01-11 08:00:00"
+    },
+    {
+      "shipment_id": 20,
+      "scan_sequence": 4,
+      "status": "DELIVERED",
+      "hub_id": 2,
+      "scan_timestamp": "2026-01-11 10:00:00"
+    },
+    {
+      "shipment_id": 21,
+      "scan_sequence": 1,
+      "status": "RECEIVED",
+      "hub_id": 1,
+      "scan_timestamp": "2026-01-09 16:30:00"
+    },
+    {
+      "shipment_id": 21,
+      "scan_sequence": 2,
+      "status": "IN_TRANSIT",
+      "hub_id": 1,
+      "scan_timestamp": "2026-01-10 09:10:00"
+    },
+    {
+      "shipment_id": 21,
+      "scan_sequence": 3,
+      "status": "OUT_FOR_DELIVERY",
+      "hub_id": 2,
+      "scan_timestamp": "2026-01-11 08:15:00"
+    },
+    {
+      "shipment_id": 21,
+      "scan_sequence": 4,
+      "status": "DELIVERED",
+      "hub_id": 2,
+      "scan_timestamp": "2026-01-11 11:00:00"
+    },
+    {
+      "shipment_id": 22,
+      "scan_sequence": 1,
+      "status": "RECEIVED",
+      "hub_id": 1,
+      "scan_timestamp": "2026-02-09 16:00:00"
+    },
+    {
+      "shipment_id": 22,
+      "scan_sequence": 2,
+      "status": "IN_TRANSIT",
+      "hub_id": 1,
+      "scan_timestamp": "2026-02-10 09:10:00"
+    },
+    {
+      "shipment_id": 22,
+      "scan_sequence": 3,
+      "status": "OUT_FOR_DELIVERY",
+      "hub_id": 2,
+      "scan_timestamp": "2026-02-11 08:00:00"
+    },
+    {
+      "shipment_id": 22,
+      "scan_sequence": 4,
+      "status": "DELIVERED",
+      "hub_id": 2,
+      "scan_timestamp": "2026-02-11 10:00:00"
+    },
+    {
+      "shipment_id": 23,
+      "scan_sequence": 1,
+      "status": "RECEIVED",
+      "hub_id": 1,
+      "scan_timestamp": "2026-02-09 16:30:00"
+    },
+    {
+      "shipment_id": 23,
+      "scan_sequence": 2,
+      "status": "IN_TRANSIT",
+      "hub_id": 1,
+      "scan_timestamp": "2026-02-10 09:10:00"
+    },
+    {
+      "shipment_id": 23,
+      "scan_sequence": 3,
+      "status": "OUT_FOR_DELIVERY",
+      "hub_id": 2,
+      "scan_timestamp": "2026-02-13 08:00:00"
+    },
+    {
+      "shipment_id": 23,
+      "scan_sequence": 4,
+      "status": "DELIVERED",
+      "hub_id": 2,
+      "scan_timestamp": "2026-02-13 11:00:00"
+    }
+  ]
+}

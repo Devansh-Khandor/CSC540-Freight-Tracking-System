@@ -361,11 +361,12 @@ def test_assigned_shipments_full_owner_chain(monkeypatch):
         assert relation in sql
 
 
-def test_scan_prelock_sequence_insert_and_commit(monkeypatch):
+@pytest.mark.parametrize('status', ['ARRIVED_AT_HUB', 'OUT_FOR_DELIVERY'])
+def test_scan_prelock_sequence_insert_and_commit(monkeypatch, status):
     connections, _ = connect(monkeypatch,scan_prefix()+[hub_step(),
         ('COALESCE(MAX(scan_sequence), 0) + 1',(41,),{'next_sequence':3}),
-        ('INSERT INTO scan_event',(41,3,datetime(2030,2,20,10),'ARRIVED_AT_HUB',1),None)])
-    service.post_scan(7,41,{**SCAN_FORM,'status':'ARRIVED_AT_HUB','scan_sequence':'999','current_status':'DELIVERED'})
+        ('INSERT INTO scan_event',(41,3,datetime(2030,2,20,10),status,1),None)])
+    service.post_scan(7,41,{**SCAN_FORM,'status':status,'scan_sequence':'999','current_status':'DELIVERED'})
     assert_transaction(connections[0])
     statements = [event[0] for event in connections[0].events if isinstance(event,tuple)]
     assert sum(s.startswith('INSERT INTO scan_event') for s in statements) == 1
@@ -621,3 +622,21 @@ def test_form_empty_reference_data(client,page_data,monkeypatch):
     assert b'No hubs are available' in client.get(WRITES[0]).data
     assert b'A vehicle and a directed lane are required' in client.get(WRITES[2]).data
     assert b'No hubs are available for scan posting' in client.get(WRITES[-1]).data
+
+
+@pytest.mark.parametrize('statuses', [
+    ['RECEIVED', 'IN_TRANSIT', 'OUT_FOR_DELIVERY', 'DELIVERED'],
+    ['RECEIVED', 'IN_TRANSIT', 'ARRIVED_AT_HUB', 'OUT_FOR_DELIVERY', 'DELIVERED'],
+])
+def test_four_and_five_stage_history_render(client, page_data, monkeypatch, statuses):
+    history = [dict(scan_sequence=i, scan_timestamp=datetime(2030, 2, 20, i),
+                    status=status, hub_id=1) for i, status in enumerate(statuses, 1)]
+    monkeypatch.setattr(service, 'tracking', lambda owner, sid:
+                        ({**SHIPMENT, 'current_status': 'DELIVERED', 'delivery_outcome': 'ON_TIME'}, history))
+    response = client.get(WRITES[-1])
+    assert response.status_code == 200
+    html = response.get_data(as_text=True)
+    positions = [html.index(f'<td>{status}</td>') for status in statuses]
+    assert positions == sorted(positions)
+    assert html.count('<tr><td>') == len(statuses)
+    assert 'Its scan history is complete.' in html

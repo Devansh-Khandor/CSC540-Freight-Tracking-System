@@ -92,11 +92,11 @@ def validate_combined(connection):
         assert weights[i] == weight, f'Fixture departure {i} load changed'
 
     q3 = queries.get_scan_time_intervals(connection, 1)
-    assert len(q3) == 5
-    assert tuple(r[0] for r in q3) == (1,) * 5
-    assert tuple(r[1] for r in q3) == (1, 2, 3, 4, 5)
-    assert tuple(r[2] for r in q3) == ('RECEIVED', 'IN_TRANSIT', 'ARRIVED_AT_HUB', 'OUT_FOR_DELIVERY', 'DELIVERED')
-    assert tuple(r[5] for r in q3) == (None, 65, 595, 270, 90)
+    assert len(q3) == 4
+    assert tuple(r[0] for r in q3) == (1,) * 4
+    assert tuple(r[1] for r in q3) == (1, 2, 3, 4)
+    assert tuple(r[2] for r in q3) == ('RECEIVED', 'IN_TRANSIT', 'OUT_FOR_DELIVERY', 'DELIVERED')
+    assert tuple(r[5] for r in q3) == (None, 65, 865, 90)
     assert tuple(str(r[3]) for r in q3) == tuple(
         r['scan_timestamp'] for r in expected['scan_event'] if r['shipment_id'] == 1)
     assert q3[0][4] is None

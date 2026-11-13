@@ -109,10 +109,40 @@ class OfflineTests(unittest.TestCase):
         # fixture totals still hold but global running totals must increase.
         self.validate()
 
-    def test_missing_fifth_scan_fails(self):
+    def test_missing_original_scan_fails(self):
         self.raw.db.execute('DELETE FROM scan_event WHERE shipment_id=1 AND scan_sequence=3')
         with self.assertRaises(AssertionError):
             self.validate()
+
+    def test_original_scan_record_contract(self):
+        # Provisional reference: original non-arrival records reviewed in the
+        # repository. This digest is NOT a claim of comparison with the PDF.
+        import hashlib
+        import json
+        from collections import Counter
+        scans = fixture()['scan_event']
+        self.assertEqual(len(scans), 69)
+        self.assertEqual(Counter(r['status'] for r in scans),
+                         {'RECEIVED': 22, 'IN_TRANSIT': 19,
+                          'OUT_FOR_DELIVERY': 14, 'DELIVERED': 14})
+        digest = hashlib.sha256(json.dumps(scans, sort_keys=True,
+                                separators=(',', ':')).encode()).hexdigest()
+        self.assertEqual(digest, '6934d25fdc3e6e9dfeb920017e21385e34098ea44ebc8099cf9420021e74e845')
+        last = {}
+        for scan in scans:
+            previous = last.get(scan['shipment_id'])
+            self.assertEqual(scan['scan_sequence'], previous['scan_sequence'] + 1 if previous else 1)
+            last[scan['shipment_id']] = scan
+        self.assertEqual(Counter(r['status'] for r in last.values()),
+                         {'DELIVERED': 14, 'IN_TRANSIT': 5, 'RECEIVED': 3})
+        self.assertEqual({r['shipment_id'] for r in fixture()['shipment']} - last.keys(), {14})
+
+    def test_shipment_one_original_timestamps_and_intervals(self):
+        rows = queries.get_scan_time_intervals(self.connection, 1)
+        self.assertEqual([str(r[3]) for r in rows],
+                         ['2026-03-01 21:00:00', '2026-03-01 22:05:00',
+                          '2026-03-02 12:30:00', '2026-03-02 14:00:00'])
+        self.assertEqual([r[5] for r in rows], [None, 65, 865, 90])
 
     def test_protected_membership_change_fails(self):
         self.raw.db.execute('DELETE FROM viewer WHERE account_id=540003')
@@ -160,7 +190,7 @@ class OfflineTests(unittest.TestCase):
     def test_manifest_and_statement_boundaries(self):
         verify_manifest()
         result = manifest()
-        self.assertEqual(len(result['tables']['scan_event']['keys']), 83)
+        self.assertEqual(len(result['tables']['scan_event']['keys']), 69)
         self.assertEqual(len(result['tables']['booking']['keys']), 22)
         self.assertEqual(sum(s.startswith('CALL ') for s in statements()), 22)
         self.assertEqual(sum(s == 'COMMIT' for s in statements()), 23)

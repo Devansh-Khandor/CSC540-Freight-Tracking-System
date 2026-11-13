@@ -271,9 +271,8 @@ START TRANSACTION;
 SELECT shipment_id FROM shipment WHERE shipment_id = 1 FOR UPDATE;
 INSERT INTO scan_event (shipment_id, scan_sequence, scan_timestamp, status, hub_id) VALUES (1, 1, '2026-03-01 21:00:00', 'RECEIVED', 1);
 INSERT INTO scan_event (shipment_id, scan_sequence, scan_timestamp, status, hub_id) VALUES (1, 2, '2026-03-01 22:05:00', 'IN_TRANSIT', 1);
-INSERT INTO scan_event (shipment_id, scan_sequence, scan_timestamp, status, hub_id) VALUES (1, 3, '2026-03-02 08:00:00', 'ARRIVED_AT_HUB', 2);
-INSERT INTO scan_event (shipment_id, scan_sequence, scan_timestamp, status, hub_id) VALUES (1, 4, '2026-03-02 12:30:00', 'OUT_FOR_DELIVERY', 2);
-INSERT INTO scan_event (shipment_id, scan_sequence, scan_timestamp, status, hub_id) VALUES (1, 5, '2026-03-02 14:00:00', 'DELIVERED', 2);
+INSERT INTO scan_event (shipment_id, scan_sequence, scan_timestamp, status, hub_id) VALUES (1, 3, '2026-03-02 12:30:00', 'OUT_FOR_DELIVERY', 2);
+INSERT INTO scan_event (shipment_id, scan_sequence, scan_timestamp, status, hub_id) VALUES (1, 4, '2026-03-02 14:00:00', 'DELIVERED', 2);
 COMMIT;
 
 -- S2: JFK -> BOS
@@ -281,9 +280,8 @@ START TRANSACTION;
 SELECT shipment_id FROM shipment WHERE shipment_id = 2 FOR UPDATE;
 INSERT INTO scan_event (shipment_id, scan_sequence, scan_timestamp, status, hub_id) VALUES (2, 1, '2026-03-01 15:00:00', 'RECEIVED', 4);
 INSERT INTO scan_event (shipment_id, scan_sequence, scan_timestamp, status, hub_id) VALUES (2, 2, '2026-03-02 09:10:00', 'IN_TRANSIT', 4);
-INSERT INTO scan_event (shipment_id, scan_sequence, scan_timestamp, status, hub_id) VALUES (2, 3, '2026-03-03 06:00:00', 'ARRIVED_AT_HUB', 5);
-INSERT INTO scan_event (shipment_id, scan_sequence, scan_timestamp, status, hub_id) VALUES (2, 4, '2026-03-03 08:00:00', 'OUT_FOR_DELIVERY', 5);
-INSERT INTO scan_event (shipment_id, scan_sequence, scan_timestamp, status, hub_id) VALUES (2, 5, '2026-03-03 11:30:00', 'DELIVERED', 5);
+INSERT INTO scan_event (shipment_id, scan_sequence, scan_timestamp, status, hub_id) VALUES (2, 3, '2026-03-03 08:00:00', 'OUT_FOR_DELIVERY', 5);
+INSERT INTO scan_event (shipment_id, scan_sequence, scan_timestamp, status, hub_id) VALUES (2, 4, '2026-03-03 11:30:00', 'DELIVERED', 5);
 COMMIT;
 
 -- S3: RDU -> ATL
@@ -291,9 +289,8 @@ START TRANSACTION;
 SELECT shipment_id FROM shipment WHERE shipment_id = 3 FOR UPDATE;
 INSERT INTO scan_event (shipment_id, scan_sequence, scan_timestamp, status, hub_id) VALUES (3, 1, '2026-03-01 19:15:00', 'RECEIVED', 1);
 INSERT INTO scan_event (shipment_id, scan_sequence, scan_timestamp, status, hub_id) VALUES (3, 2, '2026-03-01 22:05:00', 'IN_TRANSIT', 1);
-INSERT INTO scan_event (shipment_id, scan_sequence, scan_timestamp, status, hub_id) VALUES (3, 3, '2026-03-02 15:00:00', 'ARRIVED_AT_HUB', 2);
-INSERT INTO scan_event (shipment_id, scan_sequence, scan_timestamp, status, hub_id) VALUES (3, 4, '2026-03-02 18:00:00', 'OUT_FOR_DELIVERY', 2);
-INSERT INTO scan_event (shipment_id, scan_sequence, scan_timestamp, status, hub_id) VALUES (3, 5, '2026-03-02 20:45:00', 'DELIVERED', 2);
+INSERT INTO scan_event (shipment_id, scan_sequence, scan_timestamp, status, hub_id) VALUES (3, 3, '2026-03-02 18:00:00', 'OUT_FOR_DELIVERY', 2);
+INSERT INTO scan_event (shipment_id, scan_sequence, scan_timestamp, status, hub_id) VALUES (3, 4, '2026-03-02 20:45:00', 'DELIVERED', 2);
 COMMIT;
 
 -- S4: JFK -> BOS (incomplete journey)
@@ -308,9 +305,8 @@ START TRANSACTION;
 SELECT shipment_id FROM shipment WHERE shipment_id = 5 FOR UPDATE;
 INSERT INTO scan_event (shipment_id, scan_sequence, scan_timestamp, status, hub_id) VALUES (5, 1, '2026-03-03 15:00:00', 'RECEIVED', 2);
 INSERT INTO scan_event (shipment_id, scan_sequence, scan_timestamp, status, hub_id) VALUES (5, 2, '2026-03-04 06:10:00', 'IN_TRANSIT', 2);
-INSERT INTO scan_event (shipment_id, scan_sequence, scan_timestamp, status, hub_id) VALUES (5, 3, '2026-03-06 06:00:00', 'ARRIVED_AT_HUB', 3);
-INSERT INTO scan_event (shipment_id, scan_sequence, scan_timestamp, status, hub_id) VALUES (5, 4, '2026-03-06 08:00:00', 'OUT_FOR_DELIVERY', 3);
-INSERT INTO scan_event (shipment_id, scan_sequence, scan_timestamp, status, hub_id) VALUES (5, 5, '2026-03-06 12:15:00', 'DELIVERED', 3);
+INSERT INTO scan_event (shipment_id, scan_sequence, scan_timestamp, status, hub_id) VALUES (5, 3, '2026-03-06 08:00:00', 'OUT_FOR_DELIVERY', 3);
+INSERT INTO scan_event (shipment_id, scan_sequence, scan_timestamp, status, hub_id) VALUES (5, 4, '2026-03-06 12:15:00', 'DELIVERED', 3);
 COMMIT;
 
 -- S6: ATL -> MIA
@@ -318,9 +314,8 @@ START TRANSACTION;
 SELECT shipment_id FROM shipment WHERE shipment_id = 6 FOR UPDATE;
 INSERT INTO scan_event (shipment_id, scan_sequence, scan_timestamp, status, hub_id) VALUES (6, 1, '2026-03-03 16:30:00', 'RECEIVED', 2);
 INSERT INTO scan_event (shipment_id, scan_sequence, scan_timestamp, status, hub_id) VALUES (6, 2, '2026-03-04 06:10:00', 'IN_TRANSIT', 2);
-INSERT INTO scan_event (shipment_id, scan_sequence, scan_timestamp, status, hub_id) VALUES (6, 3, '2026-03-07 06:00:00', 'ARRIVED_AT_HUB', 3);
-INSERT INTO scan_event (shipment_id, scan_sequence, scan_timestamp, status, hub_id) VALUES (6, 4, '2026-03-07 09:00:00', 'OUT_FOR_DELIVERY', 3);
-INSERT INTO scan_event (shipment_id, scan_sequence, scan_timestamp, status, hub_id) VALUES (6, 5, '2026-03-07 16:20:00', 'DELIVERED', 3);
+INSERT INTO scan_event (shipment_id, scan_sequence, scan_timestamp, status, hub_id) VALUES (6, 3, '2026-03-07 09:00:00', 'OUT_FOR_DELIVERY', 3);
+INSERT INTO scan_event (shipment_id, scan_sequence, scan_timestamp, status, hub_id) VALUES (6, 4, '2026-03-07 16:20:00', 'DELIVERED', 3);
 COMMIT;
 
 -- S7: ORD -> DFW
@@ -328,9 +323,8 @@ START TRANSACTION;
 SELECT shipment_id FROM shipment WHERE shipment_id = 7 FOR UPDATE;
 INSERT INTO scan_event (shipment_id, scan_sequence, scan_timestamp, status, hub_id) VALUES (7, 1, '2026-03-02 11:00:00', 'RECEIVED', 6);
 INSERT INTO scan_event (shipment_id, scan_sequence, scan_timestamp, status, hub_id) VALUES (7, 2, '2026-03-02 20:15:00', 'IN_TRANSIT', 6);
-INSERT INTO scan_event (shipment_id, scan_sequence, scan_timestamp, status, hub_id) VALUES (7, 3, '2026-03-04 06:00:00', 'ARRIVED_AT_HUB', 8);
-INSERT INTO scan_event (shipment_id, scan_sequence, scan_timestamp, status, hub_id) VALUES (7, 4, '2026-03-04 07:30:00', 'OUT_FOR_DELIVERY', 8);
-INSERT INTO scan_event (shipment_id, scan_sequence, scan_timestamp, status, hub_id) VALUES (7, 5, '2026-03-04 11:00:00', 'DELIVERED', 8);
+INSERT INTO scan_event (shipment_id, scan_sequence, scan_timestamp, status, hub_id) VALUES (7, 3, '2026-03-04 07:30:00', 'OUT_FOR_DELIVERY', 8);
+INSERT INTO scan_event (shipment_id, scan_sequence, scan_timestamp, status, hub_id) VALUES (7, 4, '2026-03-04 11:00:00', 'DELIVERED', 8);
 COMMIT;
 
 -- S8: ORD -> DFW
@@ -338,9 +332,8 @@ START TRANSACTION;
 SELECT shipment_id FROM shipment WHERE shipment_id = 8 FOR UPDATE;
 INSERT INTO scan_event (shipment_id, scan_sequence, scan_timestamp, status, hub_id) VALUES (8, 1, '2026-03-02 12:30:00', 'RECEIVED', 6);
 INSERT INTO scan_event (shipment_id, scan_sequence, scan_timestamp, status, hub_id) VALUES (8, 2, '2026-03-02 20:15:00', 'IN_TRANSIT', 6);
-INSERT INTO scan_event (shipment_id, scan_sequence, scan_timestamp, status, hub_id) VALUES (8, 3, '2026-03-05 06:00:00', 'ARRIVED_AT_HUB', 8);
-INSERT INTO scan_event (shipment_id, scan_sequence, scan_timestamp, status, hub_id) VALUES (8, 4, '2026-03-05 07:00:00', 'OUT_FOR_DELIVERY', 8);
-INSERT INTO scan_event (shipment_id, scan_sequence, scan_timestamp, status, hub_id) VALUES (8, 5, '2026-03-05 09:45:00', 'DELIVERED', 8);
+INSERT INTO scan_event (shipment_id, scan_sequence, scan_timestamp, status, hub_id) VALUES (8, 3, '2026-03-05 07:00:00', 'OUT_FOR_DELIVERY', 8);
+INSERT INTO scan_event (shipment_id, scan_sequence, scan_timestamp, status, hub_id) VALUES (8, 4, '2026-03-05 09:45:00', 'DELIVERED', 8);
 COMMIT;
 
 -- S9: RDU -> ATL
@@ -348,9 +341,8 @@ START TRANSACTION;
 SELECT shipment_id FROM shipment WHERE shipment_id = 9 FOR UPDATE;
 INSERT INTO scan_event (shipment_id, scan_sequence, scan_timestamp, status, hub_id) VALUES (9, 1, '2026-03-01 18:40:00', 'RECEIVED', 1);
 INSERT INTO scan_event (shipment_id, scan_sequence, scan_timestamp, status, hub_id) VALUES (9, 2, '2026-03-01 22:05:00', 'IN_TRANSIT', 1);
-INSERT INTO scan_event (shipment_id, scan_sequence, scan_timestamp, status, hub_id) VALUES (9, 3, '2026-03-03 06:00:00', 'ARRIVED_AT_HUB', 2);
-INSERT INTO scan_event (shipment_id, scan_sequence, scan_timestamp, status, hub_id) VALUES (9, 4, '2026-03-03 09:00:00', 'OUT_FOR_DELIVERY', 2);
-INSERT INTO scan_event (shipment_id, scan_sequence, scan_timestamp, status, hub_id) VALUES (9, 5, '2026-03-03 12:00:00', 'DELIVERED', 2);
+INSERT INTO scan_event (shipment_id, scan_sequence, scan_timestamp, status, hub_id) VALUES (9, 3, '2026-03-03 09:00:00', 'OUT_FOR_DELIVERY', 2);
+INSERT INTO scan_event (shipment_id, scan_sequence, scan_timestamp, status, hub_id) VALUES (9, 4, '2026-03-03 12:00:00', 'DELIVERED', 2);
 COMMIT;
 
 -- S10: RDU -> ATL
@@ -358,9 +350,8 @@ START TRANSACTION;
 SELECT shipment_id FROM shipment WHERE shipment_id = 10 FOR UPDATE;
 INSERT INTO scan_event (shipment_id, scan_sequence, scan_timestamp, status, hub_id) VALUES (10, 1, '2026-03-07 15:00:00', 'RECEIVED', 1);
 INSERT INTO scan_event (shipment_id, scan_sequence, scan_timestamp, status, hub_id) VALUES (10, 2, '2026-03-07 22:10:00', 'IN_TRANSIT', 1);
-INSERT INTO scan_event (shipment_id, scan_sequence, scan_timestamp, status, hub_id) VALUES (10, 3, '2026-03-10 06:00:00', 'ARRIVED_AT_HUB', 2);
-INSERT INTO scan_event (shipment_id, scan_sequence, scan_timestamp, status, hub_id) VALUES (10, 4, '2026-03-10 08:00:00', 'OUT_FOR_DELIVERY', 2);
-INSERT INTO scan_event (shipment_id, scan_sequence, scan_timestamp, status, hub_id) VALUES (10, 5, '2026-03-10 10:30:00', 'DELIVERED', 2);
+INSERT INTO scan_event (shipment_id, scan_sequence, scan_timestamp, status, hub_id) VALUES (10, 3, '2026-03-10 08:00:00', 'OUT_FOR_DELIVERY', 2);
+INSERT INTO scan_event (shipment_id, scan_sequence, scan_timestamp, status, hub_id) VALUES (10, 4, '2026-03-10 10:30:00', 'DELIVERED', 2);
 COMMIT;
 
 -- S11: DFW -> LAX
@@ -368,9 +359,8 @@ START TRANSACTION;
 SELECT shipment_id FROM shipment WHERE shipment_id = 11 FOR UPDATE;
 INSERT INTO scan_event (shipment_id, scan_sequence, scan_timestamp, status, hub_id) VALUES (11, 1, '2026-03-02 19:00:00', 'RECEIVED', 8);
 INSERT INTO scan_event (shipment_id, scan_sequence, scan_timestamp, status, hub_id) VALUES (11, 2, '2026-03-03 08:30:00', 'IN_TRANSIT', 8);
-INSERT INTO scan_event (shipment_id, scan_sequence, scan_timestamp, status, hub_id) VALUES (11, 3, '2026-03-07 05:00:00', 'ARRIVED_AT_HUB', 10);
-INSERT INTO scan_event (shipment_id, scan_sequence, scan_timestamp, status, hub_id) VALUES (11, 4, '2026-03-07 06:00:00', 'OUT_FOR_DELIVERY', 10);
-INSERT INTO scan_event (shipment_id, scan_sequence, scan_timestamp, status, hub_id) VALUES (11, 5, '2026-03-07 08:30:00', 'DELIVERED', 10);
+INSERT INTO scan_event (shipment_id, scan_sequence, scan_timestamp, status, hub_id) VALUES (11, 3, '2026-03-07 06:00:00', 'OUT_FOR_DELIVERY', 10);
+INSERT INTO scan_event (shipment_id, scan_sequence, scan_timestamp, status, hub_id) VALUES (11, 4, '2026-03-07 08:30:00', 'DELIVERED', 10);
 COMMIT;
 
 -- S12: received only
@@ -426,9 +416,8 @@ START TRANSACTION;
 SELECT shipment_id FROM shipment WHERE shipment_id = 20 FOR UPDATE;
 INSERT INTO scan_event (shipment_id, scan_sequence, scan_timestamp, status, hub_id) VALUES (20, 1, '2026-01-09 16:00:00', 'RECEIVED', 1);
 INSERT INTO scan_event (shipment_id, scan_sequence, scan_timestamp, status, hub_id) VALUES (20, 2, '2026-01-10 09:10:00', 'IN_TRANSIT', 1);
-INSERT INTO scan_event (shipment_id, scan_sequence, scan_timestamp, status, hub_id) VALUES (20, 3, '2026-01-11 06:00:00', 'ARRIVED_AT_HUB', 2);
-INSERT INTO scan_event (shipment_id, scan_sequence, scan_timestamp, status, hub_id) VALUES (20, 4, '2026-01-11 08:00:00', 'OUT_FOR_DELIVERY', 2);
-INSERT INTO scan_event (shipment_id, scan_sequence, scan_timestamp, status, hub_id) VALUES (20, 5, '2026-01-11 10:00:00', 'DELIVERED', 2);
+INSERT INTO scan_event (shipment_id, scan_sequence, scan_timestamp, status, hub_id) VALUES (20, 3, '2026-01-11 08:00:00', 'OUT_FOR_DELIVERY', 2);
+INSERT INTO scan_event (shipment_id, scan_sequence, scan_timestamp, status, hub_id) VALUES (20, 4, '2026-01-11 10:00:00', 'DELIVERED', 2);
 COMMIT;
 
 -- S21: RDU -> ATL
@@ -436,9 +425,8 @@ START TRANSACTION;
 SELECT shipment_id FROM shipment WHERE shipment_id = 21 FOR UPDATE;
 INSERT INTO scan_event (shipment_id, scan_sequence, scan_timestamp, status, hub_id) VALUES (21, 1, '2026-01-09 16:30:00', 'RECEIVED', 1);
 INSERT INTO scan_event (shipment_id, scan_sequence, scan_timestamp, status, hub_id) VALUES (21, 2, '2026-01-10 09:10:00', 'IN_TRANSIT', 1);
-INSERT INTO scan_event (shipment_id, scan_sequence, scan_timestamp, status, hub_id) VALUES (21, 3, '2026-01-11 06:00:00', 'ARRIVED_AT_HUB', 2);
-INSERT INTO scan_event (shipment_id, scan_sequence, scan_timestamp, status, hub_id) VALUES (21, 4, '2026-01-11 08:15:00', 'OUT_FOR_DELIVERY', 2);
-INSERT INTO scan_event (shipment_id, scan_sequence, scan_timestamp, status, hub_id) VALUES (21, 5, '2026-01-11 11:00:00', 'DELIVERED', 2);
+INSERT INTO scan_event (shipment_id, scan_sequence, scan_timestamp, status, hub_id) VALUES (21, 3, '2026-01-11 08:15:00', 'OUT_FOR_DELIVERY', 2);
+INSERT INTO scan_event (shipment_id, scan_sequence, scan_timestamp, status, hub_id) VALUES (21, 4, '2026-01-11 11:00:00', 'DELIVERED', 2);
 COMMIT;
 
 -- S22: RDU -> ATL
@@ -446,9 +434,8 @@ START TRANSACTION;
 SELECT shipment_id FROM shipment WHERE shipment_id = 22 FOR UPDATE;
 INSERT INTO scan_event (shipment_id, scan_sequence, scan_timestamp, status, hub_id) VALUES (22, 1, '2026-02-09 16:00:00', 'RECEIVED', 1);
 INSERT INTO scan_event (shipment_id, scan_sequence, scan_timestamp, status, hub_id) VALUES (22, 2, '2026-02-10 09:10:00', 'IN_TRANSIT', 1);
-INSERT INTO scan_event (shipment_id, scan_sequence, scan_timestamp, status, hub_id) VALUES (22, 3, '2026-02-11 06:00:00', 'ARRIVED_AT_HUB', 2);
-INSERT INTO scan_event (shipment_id, scan_sequence, scan_timestamp, status, hub_id) VALUES (22, 4, '2026-02-11 08:00:00', 'OUT_FOR_DELIVERY', 2);
-INSERT INTO scan_event (shipment_id, scan_sequence, scan_timestamp, status, hub_id) VALUES (22, 5, '2026-02-11 10:00:00', 'DELIVERED', 2);
+INSERT INTO scan_event (shipment_id, scan_sequence, scan_timestamp, status, hub_id) VALUES (22, 3, '2026-02-11 08:00:00', 'OUT_FOR_DELIVERY', 2);
+INSERT INTO scan_event (shipment_id, scan_sequence, scan_timestamp, status, hub_id) VALUES (22, 4, '2026-02-11 10:00:00', 'DELIVERED', 2);
 COMMIT;
 
 -- S23: RDU -> ATL
@@ -456,7 +443,6 @@ START TRANSACTION;
 SELECT shipment_id FROM shipment WHERE shipment_id = 23 FOR UPDATE;
 INSERT INTO scan_event (shipment_id, scan_sequence, scan_timestamp, status, hub_id) VALUES (23, 1, '2026-02-09 16:30:00', 'RECEIVED', 1);
 INSERT INTO scan_event (shipment_id, scan_sequence, scan_timestamp, status, hub_id) VALUES (23, 2, '2026-02-10 09:10:00', 'IN_TRANSIT', 1);
-INSERT INTO scan_event (shipment_id, scan_sequence, scan_timestamp, status, hub_id) VALUES (23, 3, '2026-02-13 06:00:00', 'ARRIVED_AT_HUB', 2);
-INSERT INTO scan_event (shipment_id, scan_sequence, scan_timestamp, status, hub_id) VALUES (23, 4, '2026-02-13 08:00:00', 'OUT_FOR_DELIVERY', 2);
-INSERT INTO scan_event (shipment_id, scan_sequence, scan_timestamp, status, hub_id) VALUES (23, 5, '2026-02-13 11:00:00', 'DELIVERED', 2);
+INSERT INTO scan_event (shipment_id, scan_sequence, scan_timestamp, status, hub_id) VALUES (23, 3, '2026-02-13 08:00:00', 'OUT_FOR_DELIVERY', 2);
+INSERT INTO scan_event (shipment_id, scan_sequence, scan_timestamp, status, hub_id) VALUES (23, 4, '2026-02-13 11:00:00', 'DELIVERED', 2);
 COMMIT;

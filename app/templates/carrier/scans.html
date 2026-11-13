@@ -11,7 +11,7 @@
 {% elif hubs %}
 <h2>Post a scan</h2>
 <p>Scans must follow the latest timestamp and status order. Equal timestamps are allowed. History cannot be edited or deleted.</p>
-<details><summary>Allowed status order</summary><p>RECEIVED → IN_TRANSIT. From IN_TRANSIT, stay IN_TRANSIT or move to ARRIVED_AT_HUB. From ARRIVED_AT_HUB, stay there, return to IN_TRANSIT, or move to OUT_FOR_DELIVERY. From OUT_FOR_DELIVERY, stay there or move to DELIVERED. No further scans follow delivery.</p></details>
+<details><summary>Allowed status order</summary><p>RECEIVED → IN_TRANSIT. From IN_TRANSIT, stay IN_TRANSIT or move to ARRIVED_AT_HUB or OUT_FOR_DELIVERY. From ARRIVED_AT_HUB, stay there, return to IN_TRANSIT, or move to OUT_FOR_DELIVERY. From OUT_FOR_DELIVERY, stay there or move to DELIVERED. No further scans follow delivery.</p></details>
 <form method="post" class="login-form">
 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
 <label for="scan_timestamp">Scan date and time (ET)</label><input type="datetime-local" id="scan_timestamp" name="scan_timestamp" value="{{ values.get('scan_timestamp', '') }}" min="1000-01-01T00:00" max="9999-12-31T23:59:59" step="1" required>

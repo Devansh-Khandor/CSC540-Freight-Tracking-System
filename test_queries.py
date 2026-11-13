@@ -14,11 +14,10 @@ from analytics_checks.safety import ReadOnlyConnection
 EXPECTED_STATUSES_SHIPMENT_1 = (
     "RECEIVED",
     "IN_TRANSIT",
-    "ARRIVED_AT_HUB",
     "OUT_FOR_DELIVERY",
     "DELIVERED",
 )
-EXPECTED_ELAPSED_MINUTES_SHIPMENT_1 = (None, 65, 595, 270, 90)
+EXPECTED_ELAPSED_MINUTES_SHIPMENT_1 = (None, 65, 865, 90)
 
 
 def _require_test_schema(connection):
@@ -101,9 +100,9 @@ def run_tests():
             )
         print("PASS Q2: 10 departures and utilization rankings verified")
 
-        # Q3: shipment 1 must have the full five-stage canonical scan history.
+        # Q3: shipment 1 must have the original four-stage sample scan history.
         q3 = queries.get_scan_time_intervals(connection, 1)
-        assert len(q3) == 5, f"Expected 5 scans for shipment 1, got {len(q3)}"
+        assert len(q3) == 4, f"Expected 4 scans for shipment 1, got {len(q3)}"
         assert all(row[0] == 1 for row in q3), "Query 3 returned another shipment"
         assert tuple(row[2] for row in q3) == EXPECTED_STATUSES_SHIPMENT_1, (
             f"Unexpected shipment 1 status sequence: {[row[2] for row in q3]}"
@@ -113,8 +112,8 @@ def run_tests():
         )
         assert q3[0][4] is None, "First scan should have no previous timestamp"
         print(
-            "PASS Q3: 5 scans, canonical statuses, and elapsed intervals "
-            "(65, 595, 270, 90 minutes) verified"
+            "PASS Q3: 4 scans, canonical statuses, and elapsed intervals "
+            "(65, 865, 90 minutes) verified"
         )
 
         # Q4: 14 delivered shipments and cumulative totals by carrier.

@@ -1,6 +1,53 @@
 CSC 540 - Freight Tracking and Delivery Management
 NC State University
 
+SAMPLE-DATA SOURCE CORRECTION (2026-11-13)
+
+The source seed now contains 69 scans: 22 RECEIVED, 19 IN_TRANSIT,
+14 OUT_FOR_DELIVERY and 14 DELIVERED. Fourteen synthetic ARRIVED_AT_HUB
+rows were removed; all remaining timestamps/statuses/hubs are preserved and
+only the affected sequence numbers were compacted. The supplied seven-page professor PDF has now been compared row by row.
+All represented operational values, including all 69 scans, match. Descriptive
+hub/account names are not stored by the current schema; see the full mapping,
+limitations and verification results in docs/sample_data_reconciliation.md.
+The migration plan is docs/university_scan_migration_plan.md.
+
+The BEFORE INSERT trigger now allows IN_TRANSIT -> OUT_FOR_DELIVERY directly.
+ARRIVED_AT_HUB remains supported and optional; both four-stage and five-stage
+histories are valid. All other transition, chronology, sequence and outcome
+rules remain unchanged. Query 3 shipment 1 now returns four rows with elapsed
+minutes NULL,65,865,90. Queries 1,2,4,5,6 retain their meaning and sample results.
+The seed manifest was regenerated for this reviewed source correction; the
+existing guarded loader and its backup/baseline checks were not changed.
+
+IMPORTANT: This is a SOURCE correction, not a migration. The existing university
+and local demonstration dkhando databases were not altered and still contain
+the previously loaded 83-scan fixture (plus local demo records). The university
+has sample accounts 1..8; preserve all existing initialized password hashes. It
+passed the previous 83-scan analytics checks, not the corrected fixture checks.
+Do not rerun schema/seed scripts over either populated database. A university
+correction requires a separately reviewed and authorized migration.
+
+Historical setup/load notes below describe earlier stages, including the former
+three protected accounts and now-obsolete combined baseline. They are not
+instructions to reinitialize the current databases. In particular, guarded
+load_seed and combined-mode tests still require their original three-account
+baseline. Old database-test reports describe the former transition rule;
+OUT_FOR_DELIVERY after IN_TRANSIT is now valid.
+
+Corrected-seed verification uses an explicitly disposable local schema only.
+After corrected schema/seed installation in a fresh csc540_scan69_* schema:
+    python -m analytics_checks.verify_isolated_scans --schema csc540_scan69_NAME
+This opt-in utility checks the local endpoint, rejects dkhando, tests real
+triggers, and rolls back temporary scenario records. It is never run by Flask
+startup or offline test discovery. Use test_queries.py in isolated mode only
+with DB_NAME and ANALYTICS_TEST_SCHEMA set to that same disposable schema.
+Offline regression commands (no live writes):
+    python -m pytest web_tests/ -q
+    python -m unittest analytics_checks.test_offline -v
+    python -m pip check
+    git diff --check
+
 Steps 1–5: Flask foundation, authentication, shipper, carrier and viewer workflows
 
 Uses Python 3 (3.10 or newer recommended), PyMySQL, and raw SQL against the
@@ -634,7 +681,7 @@ isolated restore rehearsal are blocking prerequisites, not optional steps.
 7. Review the diff and integration results before any separately authorized
    commit, push or merge. Reopen application writers only after acceptance.
 
-EXPECTED COUNTS IMMEDIATELY AFTER THE AUDITED LOAD
+EXPECTED CORRECTED-SOURCE COUNTS (NOT CURRENT DEPLOYED DATABASE COUNTS)
 
                      isolated seed      combined dkhando
     account                      8                    11
@@ -650,7 +697,7 @@ EXPECTED COUNTS IMMEDIATELY AFTER THE AUDITED LOAD
     departure                   10                    10
     shipment                    23                    23
     booking                     22                    22
-    scan_event                  83                    83
+    scan_event                  69                    69
 
 These global counts describe the audited baseline plus seed, not invariants for
 arbitrary future data. The manifest enumerates every seed-owned key. Combined
@@ -660,8 +707,8 @@ against independently computed current-data expectations.
 Q1: 4 carrier rows for this baseline, including 540002 with zero vehicles.
 Q2: 10 departures; booked kg for D1..D10: 7500,3700,4000,7000,3500,2800,
     2000,4000,2000,2000. D1 is 75%; D7 is exactly full. Ranks include future rows.
-Q3: shipment 1 has RECEIVED, IN_TRANSIT, ARRIVED_AT_HUB, OUT_FOR_DELIVERY,
-    DELIVERED; elapsed minutes NULL,65,595,270,90.
+Q3: corrected-source shipment 1 has RECEIVED, IN_TRANSIT, OUT_FOR_DELIVERY,
+    DELIVERED; elapsed minutes NULL,65,865,90.
 Q4: 14 fixture deliveries; fixture contributions by carrier: 1=18000 kg,
     2=9500 kg, 3=3500 kg. Global cumulative totals include future deliveries.
 Q5: fixture departures 1,2,3 each have two distinct shippers.

@@ -372,7 +372,7 @@ class TestScanProgression:
 
     @pytest.mark.parametrize("prefix, invalid_next", [
         (["RECEIVED"], ["RECEIVED", "ARRIVED_AT_HUB", "OUT_FOR_DELIVERY", "DELIVERED"]),
-        (["RECEIVED", "IN_TRANSIT"], ["RECEIVED", "OUT_FOR_DELIVERY", "DELIVERED"]),
+        (["RECEIVED", "IN_TRANSIT"], ["RECEIVED", "DELIVERED"]),
         (["RECEIVED", "IN_TRANSIT", "ARRIVED_AT_HUB"], ["RECEIVED", "DELIVERED"]),
         (TO_OUT_FOR_DELIVERY, ["RECEIVED", "IN_TRANSIT", "ARRIVED_AT_HUB"]),
     ], ids=["from_RECEIVED", "from_IN_TRANSIT", "from_ARRIVED_AT_HUB", "from_OUT_FOR_DELIVERY"])

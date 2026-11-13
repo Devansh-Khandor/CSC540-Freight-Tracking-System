@@ -61,12 +61,12 @@ The BEFORE INSERT trigger requires sequence 1 for the first scan and exactly las
 
 - No history -> RECEIVED only.
 - RECEIVED -> IN_TRANSIT.
-- IN_TRANSIT -> IN_TRANSIT or ARRIVED_AT_HUB.
+- IN_TRANSIT -> IN_TRANSIT, ARRIVED_AT_HUB, or OUT_FOR_DELIVERY.
 - ARRIVED_AT_HUB -> ARRIVED_AT_HUB, IN_TRANSIT, or OUT_FOR_DELIVERY.
 - OUT_FOR_DELIVERY -> OUT_FOR_DELIVERY or DELIVERED.
 - DELIVERED -> no further scans, including a repeated DELIVERED.
 
-The stages are receipt, line-haul, last-mile, completed. IN_TRANSIT and ARRIVED_AT_HUB are both line-haul states: alternating them represents legitimate intermediate hub handling, not regression to receipt. Stage skipping is deliberately rejected. This is a documented interpretation of the specification's example statuses; the PDF does not supply a full transition matrix. No extra requirement that every scan hub equal an endpoint is imposed.
+The stages are receipt, line-haul, last-mile, completed. IN_TRANSIT and ARRIVED_AT_HUB are both line-haul states: alternating them represents legitimate intermediate hub handling, not regression to receipt. ARRIVED_AT_HUB is optional: both four-stage and five-stage histories are valid. Skipping directly from line-haul to DELIVERED remains rejected. This is a documented interpretation of the specification's example statuses; the PDF does not supply a full transition matrix. No extra requirement that every scan hub equal an endpoint is imposed.
 
 The AFTER INSERT trigger updates both derived fields in one statement. A DELIVERED scan uses `DATE(scan_timestamp) <= promised_delivery_date` for ON_TIME; otherwise LATE. A non-delivery scan sets outcome NULL. No current clock or derived SLA replaces the explicitly stored promise. DATETIME has no time-zone conversion; the proposed application convention is America/New_York wall-clock dates/times for both inputs. Normalize inputs consistently, including DST ambiguity, before storing them. This convention is an application assumption, not a time zone specified by the PDF.
 
