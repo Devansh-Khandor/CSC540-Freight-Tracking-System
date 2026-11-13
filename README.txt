@@ -1,100 +1,156 @@
 CSC 540 - Freight Tracking and Delivery Management
-NC State University
+Analytics integration preparation - devansh-analytics-fix
 
-Task 1: Python project foundation
+The six reports live in sql/03_queries.sql and app/queries.py. Canonical schema,
+scan triggers, approved ER diagram and Flask authentication are unchanged.
+Existing results/notes describe the earlier sachith run, including its Q3
+four-scan failure; they are historical evidence, not a successful dkhando load.
 
-Uses Python 3 (3.10 or newer recommended), PyMySQL, and raw SQL against the
-departmental MariaDB 10.5 server. SSL is explicitly disabled per the professor's
-instructions. There is no ORM, business logic, or menu workflow yet.
-The only application query is SELECT VERSION(). No databases, tables, triggers,
-or stored procedures are created. Use your existing assigned schema; CREATE
-DATABASE permission is neither assumed nor required.
+SETUP AND OFFLINE CHECKS
 
-FILES AND DIRECTORIES
+    python3 -m venv .venv
+    .venv/bin/python -m pip install -r requirements-dev.txt
+    .venv/bin/python -m pip check
+    .venv/bin/python -m compileall -q app analytics_checks test_queries.py
+    .venv/bin/python -m unittest analytics_checks.test_offline -v
+    git diff --check
 
-app/__init__.py   Marks app as a Python package.
-app/db.py         Loads configuration, validates required values and the port,
-                  and opens a PyMySQL connection with SSL disabled and timeouts.
-app/main.py       CLI connectivity test; prints the server version only after
-                  SELECT VERSION() succeeds, and closes cursor and connection.
-requirements.txt Runtime dependencies: PyMySQL and python-dotenv.
-.env.example     Configuration template with no real credentials or schema name.
-.gitignore       Excludes local credentials, virtual environments, caches, and
-                  generated output. It keeps .env.example tracked.
-README.txt       This setup and usage guide.
-sql/             Reserved for future raw SQL scripts; currently empty.
-tests/           Reserved for future automated tests; currently empty.
-diagrams/        Reserved for authored database/project diagrams.
-report/          Reserved for authored project reports.
-Each reserved directory contains a .gitkeep so Git can retain the directory.
-Place disposable generated output in a generated/ directory.
+app/db.py reads the root .env without interpolation; exported settings take
+precedence. Configure DB_HOST, DB_PORT, DB_NAME, DB_USER, DB_PASSWORD privately.
+Never print or source .env as shell code. Ensure chmod 600 .env. Do not commit
+credentials, password hashes, backups, receipts or journals. Tests use asserts;
+do not run Python with -O. Plain pytest targets Sanjana's separate write-capable
+functional tests for sshett24; do not use it to validate dkhando analytics.
 
-MACOS SETUP (Terminal, zsh)
+A. FRESH ISOLATED-SCHEMA ANALYTICS TESTING
 
-1. Confirm Python 3 is installed:
+Obtain approval and an assigned empty dedicated schema, distinct from dkhando.
+Set DB_NAME locally to that schema. Only for that approved empty target, install
+sql/01_schema.sql and sql/02_sample_data.sql with a MariaDB client, using an
+interactive password prompt, stopping immediately on errors:
 
-   python3 --version
+    mariadb -h "$DB_HOST" -P "$DB_PORT" -u "$DB_USER" -p "$DB_NAME" < sql/01_schema.sql
+    mariadb -h "$DB_HOST" -P "$DB_PORT" -u "$DB_USER" -p "$DB_NAME" < sql/02_sample_data.sql
 
-2. From the project directory, create and activate a virtual environment:
+The shell variables above must be set privately; .env is not shell-exported.
+Do not reuse these installation commands for dkhando. Never retry a partial seed.
+After a successful installation, run the existing isolated assertions:
 
-   cd /Users/devanshkhandor/Documents/DBMS_FinalProject
-   python3 -m venv .venv
-   source .venv/bin/activate
+    ANALYTICS_TEST_MODE=isolated ANALYTICS_TEST_SCHEMA="$DB_NAME" \
+      .venv/bin/python test_queries.py
 
-3. Install dependencies:
+This retains the exact-schema guard and all six seed-only tests. dkhando is
+rejected in isolated mode. The runner starts a server-enforced READ ONLY snapshot
+and exposes only SELECT cursors to query/test code. It rolls back and closes.
 
-   python -m pip install -r requirements.txt
+B. AUDITED INTEGRATION INTO DKHANDO
 
-4. If you do not already have a .env file, create your local configuration:
+The audited baseline is MariaDB 10.5.22, 14 InnoDB tables, book_shipment and two
+scan triggers. Account/role rows are 540001 SHIPPER, 540002 CARRIER, 540003 VIEWER;
+all freight tables are empty. Never reset the schema or overwrite these accounts.
 
-   cp -n .env.example .env
-   chmod 600 .env
-   nano .env
+Read analytics_checks/OPERATIONS.md completely before any approved write. The
+current task prepares the process only: no seed, recovery or restore is authorized.
+No local dump client is installed; Docker daemon access is unavailable. Routine
+metadata is visible, but mysql.proc SELECT is denied (1142), so a complete
+MariaDB routine dump may need DBA assistance. A complete backup and successful
+isolated restore rehearsal are blocking prerequisites, not optional steps.
 
-   Keep DB_HOST=classdb2.csc.ncsu.edu and DB_PORT=3306.
-   Set DB_NAME to your assigned existing schema, DB_USER to your database
-   username, and DB_PASSWORD to your password. All five values are required.
-   Quote values containing spaces or #; for example DB_PASSWORD='your value'.
-   python-dotenv reads this file; do not source it as a shell script.
-   Variable interpolation is disabled so dollar signs remain literal.
-   Exported environment variables take precedence over .env values.
-   The .env file is loaded from the project root, not an arbitrary directory.
-   Never commit actual credentials. .gitignore does not protect files already
-   tracked by Git.
+1. Pause all application writers. Obtain and rehearse the protected full backup
+   as specified in OPERATIONS.md. Keep writers paused through validation.
+2. Review live schema/routine/trigger definitions against the audited schema.
+   No canonical schema modification or reinstall is needed.
+3. Run the default read-only baseline check (DB_NAME must be dkhando in local
+   configuration; do not override a mismatched target silently):
 
-5. Run the connectivity test from the project root:
+       .venv/bin/python -m analytics_checks.load_seed
 
-   python -m app.main
+   It rejects ANY departure from the exact three-account baseline, including
+   partially loaded seeds. It verifies the pinned seed digest and all ID spaces.
+4. Obtain explicit approval for the live seed load. Only after approval, use a
+   verified backup receipt and a new durable journal outside Git:
 
-   On a successful query it prints:
-   Connectivity test succeeded. Server version: <actual server version>
+       .venv/bin/python -m analytics_checks.load_seed --execute \
+         --approval LOAD-DKHANDO-ONCE \
+         --backup-receipt /absolute/private/verified-backup.json \
+         --journal /absolute/private/dkhando-seed-run-001.jsonl
 
-   This example is not evidence of a successful connection. The actual server
-   response is displayed only when the query succeeds. Exit status is 0 on
-   success and 1 on configuration/database failure. Driver error text is omitted
-   to avoid displaying account details. If connection fails, verify credentials,
-   assigned schema access, and any departmental network/VPN requirements.
+   The wrapper stops at the first failure, never retries, and logs no SQL or
+   credentials. Prior commits survive failure. DO NOT run the raw seed against
+   dkhando and DO NOT create a new journal to retry a failed attempt. Use the
+   narrowly scoped, approval-gated recovery procedure in OPERATIONS.md.
+5. Run explicit combined-dataset read-only validation:
 
-6. Local checks that do not connect to MariaDB:
+       ANALYTICS_TEST_MODE=combined ANALYTICS_ALLOW_COMBINED=dkhando \
+         ANALYTICS_TEST_SCHEMA=dkhando .venv/bin/python test_queries.py
 
-   python -m compileall -q app
-   python -c "import app.db; import app.main; print('Imports OK')"
-   python -m pip check
+   This requires SELECT DATABASE() == 'dkhando'. It checks all fixture values,
+   the three protected account roles and their exact subtype memberships, and
+   independently computes all report expectations from the current dataset.
+   Additional unrelated records are allowed, including records that affect lane
+   ranks and carrier running totals. Fixture corruption still fails. The four
+   required carrier rows are 1:(2,1,0), 2:(2,1,0), 3:(0,0,1), 540002:(0,0,0).
+   No vehicle, including an untyped vehicle, may belong to protected carrier
+   540002 in this validation mode. A later change to that baseline needs review.
+6. Capture actual SQL report output after successful validation, using an
+   approved installed client and an interactive password prompt:
 
-   Syntax/import checks do not establish server access or confirm the server
-   version. Run step 5 with valid credentials to verify real connectivity.
+       mariadb -h "$DB_HOST" -P "$DB_PORT" -u "$DB_USER" -p dkhando \
+         < sql/03_queries.sql > analytics_query_results.txt
 
-7. Leave the virtual environment when finished:
+   Record date, schema and actual outcomes in analytics_execution_notes.txt;
+   replace historical evidence only after real execution. Verify protected
+   password preservation privately against the verified backup; report only
+   pass/fail. The test runner deliberately never reads password columns.
+7. Review the diff and integration results before any separately authorized
+   commit, push or merge. Reopen application writers only after acceptance.
 
-   deactivate
+EXPECTED COUNTS IMMEDIATELY AFTER THE AUDITED LOAD
 
-For later sessions, reactivate with source .venv/bin/activate before running.
-Use python -m app.main, rather than python app/main.py, for package imports.
+                     isolated seed      combined dkhando
+    account                      8                    11
+    shipper                      4                     5
+    carrier                      3                     4
+    viewer                       1                     2
+    hub                         11                    11
+    lane                         5                     5
+    vehicle                      7                     7
+    box_truck                    4                     4
+    refrigerated_van             2                     2
+    rail_car                     1                     1
+    departure                   10                    10
+    shipment                    23                    23
+    booking                     22                    22
+    scan_event                  83                    83
 
-COMPATIBILITY
+These global counts describe the audited baseline plus seed, not invariants for
+arbitrary future data. The manifest enumerates every seed-owned key. Combined
+tests scope fixture assertions to these known rows and validate the full reports
+against independently computed current-data expectations.
 
-SELECT VERSION() and utf8mb4 are supported by MariaDB 10.5. The connection uses
-no MySQL-only collation, ORM, or schema-creation commands. Transactions default
-to autocommit=False; future writes will require explicit transaction handling.
-PyMySQL connection options reference:
-https://pymysql.readthedocs.io/en/latest/modules/connections.html
+Q1: 4 carrier rows for this baseline, including 540002 with zero vehicles.
+Q2: 10 departures; booked kg for D1..D10: 7500,3700,4000,7000,3500,2800,
+    2000,4000,2000,2000. D1 is 75%; D7 is exactly full. Ranks include future rows.
+Q3: shipment 1 has RECEIVED, IN_TRANSIT, ARRIVED_AT_HUB, OUT_FOR_DELIVERY,
+    DELIVERED; elapsed minutes NULL,65,595,270,90.
+Q4: 14 fixture deliveries; fixture contributions by carrier: 1=18000 kg,
+    2=9500 kg, 3=3500 kg. Global cumulative totals include future deliveries.
+Q5: fixture departures 1,2,3 each have two distinct shippers.
+Q6: fixture shipment 14 alone has no scans; future unscanned shipments may exist.
+
+ACCOUNT BOOTSTRAP AND FLASK INTEGRATION
+
+Sample accounts 1..8 initially use BOOTSTRAP_REQUIRED. Analytics does not require
+password initialization. app/bootstrap_accounts.py is optional and write-capable:
+run only with separate approval if demo logins are needed, after validation. Its
+marker/role checks target only accounts 1..8. Do not recreate authentication or
+modify the existing 540001..540003 accounts. Preserve the devansh-flask-ui branch.
+
+All six app.queries functions accept an open connection and return tuple rows;
+get_scan_time_intervals(connection, shipment_id) additionally requires a positive
+non-boolean int and binds it as a SQL parameter. The other five functions take
+only connection. Functions close their cursor, do not commit, and leave connection
+ownership to the caller. Flask must supply per-request connections, enforce its
+existing authorization policy, and handle Decimal/date/datetime serialization.
+The reports themselves are global reports, not account-level access controls.
+No function signatures or Flask branch files were changed.

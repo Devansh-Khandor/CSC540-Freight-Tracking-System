@@ -1,0 +1,55 @@
+# Analytics Execution Record
+
+## Environment
+- Database: sachith (existing shared schema)
+- MariaDB version: 10.5.22-MariaDB
+- Execution date: November 12, 2026
+- Analytics SQL: sql/03_queries.sql
+- Python test: test_queries.py
+
+## SQL Query Execution
+All six analytics queries executed successfully against the existing sachith schema.
+
+Actual output is saved in analytics_query_results.txt.
+
+## Python Integration Test Results
+
+| Test | Result | Details |
+|---|---|---|
+| Q1 | PASS | 3 carriers and 7 vehicles verified |
+| Q2 | PASS | 10 departures and utilization rankings verified |
+| Q3 | FAIL | Expected 5 scans for shipment 1, found 4 |
+| Q4 | PASS | 14 delivered shipments and running totals verified |
+| Q5 | PASS | 3 departures with multiple shippers verified |
+| Q6 | PASS | Shipment 14 is the only shipment without scans |
+
+Q4, Q5 and Q6 were executed independently after Q3 stopped the sequential test run.
+
+## Q3 Limitation
+The existing sachith schema contains four scans for shipment 1:
+1. RECEIVED
+2. IN_TRANSIT
+3. OUT_FOR_DELIVERY
+4. DELIVERED
+
+The corrected test expects five canonical statuses:
+1. RECEIVED
+2. IN_TRANSIT
+3. ARRIVED_AT_HUB
+4. OUT_FOR_DELIVERY
+5. DELIVERED
+
+The existing shared database was not modified to force this expected result.
+
+## Validation Summary
+- Python compilation: PASS
+- Dependencies and Werkzeug: PASS
+- MariaDB connection: PASS
+- MariaDB version verification: PASS
+- Six analytics SQL queries: PASS
+- Actual SQL output captured: PASS
+- Python integration assertions: 5 PASS, 1 FAIL
+- Fresh sample-data installation: NOT PERFORMED
+- Five-stage Q3 validation: NOT VERIFIED against fresh sample data
+
+A dedicated database was unavailable. The existing sachith and dkhando schemas must not be reset or seeded for this validation.
