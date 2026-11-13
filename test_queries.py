@@ -1,13 +1,14 @@
 """Integration tests for the six freight analytics queries.
 
 These tests are read-only. They require an explicitly selected analytics schema
-and refuse to run against the shared dkhando schema.
+with explicit opt-in for combined-dataset validation on dkhando.
 """
 
 import os
 
 from app.db import get_connection
 from app import queries
+from analytics_checks.safety import ReadOnlyConnection
 
 
 EXPECTED_STATUSES_SHIPMENT_1 = (
@@ -27,7 +28,13 @@ def _require_test_schema(connection):
             "Set ANALYTICS_TEST_SCHEMA to the dedicated schema containing "
             "the analytics sample dataset before running these tests."
         )
-    if expected_schema.lower() == "dkhando":
+    mode = os.environ.get("ANALYTICS_TEST_MODE", "isolated")
+    if mode not in ("isolated", "combined"):
+        raise RuntimeError("ANALYTICS_TEST_MODE must be isolated or combined")
+    if mode == "combined" and (expected_schema != "dkhando" or
+            os.environ.get("ANALYTICS_ALLOW_COMBINED") != "dkhando"):
+        raise RuntimeError("Combined mode requires exact schema dkhando and ANALYTICS_ALLOW_COMBINED=dkhando")
+    if expected_schema.lower() == "dkhando" and mode != "combined":
         raise RuntimeError(
             "Refusing to run analytics tests against shared schema dkhando."
         )
@@ -49,10 +56,23 @@ def _require_test_schema(connection):
 
 
 def run_tests():
-    connection = get_connection()
+    if not __debug__:
+        raise RuntimeError("Do not run assertion-based validation with python -O")
+    raw_connection = get_connection()
     try:
+        cursor = raw_connection.cursor()
+        try:
+            cursor.execute("START TRANSACTION WITH CONSISTENT SNAPSHOT, READ ONLY")
+        finally:
+            cursor.close()
+        connection = ReadOnlyConnection(raw_connection)
         schema = _require_test_schema(connection)
         print(f"Testing database: {schema}")
+        if os.environ.get("ANALYTICS_TEST_MODE", "isolated") == "combined":
+            from analytics_checks.combined import validate_combined
+            validate_combined(connection)
+            print("All six combined-dataset analytics checks passed")
+            return
 
         # Q1: exactly three carriers and seven vehicles across all subtypes.
         q1 = queries.get_vehicle_counts_by_carrier(connection)
@@ -127,8 +147,11 @@ def run_tests():
         print("\nAll six analytics integration tests passed!")
 
     finally:
-        connection.close()
+        raw_connection.rollback()
+        raw_connection.close()
 
 
 if __name__ == "__main__":
+    if not __debug__:
+        raise RuntimeError("Do not run assertion-based validation with python -O")
     run_tests()
