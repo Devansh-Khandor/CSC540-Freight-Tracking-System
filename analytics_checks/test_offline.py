@@ -72,8 +72,10 @@ class Database:
             self.db.execute(f"CREATE TABLE {table} ({', '.join(definitions)})")
             self.db.executemany(f"INSERT INTO {table} VALUES ({','.join('?' for _ in columns)})",
                                 [tuple(row[c] for c in columns) for row in rows])
-        self.db.executemany('INSERT INTO account VALUES (?,?)',
-                            [(540001, 'SHIPPER'), (540002, 'CARRIER'), (540003, 'VIEWER')])
+        self.db.executemany(
+    'INSERT INTO account (account_id, role) VALUES (?,?)',
+    [(540001, 'SHIPPER'), (540002, 'CARRIER'), (540003, 'VIEWER')]
+)
         for table, account in [('shipper',540001),('carrier',540002),('viewer',540003)]:
             self.db.execute(f'INSERT INTO {table} VALUES (?)', (account,))
 
@@ -99,7 +101,7 @@ class OfflineTests(unittest.TestCase):
     def test_future_rows_affect_ranks_and_running_totals(self):
         db = self.raw.db
         db.execute("INSERT INTO carrier VALUES (999)")
-        db.execute("INSERT INTO account VALUES (999, 'CARRIER')")
+        db.execute("INSERT INTO account (account_id, role) VALUES (999, 'CARRIER')")
         db.execute("INSERT INTO departure VALUES (99,101,1,2,'2025-01-01 09:00:00',100)")
         db.execute("INSERT INTO shipment VALUES (99,4,1,2,100,'2025-01-03')")
         db.execute('INSERT INTO booking VALUES (99,99)')

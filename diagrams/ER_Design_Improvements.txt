@@ -1,0 +1,17 @@
+ER MODEL — IMPROVEMENTS FROM THE PRELIMINARY DESIGN
+
+The revised ER model clarifies the relationships, key constraints,
+and cardinalities from the preliminary design. The LANE entity
+uses a composite primary key consisting of origin_hub_id and
+destination_hub_id, preserving the direction of each route.
+The VEHICLE specialization represents BOX_TRUCK,
+REFRIGERATED_VAN, and RAIL_CAR with their type-specific
+attributes, while common vehicle relationships remain attached
+to the VEHICLE superclass. In particular, BasedAt connects
+VEHICLE to HUB, and Runs connects VEHICLE to DEPARTURE.
+TravelsOn connects DEPARTURE to LANE. The revised diagram also
+clarifies mandatory and optional participation in relationships
+and maintains Region as an attribute of HUB rather than a
+separate entity. The final ER model follows the zyBooks
+conceptual notation and reflects the implemented relational
+schema and business constraints.

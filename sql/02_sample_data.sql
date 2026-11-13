@@ -13,18 +13,18 @@
 -- SECTION 1: HUBS
 -- ============================================================
 
-INSERT INTO hub (hub_id, region) VALUES
-(1, 'Southeast'),  -- RDU
-(2, 'Southeast'),  -- ATL
-(3, 'Southeast'),  -- MIA
-(4, 'Northeast'),  -- JFK
-(5, 'Northeast'),  -- BOS
-(6, 'Midwest'),    -- ORD
-(7, 'Midwest'),    -- STL
-(8, 'Southwest'),  -- DFW
-(9, 'Southwest'),  -- PHX
-(10, 'West'),      -- LAX
-(11, 'West');      -- SEA
+INSERT INTO hub (hub_id, hub_code, hub_name, region) VALUES
+(1, 'RDU', 'Raleigh Hub', 'Southeast'),
+(2, 'ATL', 'Atlanta Hub', 'Southeast'),
+(3, 'MIA', 'Miami Hub', 'Southeast'),
+(4, 'JFK', 'New York Hub', 'Northeast'),
+(5, 'BOS', 'Boston Hub', 'Northeast'),
+(6, 'ORD', 'Chicago Hub', 'Midwest'),
+(7, 'STL', 'St. Louis Hub', 'Midwest'),
+(8, 'DFW', 'Dallas Hub', 'Southwest'),
+(9, 'PHX', 'Phoenix Hub', 'Southwest'),
+(10, 'LAX', 'Los Angeles Hub', 'West'),
+(11, 'SEA', 'Seattle Hub', 'West');
 
 
 -- ============================================================
@@ -59,15 +59,15 @@ INSERT INTO lane (origin_hub_id, destination_hub_id) VALUES
 -- Passwords are initialized securely after loading the seed by app/bootstrap_accounts.py.
 -- The bootstrap utility replaces this marker with per-account Werkzeug scrypt hashes.
 
-INSERT INTO account (account_id, password, role) VALUES
-(1, 'BOOTSTRAP_REQUIRED', 'CARRIER'),
-(2, 'BOOTSTRAP_REQUIRED', 'CARRIER'),
-(3, 'BOOTSTRAP_REQUIRED', 'CARRIER'),
-(4, 'BOOTSTRAP_REQUIRED', 'SHIPPER'),
-(5, 'BOOTSTRAP_REQUIRED', 'SHIPPER'),
-(6, 'BOOTSTRAP_REQUIRED', 'SHIPPER'),
-(7, 'BOOTSTRAP_REQUIRED', 'SHIPPER'),
-(8, 'BOOTSTRAP_REQUIRED', 'VIEWER');
+INSERT INTO account (account_id, password, role, account_name) VALUES
+(1, 'BOOTSTRAP_REQUIRED', 'CARRIER', 'Piedmont Freight Lines'),
+(2, 'BOOTSTRAP_REQUIRED', 'CARRIER', 'Atlantic Coast Haulers'),
+(3, 'BOOTSTRAP_REQUIRED', 'CARRIER', 'Plains Rail Co'),
+(4, 'BOOTSTRAP_REQUIRED', 'SHIPPER', 'Triangle Textiles'),
+(5, 'BOOTSTRAP_REQUIRED', 'SHIPPER', 'Oak City Electronics'),
+(6, 'BOOTSTRAP_REQUIRED', 'SHIPPER', 'Carolina Produce Co'),
+(7, 'BOOTSTRAP_REQUIRED', 'SHIPPER', 'Coastal Furniture'),
+(8, 'BOOTSTRAP_REQUIRED', 'VIEWER', 'Fedex');
 
 
 -- ============================================================

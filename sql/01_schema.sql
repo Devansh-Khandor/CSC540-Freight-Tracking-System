@@ -18,6 +18,7 @@ CREATE TABLE account (
     account_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
     password VARCHAR(255) NOT NULL,
     role VARCHAR(10) NOT NULL,
+    account_name VARCHAR(100) NULL,
 
     CONSTRAINT pk_account
         PRIMARY KEY (account_id),
@@ -67,6 +68,8 @@ CREATE TABLE viewer (
 -- HUB - Stores logistics hubs and their regions.
 CREATE TABLE hub (
     hub_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    hub_code VARCHAR(10) NULL,
+    hub_name VARCHAR(100) NULL,
     region VARCHAR(20) NOT NULL,
 
     CONSTRAINT pk_hub
